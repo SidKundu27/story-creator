@@ -1,0 +1,123 @@
+.markdown-preview {
+  background: white;
+  border: 1px solid #e0e2e6;
+  border-top: none;
+  border-radius: 0 0 8px 8px;
+  margin-top: -1px;
+  overflow: hidden;
+  max-height: 300px;
+  display: flex;
+  flex-direction: column;
+}
+
+.preview-header {
+  background: #f8f9fa;
+  border-bottom: 1px solid #e0e2e6;
+  padding: 8px 12px;
+  flex-shrink: 0;
+}
+
+.preview-header h4 {
+  margin: 0;
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: #6b7280;
+}
+
+.preview-content {
+  flex: 1;
+  overflow-y: auto;
+  padding: 12px;
+  font-size: 14px;
+  line-height: 1.6;
+  color: #374151;
+}
+
+.preview-paragraph {
+  margin: 0 0 8px 0;
+  padding: 0;
+}
+
+.preview-paragraph:last-child {
+  margin-bottom: 0;
+}
+
+.preview-paragraph strong {
+  font-weight: 700;
+  color: #1f2937;
+}
+
+.preview-paragraph em {
+  font-style: italic;
+  color: #6366f1;
+}
+
+.preview-paragraph u {
+  text-decoration: underline;
+  text-decoration-thickness: 1.5px;
+  text-underline-offset: 2px;
+}
+
+.preview-paragraph del {
+  text-decoration: line-through;
+  opacity: 0.6;
+}
+
+.preview-paragraph a {
+  color: #2563eb;
+  text-decoration: underline;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.preview-paragraph a:hover {
+  opacity: 0.8;
+}
+
+.preview-paragraph mark {
+  background: rgba(255, 255, 0, 0.3);
+  padding: 2px 4px;
+  border-radius: 2px;
+}
+
+.markdown-image {
+  max-width: 100%;
+  height: auto;
+  max-height: 200px;
+  margin: 12px 0;
+  border-radius: 4px;
+  border: 1px solid #e5e7eb;
+}
+
+.preview-paragraph > div {
+  margin: 0;
+  padding: 0;
+}
+
+.preview-empty {
+  margin: 0;
+  color: #9ca3af;
+  font-style: italic;
+  text-align: center;
+  padding: 20px 0;
+}
+
+/* Scrollbar styling */
+.preview-content::-webkit-scrollbar {
+  width: 6px;
+}
+
+.preview-content::-webkit-scrollbar-track {
+  background: #f0f1f3;
+}
+
+.preview-content::-webkit-scrollbar-thumb {
+  background: #d1d5db;
+  border-radius: 3px;
+}
+
+.preview-content::-webkit-scrollbar-thumb:hover {
+  background: #9ca3af;
+}

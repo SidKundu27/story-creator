@@ -11,6 +11,10 @@ export const parseMarkdown = (text) => {
     .replace(/</g, '&lt;')
     .replace(/>/g, '&gt;');
 
+  // Parse images FIRST (before other replacements)
+  // ![alt text](image url)
+  escaped = escaped.replace(/!\[(.*?)\]\((.*?)\)/g, '<img src="$2" alt="$1" class="markdown-image" />');
+
   // Process markdown-style formatting
   // **bold**
   escaped = escaped.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');

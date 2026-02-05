@@ -1,0 +1,375 @@
+.story-nodes-editor {
+  display: grid;
+  grid-template-columns: 280px 1fr;
+  gap: 20px;
+  height: 100%;
+}
+
+.nodes-sidebar {
+  background: #f9fafb;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  max-height: 800px;
+  overflow-y: auto;
+}
+
+.sidebar-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+}
+
+.sidebar-header h3 {
+  margin: 0;
+  font-size: 14px;
+  font-weight: 700;
+  color: #1f2937;
+}
+
+.nodes-list {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.node-item-container {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+}
+
+.node-item {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 12px;
+  border: 1px solid #d1d5db;
+  background: white;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s;
+  text-align: left;
+  font-size: 13px;
+  font-weight: 500;
+}
+
+.node-item:hover {
+  border-color: #667eea;
+  background: #f3f4f6;
+}
+
+.node-item.active {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  border-color: transparent;
+}
+
+.node-badge {
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.node-name {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  flex: 1;
+}
+
+.node-delete {
+  background: #fee2e2;
+  border: none;
+  color: #991b1b;
+  border-radius: 4px;
+  width: 28px;
+  height: 28px;
+  cursor: pointer;
+  font-weight: 700;
+  transition: all 0.2s;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.node-delete:hover {
+  background: #fca5a5;
+}
+
+/* Node Editor */
+.nodes-editor {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.node-form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.node-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: 16px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.node-info {
+  flex: 1;
+}
+
+.node-info label {
+  display: block;
+  font-size: 12px;
+  font-weight: 700;
+  color: #6b7280;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 6px;
+}
+
+.node-info input {
+  width: 100%;
+  padding: 8px 12px;
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+  font-size: 14px;
+}
+
+.node-type-selector {
+  display: flex;
+  gap: 8px;
+}
+
+.node-type-badge {
+  padding: 8px 16px;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 700;
+  border: 1px solid;
+  cursor: pointer;
+  transition: all 0.2s;
+  white-space: nowrap;
+}
+
+.node-type-badge.start {
+  background: #d1fae5;
+  border-color: #10b981;
+  color: #065f46;
+  cursor: default;
+}
+
+.node-type-badge.ending {
+  background: #fee2e2;
+  border-color: #ef4444;
+  color: #991b1b;
+}
+
+.node-type-badge.ending:hover {
+  background: #fca5a5;
+}
+
+.node-type-badge.choice {
+  background: #dbeafe;
+  border-color: #3b82f6;
+  color: #1e40af;
+}
+
+.node-type-badge.choice:hover {
+  background: #bfdbfe;
+}
+
+/* Content Editor */
+.content-editor {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.editor-label {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 16px;
+  background: #f9fafb;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.editor-label label {
+  margin: 0;
+  font-weight: 700;
+  color: #1f2937;
+  font-size: 13px;
+}
+
+.preview-toggle {
+  background: none;
+  border: none;
+  color: #667eea;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 12px;
+  padding: 0;
+  transition: color 0.2s;
+}
+
+.preview-toggle:hover {
+  color: #764ba2;
+}
+
+.editor-wrapper {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0;
+}
+
+.content-textarea {
+  padding: 16px;
+  border: none;
+  font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+  font-size: 13px;
+  line-height: 1.6;
+  resize: vertical;
+  min-height: 400px;
+  color: #1f2937;
+}
+
+.content-textarea:focus {
+  outline: none;
+  background: #f9fafb;
+}
+
+/* Choices */
+.choices-section {
+  padding: 16px;
+  background: #f9fafb;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+}
+
+.choices-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 16px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.choices-header h3 {
+  margin: 0;
+  font-size: 14px;
+  font-weight: 700;
+  color: #1f2937;
+}
+
+.choices-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.choice-form {
+  background: white;
+  border: 1px solid #e5e7eb;
+  border-radius: 6px;
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.choice-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+}
+
+.choice-number {
+  font-size: 12px;
+  font-weight: 700;
+  color: #667eea;
+}
+
+.choice-text-input,
+.choice-target-select {
+  padding: 8px 12px;
+  border: 1px solid #d1d5db;
+  border-radius: 4px;
+  font-size: 13px;
+  font-family: inherit;
+}
+
+.choice-text-input:focus,
+.choice-target-select:focus {
+  outline: none;
+  border-color: #667eea;
+  box-shadow: 0 0 0 2px rgba(102, 126, 234, 0.1);
+}
+
+.no-choices {
+  margin: 0;
+  padding: 16px;
+  text-align: center;
+  color: #9ca3af;
+  font-style: italic;
+  background: white;
+  border: 1px dashed #e5e7eb;
+  border-radius: 6px;
+}
+
+@media (max-width: 1024px) {
+  .story-nodes-editor {
+    grid-template-columns: 1fr;
+  }
+
+  .nodes-sidebar {
+    max-height: 200px;
+  }
+
+  .editor-wrapper {
+    grid-template-columns: 1fr;
+  }
+}
+
+
+.paste-error {
+  margin-top: 8px;
+  padding: 10px;
+  background: #fee2e2;
+  border: 1px solid #fecaca;
+  border-radius: 4px;
+  color: #991b1b;
+  font-size: 12px;
+}
+
+@media (max-width: 768px) {
+  .node-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .node-type-selector {
+    width: 100%;
+  }
+
+  .node-type-badge {
+    flex: 1;
+    text-align: center;
+  }
+}

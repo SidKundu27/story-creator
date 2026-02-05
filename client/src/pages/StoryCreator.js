@@ -1,12 +1,16 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { createStory, updateStory, getStoryById } from '../services/storyService';
+import MarkdownToolbar from '../components/MarkdownToolbar';
+import MarkdownPreview from '../components/MarkdownPreview';
+import NodeGraph from '../components/NodeGraph';
 import './StoryCreator.css';
 
 const StoryCreator = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const isEditing = !!id;
+  const textareaRef = useRef(null);
 
   const [formData, setFormData] = useState({
     title: '',
@@ -14,8 +18,13 @@ const StoryCreator = () => {
     tags: '',
     genres: [],
     colorTheme: 'light',
-    isPublished: false
+    isPublished: false,
+    coverImage: '',
+    coverImageCaption: ''
   });
+
+  const [showPreview, setShowPreview] = useState(false);
+  const [showNodeGraph, setShowNodeGraph] = useState(false);
 
   const availableGenres = ['Adventure', 'Fantasy', 'Mystery', 'Sci-Fi', 'Horror', 'Romance', 'Comedy', 'Thriller'];
   
@@ -35,7 +44,6 @@ const StoryCreator = () => {
       nodeId: 'start',
       name: 'Start',
       content: '',
-      imageUrl: '',
       isEnding: false,
       choices: []
     }
@@ -61,7 +69,9 @@ const StoryCreator = () => {
         tags: story.tags.join(', '),
         genres: story.genres || [],
         colorTheme: story.colorTheme || 'light',
-        isPublished: story.isPublished
+        isPublished: story.isPublished,
+        coverImage: story.coverImage || '',
+        coverImageCaption: story.coverImageCaption || ''
       });
       setNodes(story.nodes);
     } catch (err) {
@@ -80,9 +90,26 @@ const StoryCreator = () => {
     setFormData({ ...formData, genres });
   };
 
+  const handleCoverImageUpload = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setFormData({ ...formData, coverImage: reader.result });
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
   const handleNodeContentChange = (e) => {
     const updatedNodes = [...nodes];
     updatedNodes[selectedNodeIndex].content = e.target.value;
+    setNodes(updatedNodes);
+  };
+
+  const handleMarkdownInsert = (newValue) => {
+    const updatedNodes = [...nodes];
+    updatedNodes[selectedNodeIndex].content = newValue;
     setNodes(updatedNodes);
   };
 
@@ -96,19 +123,6 @@ const StoryCreator = () => {
     const updatedNodes = [...nodes];
     updatedNodes[selectedNodeIndex].isEnding = e.target.checked;
     setNodes(updatedNodes);
-  };
-
-  const handleImageUpload = (e) => {
-    const file = e.target.files[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        const updatedNodes = [...nodes];
-        updatedNodes[selectedNodeIndex].imageUrl = reader.result;
-        setNodes(updatedNodes);
-      };
-      reader.readAsDataURL(file);
-    }
   };
 
   const addChoice = () => {
@@ -145,7 +159,6 @@ const StoryCreator = () => {
         nodeId: newNodeId,
         name: generateNodeName(nodes.length),
         content: '',
-        imageUrl: '',
         isEnding: false,
         choices: []
       }
@@ -188,6 +201,8 @@ const StoryCreator = () => {
       tags: formData.tags.split(',').map(tag => tag.trim()).filter(tag => tag),
       genres: formData.genres,
       colorTheme: formData.colorTheme,
+      coverImage: formData.coverImage,
+      coverImageCaption: formData.coverImageCaption,
       nodes: nodes,
       startNodeId: 'start',
       isPublished: formData.isPublished
@@ -239,6 +254,44 @@ const StoryCreator = () => {
                 onChange={handleInputChange}
                 required
               />
+            </div>
+
+            <div className="form-group">
+              <label>Cover Image (shown on story cards)</label>
+              <div className="image-upload-group">
+                <input
+                  type="file"
+                  accept="image/*"
+                  onChange={handleCoverImageUpload}
+                  id="cover-upload"
+                />
+                <label htmlFor="cover-upload" className="image-upload-label">
+                  Upload Cover Image
+                </label>
+              </div>
+              {formData.coverImage && (
+                <div className="image-preview">
+                  <img src={formData.coverImage} alt="Cover preview" />
+                  <button
+                    type="button"
+                    onClick={() => setFormData({ ...formData, coverImage: '' })}
+                    className="btn btn-danger btn-small"
+                  >
+                    Remove Cover
+                  </button>
+                </div>
+              )}
+              {formData.coverImage && (
+                <div className="form-group">
+                  <label>Cover Image Caption (optional)</label>
+                  <input
+                    type="text"
+                    value={formData.coverImageCaption}
+                    onChange={(e) => setFormData({ ...formData, coverImageCaption: e.target.value })}
+                    placeholder="Brief description of the cover image"
+                  />
+                </div>
+              )}
             </div>
 
             <div className="form-group">
@@ -327,10 +380,29 @@ const StoryCreator = () => {
           <div className="card">
             <div className="node-header">
               <h2>Story Nodes</h2>
-              <button type="button" onClick={addNode} className="btn btn-success">
-                Add Node
-              </button>
+              <div className="node-header-actions">
+                <button 
+                  type="button" 
+                  onClick={() => setShowNodeGraph(!showNodeGraph)} 
+                  className="btn btn-secondary btn-small"
+                  title="Toggle node graph visualization"
+                >
+                  {showNodeGraph ? '📖' : '📊'} {showNodeGraph ? 'Hide' : 'Show'} Graph
+                </button>
+                <button type="button" onClick={addNode} className="btn btn-success">
+                  + Add Node
+                </button>
+              </div>
             </div>
+
+            {showNodeGraph && (
+              <NodeGraph 
+                nodes={nodes} 
+                selectedNodeIndex={selectedNodeIndex}
+                onNodeSelect={setSelectedNodeIndex}
+                startNodeId="start"
+              />
+            )}
 
             <div className="node-selector">
               {nodes.map((node, index) => (
@@ -376,42 +448,31 @@ const StoryCreator = () => {
 
               <div className="form-group">
                 <label>Content *</label>
+                <MarkdownToolbar 
+                  onInsert={handleMarkdownInsert}
+                  textareaRef={textareaRef}
+                />
                 <textarea
+                  ref={textareaRef}
                   value={currentNode.content}
                   onChange={handleNodeContentChange}
-                  placeholder="Write the story content for this node..."
-                  rows="6"
+                  placeholder="Write the story content for this node using markdown-style formatting..."
+                  rows="8"
+                  className="markdown-textarea"
                 />
-              </div>
-
-              <div className="form-group">
-                <label>Background Image</label>
-                <div className="image-upload-group">
-                  <input
-                    type="file"
-                    accept="image/*"
-                    onChange={handleImageUpload}
-                    id="image-upload"
+                <button
+                  type="button"
+                  onClick={() => setShowPreview(!showPreview)}
+                  className="btn btn-secondary btn-small"
+                  style={{ marginTop: '8px' }}
+                >
+                  {showPreview ? '✕' : '👁'} {showPreview ? 'Hide' : 'Show'} Preview
+                </button>
+                {showPreview && (
+                  <MarkdownPreview 
+                    content={currentNode.content}
+                    isVisible={showPreview}
                   />
-                  <label htmlFor="image-upload" className="image-upload-label">
-                    Upload Image
-                  </label>
-                </div>
-                {currentNode.imageUrl && (
-                  <div className="image-preview">
-                    <img src={currentNode.imageUrl} alt="Preview" />
-                    <button
-                      type="button"
-                      onClick={() => {
-                        const updatedNodes = [...nodes];
-                        updatedNodes[selectedNodeIndex].imageUrl = '';
-                        setNodes(updatedNodes);
-                      }}
-                      className="btn btn-danger btn-small"
-                    >
-                      Remove Image
-                    </button>
-                  </div>
                 )}
               </div>
 

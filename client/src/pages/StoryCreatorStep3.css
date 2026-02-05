@@ -1,0 +1,147 @@
+.story-preview-container {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.preview-tabs {
+  display: flex;
+  gap: 8px;
+  border-bottom: 1px solid #e5e7eb;
+  overflow-x: auto;
+}
+
+.preview-tab {
+  padding: 12px 20px;
+  border: none;
+  background: transparent;
+  color: #6b7280;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 13px;
+  transition: all 0.2s;
+  border-bottom: 3px solid transparent;
+  white-space: nowrap;
+}
+
+.preview-tab:hover {
+  color: #1f2937;
+}
+
+.preview-tab.active {
+  color: #667eea;
+  border-bottom-color: #667eea;
+}
+
+.error-banner {
+  background: #fee2e2;
+  border: 1px solid #fca5a5;
+  color: #991b1b;
+  padding: 12px 16px;
+  border-radius: 8px;
+  font-weight: 500;
+}
+
+.preview-content {
+  background: white;
+  border-radius: 8px;
+  border: 1px solid #e5e7eb;
+  overflow: hidden;
+  min-height: 600px;
+}
+
+.preview-section {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.map-header {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.map-header h2 {
+  margin: 0 0 8px 0;
+  color: #1f2937;
+  font-size: 20px;
+}
+
+.map-header p {
+  margin: 0;
+  color: #6b7280;
+  font-size: 13px;
+}
+
+.preview-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 20px;
+  padding: 20px;
+  background: white;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  flex-wrap: wrap;
+}
+
+.story-stats {
+  display: flex;
+  gap: 30px;
+}
+
+.stat {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+
+.stat-label {
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: #6b7280;
+}
+
+.stat-value {
+  font-size: 22px;
+  font-weight: 800;
+  color: #667eea;
+}
+
+.action-buttons {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.action-buttons .btn {
+  min-width: 150px;
+  padding: 10px 20px;
+  font-weight: 600;
+}
+
+@media (max-width: 768px) {
+  .preview-footer {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .story-stats {
+    justify-content: space-around;
+    width: 100%;
+  }
+
+  .action-buttons {
+    width: 100%;
+  }
+
+  .action-buttons .btn {
+    flex: 1;
+  }
+}

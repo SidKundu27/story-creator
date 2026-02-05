@@ -9,7 +9,7 @@ import Login from './pages/Login';
 import Register from './pages/Register';
 import StoryFeed from './pages/StoryFeed';
 import StoryPlayer from './pages/StoryPlayer';
-import StoryCreator from './pages/StoryCreator';
+import StoryCreatorMultiStep from './pages/StoryCreatorMultiStep';
 import MyStories from './pages/MyStories';
 import ProtectedRoute from './components/ProtectedRoute';
 
@@ -29,7 +29,7 @@ function App() {
               path="/create" 
               element={
                 <ProtectedRoute>
-                  <StoryCreator />
+                  <StoryCreatorMultiStep />
                 </ProtectedRoute>
               } 
             />
@@ -37,7 +37,7 @@ function App() {
               path="/edit/:id" 
               element={
                 <ProtectedRoute>
-                  <StoryCreator />
+                  <StoryCreatorMultiStep />
                 </ProtectedRoute>
               } 
             />

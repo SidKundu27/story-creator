@@ -51,22 +51,6 @@ const StoryNodeSchema = new mongoose.Schema({
     type: String,
     required: true
   },
-  imageUrl: {
-    type: String,
-    default: null
-  },
-  imageCaption: {
-    type: String,
-    default: ''
-  },
-  backgroundColor: {
-    type: String,
-    default: null
-  },
-  textColor: {
-    type: String,
-    default: null
-  },
   isEnding: {
     type: Boolean,
     default: false
@@ -83,6 +67,14 @@ const StorySchema = new mongoose.Schema({
   description: {
     type: String,
     required: true
+  },
+  coverImage: {
+    type: String,
+    default: null
+  },
+  coverImageCaption: {
+    type: String,
+    default: ''
   },
   author: {
     type: mongoose.Schema.Types.ObjectId,

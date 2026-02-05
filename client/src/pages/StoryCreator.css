@@ -462,3 +462,68 @@
     grid-template-columns: repeat(2, 1fr);
   }
 }
+/* Node Header Actions */
+.node-header-actions {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.node-header-actions .btn {
+  font-size: 13px;
+  padding: 8px 14px;
+}
+
+/* Markdown Textarea */
+.markdown-textarea {
+  font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+  font-size: 13px;
+  line-height: 1.6;
+}
+
+/* Button Small Variant */
+.btn-small {
+  padding: 6px 12px;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+/* Image Upload Group */
+.image-upload-group {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 12px;
+}
+
+.image-upload-group input[type="file"] {
+  display: none;
+}
+
+.image-upload-label {
+  display: inline-block;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  padding: 10px 20px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 14px;
+  transition: all 0.2s;
+}
+
+.image-upload-label:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+}
+
+/* Preview button */
+.btn-secondary.btn-small {
+  background: #667eea;
+  color: white;
+}
+
+.btn-secondary.btn-small:hover {
+  background: #764ba2;
+}

@@ -1,18 +1,21 @@
 import React, { useState, useEffect } from 'react';
-import { useParams, useSearchParams } from 'react-router-dom';
+import { useParams, useSearchParams, useNavigate } from 'react-router-dom';
 import { getStoryById, likeStory } from '../services/storyService';
 import { parseMarkdown, stripFormattingDirectives, parseFormattingDirectives } from '../utils/markdownParser';
+import StoryCoverPage from '../components/StoryCoverPage';
 import './StoryPlayer.css';
 
 const StoryPlayer = () => {
   const { id } = useParams();
   const [searchParams] = useSearchParams();
+  const navigate = useNavigate();
   const isPreview = searchParams.get('preview') === 'true';
   const [story, setStory] = useState(null);
   const [currentNode, setCurrentNode] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
   const [history, setHistory] = useState([]);
+  const [showCover, setShowCover] = useState(true);
 
   const colorThemes = {
     light: { name: 'Light', bg: '#ffffff', text: '#333333', titleBg: '#f8f9fa', accent: '#667eea' },
@@ -77,6 +80,17 @@ const StoryPlayer = () => {
 
   if (!story || !currentNode) {
     return <div className="container error">Story not found</div>;
+  }
+
+  // Show cover page if enabled and story has cover image
+  if (showCover && story.coverImage) {
+    return (
+      <StoryCoverPage 
+        story={story} 
+        onStart={() => setShowCover(false)}
+        onBack={() => navigate('/feed')}
+      />
+    );
   }
 
   const theme = colorThemes[story.colorTheme] || colorThemes.light;
@@ -148,22 +162,6 @@ const StoryPlayer = () => {
 
         {/* Main Content Area */}
         <main className="reader-content">
-          {/* Node Image - Integrated with text */}
-          {currentNode?.imageUrl && (
-            <figure className="node-image-container">
-              <img 
-                src={currentNode.imageUrl} 
-                alt={currentNode.name || "Scene illustration"}
-                className="node-image"
-              />
-              {currentNode.imageCaption && (
-                <figcaption className="image-caption" style={{ color: nodeTextColor }}>
-                  {currentNode.imageCaption}
-                </figcaption>
-              )}
-            </figure>
-          )}
-
           {/* Main Text Content with Markdown Support */}
           <article 
             className="story-content-area"
