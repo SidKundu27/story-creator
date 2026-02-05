@@ -1,0 +1,470 @@
+/* Web Novel Reader Styles */
+.webnovel-reader {
+  min-height: 100vh;
+  padding: 0;
+  margin: 0;
+  transition: background-color 0.3s ease;
+}
+
+.reader-wrapper {
+  max-width: 100%;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+/* Preview Banner */
+.preview-banner {
+  background: linear-gradient(135deg, #ff9800 0%, #ff5722 100%);
+  color: white;
+  padding: 12px 20px;
+  text-align: center;
+  font-weight: 600;
+  font-size: 14px;
+  z-index: 1000;
+}
+
+/* Header - Compact and Information-Rich */
+.reader-header {
+  padding: 16px 20px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.header-content {
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+.title-section {
+  margin-bottom: 12px;
+}
+
+.story-title {
+  margin: 0;
+  font-size: 20px;
+  font-weight: 700;
+  color: white;
+  line-height: 1.2;
+}
+
+.story-meta {
+  margin: 4px 0 0 0;
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.7);
+  font-weight: 400;
+}
+
+.author-name {
+  font-weight: 600;
+}
+
+/* Story Metadata Section */
+.story-metadata {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.genre-tags {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.genre-tag {
+  background: rgba(255, 255, 255, 0.15);
+  color: rgba(255, 255, 255, 0.9);
+  padding: 4px 10px;
+  border-radius: 12px;
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  border: 1px solid rgba(255, 255, 255, 0.25);
+}
+
+/* Story Stats */
+.story-stats {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  font-size: 12px;
+}
+
+.stat-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.stat-label {
+  font-size: 10px;
+  text-transform: uppercase;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  color: rgba(255, 255, 255, 0.6);
+}
+
+.stat-value {
+  font-size: 13px;
+  font-weight: 600;
+  color: white;
+}
+
+.btn-like {
+  background: rgba(255, 255, 255, 0.15);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  padding: 4px 8px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.2s;
+  font-weight: 600;
+  color: white;
+  font-size: 12px;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.btn-like:hover:not(:disabled) {
+  background: rgba(255, 255, 255, 0.25);
+}
+
+.btn-like:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Main Content Area */
+.reader-content {
+  flex: 1;
+  max-width: 900px;
+  margin: 0 auto;
+  width: 100%;
+  padding: 30px 40px;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Node Image - Beautiful integration */
+.node-image-container {
+  margin: 0 0 30px 0;
+  padding: 0;
+  text-align: center;
+}
+
+.node-image {
+  width: 100%;
+  max-width: 600px;
+  height: auto;
+  max-height: 500px;
+  display: block;
+  object-fit: cover;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  margin: 0 auto;
+}
+
+.image-caption {
+  font-size: 12px;
+  font-style: italic;
+  margin-top: 8px;
+  opacity: 0.8;
+}
+
+/* Story Content Area */
+.story-content-area {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  transition: color 0.3s ease, background-color 0.3s ease, font-family 0.2s ease;
+}
+
+.content-text {
+  flex: 1;
+}
+
+/* Narrative Section - Book-like readability */
+.narrative-section {
+  margin-bottom: 40px;
+}
+
+.story-paragraph {
+  margin-bottom: 1.5em;
+  text-align: justify;
+  letter-spacing: 0.3px;
+  word-spacing: 0.1em;
+  transition: all 0.2s ease;
+}
+
+/* Rich Text Formatting */
+.story-paragraph strong {
+  font-weight: 700;
+}
+
+.story-paragraph em {
+  font-style: italic;
+  font-weight: 500;
+}
+
+.story-paragraph u {
+  text-decoration: underline;
+  text-decoration-thickness: 1.5px;
+  text-underline-offset: 3px;
+}
+
+.story-paragraph del {
+  opacity: 0.6;
+  text-decoration: line-through;
+}
+
+.story-paragraph a {
+  text-decoration: none;
+  font-weight: 600;
+  cursor: pointer;
+  transition: opacity 0.2s ease;
+  border-bottom: 2px solid currentColor;
+  opacity: 0.9;
+}
+
+.story-paragraph a:hover {
+  opacity: 1;
+  text-decoration: underline;
+}
+
+.story-paragraph mark {
+  background: rgba(255, 255, 200, 0.3);
+  padding: 2px 4px;
+  border-radius: 2px;
+  font-weight: 500;
+}
+
+/* Choices Navigation */
+.choices-navigation {
+  margin-top: 40px;
+  padding-top: 30px;
+  border-top: 2px solid currentColor;
+  border-top-opacity: 0.2;
+}
+
+.choices-label {
+  margin: 0 0 16px 0;
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1.2px;
+  opacity: 0.7;
+}
+
+.choices-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.choice-item {
+  display: list-item;
+}
+
+.choice-link {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  background: transparent;
+  border: none;
+  padding: 12px 16px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-align: left;
+  font-size: inherit;
+  line-height: 1.4;
+  border-left: 3px solid currentColor;
+  font-weight: 500;
+  text-decoration: none;
+}
+
+.choice-link:hover {
+  padding-left: 20px;
+  background: currentColor;
+  background-color: rgba(102, 126, 234, 0.1);
+  opacity: 1;
+}
+
+.choice-arrow {
+  flex-shrink: 0;
+  font-weight: 700;
+  font-size: 18px;
+  opacity: 0.8;
+  transition: transform 0.2s ease;
+}
+
+.choice-link:hover .choice-arrow {
+  transform: translateX(4px);
+}
+
+.choice-text {
+  display: block;
+  flex: 1;
+}
+
+/* Ending Footer */
+.ending-footer {
+  text-align: center;
+  padding: 50px 30px 30px;
+  border-top: 2px solid currentColor;
+  border-top-opacity: 0.2;
+  margin-top: 40px;
+}
+
+.ending-title {
+  font-size: 28px;
+  margin: 0 0 30px 0;
+  font-weight: 700;
+  opacity: 0.9;
+}
+
+/* Reader Footer */
+.reader-footer {
+  max-width: 900px;
+  margin: 0 auto;
+  width: 100%;
+  padding: 30px 40px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 20px;
+  border-top: 1px solid currentColor;
+  border-top-opacity: 0.2;
+  font-size: 12px;
+}
+
+.btn-restart-footer {
+  background: transparent;
+  border: 1px solid currentColor;
+  padding: 8px 16px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.btn-restart-footer:hover {
+  background: currentColor;
+  background-color: rgba(102, 126, 234, 0.2);
+}
+
+.btn-restart {
+  background: transparent;
+  border: 2px solid currentColor;
+  padding: 10px 20px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-size: 14px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.btn-restart:hover {
+  background: currentColor;
+  background-color: rgba(102, 126, 234, 0.15);
+  transform: scale(1.02);
+}
+
+.progress-indicator {
+  opacity: 0.6;
+  font-size: 11px;
+}
+
+.progress-text {
+  font-weight: 500;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .reader-header {
+    padding: 12px 16px;
+  }
+
+  .story-title {
+    font-size: 18px;
+  }
+
+  .story-metadata {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+  }
+
+  .story-stats {
+    flex-direction: row;
+    gap: 12px;
+    width: 100%;
+  }
+
+  .genre-tags {
+    width: 100%;
+  }
+
+  .reader-content {
+    padding: 20px 24px;
+  }
+
+  .node-image {
+    max-height: 300px;
+  }
+
+  .story-paragraph {
+    text-align: left;
+    font-size: 15px;
+    line-height: 1.8;
+  }
+
+  .choice-link {
+    padding: 10px 12px;
+  }
+
+  .choice-link:hover {
+    padding-left: 16px;
+  }
+
+  .choices-navigation {
+    margin-top: 30px;
+    padding-top: 20px;
+  }
+
+  .ending-title {
+    font-size: 24px;
+  }
+
+  .reader-footer {
+    padding: 20px 24px;
+    flex-direction: column-reverse;
+    gap: 15px;
+  }
+
+  .btn-restart {
+    width: 100%;
+  }
+
+  .btn-restart-footer {
+    width: 100%;
+  }
+}

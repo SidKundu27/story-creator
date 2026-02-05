@@ -1,0 +1,128 @@
+.auth-container {
+  min-height: calc(100vh - 60px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+}
+
+.auth-card {
+  background: white;
+  border-radius: 16px;
+  padding: 50px 40px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+  width: 100%;
+  max-width: 420px;
+  border-top: 4px solid;
+  border-image: linear-gradient(135deg, #667eea 0%, #764ba2 100%) 1;
+}
+
+.auth-icon {
+  text-align: center;
+  font-size: 48px;
+  margin-bottom: 20px;
+}
+
+.auth-subtitle {
+  text-align: center;
+  color: #6c757d;
+  margin-bottom: 30px;
+  font-size: 15px;
+}
+
+.auth-card h2 {
+  text-align: center;
+  color: #2c3e50;
+  margin-bottom: 30px;
+  font-size: 28px;
+}
+
+.auth-steps {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 30px;
+  gap: 10px;
+}
+
+.step {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: #e9ecef;
+  color: #6c757d;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  transition: all 0.3s;
+}
+
+.step.active {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+}
+
+.step.completed {
+  background: #30cfd0;
+  color: white;
+}
+
+.step-line {
+  width: 60px;
+  height: 3px;
+  background: #e9ecef;
+}
+
+.form-hint {
+  display: block;
+  margin-top: 6px;
+  color: #6c757d;
+  font-size: 13px;
+}
+
+.button-group {
+  display: flex;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+.button-group .btn {
+  flex: 1;
+  padding: 14px 20px;
+}
+
+.btn-block {
+  width: 100%;
+  margin-top: 20px;
+  padding: 14px 20px;
+}
+
+.auth-link {
+  text-align: center;
+  margin-top: 25px;
+  color: #666;
+  font-size: 15px;
+}
+
+.auth-link a {
+  color: #667eea;
+  text-decoration: none;
+  font-weight: 700;
+  transition: all 0.3s;
+}
+
+.auth-link a:hover {
+  color: #764ba2;
+}
+
+@media (max-width: 480px) {
+  .auth-card {
+    padding: 40px 25px;
+  }
+
+  .auth-card h2 {
+    font-size: 24px;
+  }
+}
