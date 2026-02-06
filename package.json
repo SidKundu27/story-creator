@@ -8,7 +8,8 @@
     "client": "npm start --prefix client",
     "dev": "concurrently \"npm run server\" \"npm run client\"",
     "build": "npm run build --prefix client",
-    "install-all": "npm install && cd client && npm install"
+    "install-all": "npm install && cd client && npm install",
+    "seed": "node server/seed.js"
   },
   "keywords": ["story", "adventure", "interactive"],
   "author": "",
