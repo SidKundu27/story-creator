@@ -96,8 +96,8 @@ const StoryPlayer = () => {
     return <div className="container error">Story not found</div>;
   }
 
-  // Show cover page if enabled and story has cover image
-  if (showCover && story.coverImage) {
+  // Show cover page first (always, not just if there's a cover image)
+  if (showCover) {
     return (
       <StoryCoverPage 
         story={story} 
@@ -135,7 +135,6 @@ const StoryPlayer = () => {
           <div className="header-content">
             <div className="title-section">
               <h1 className="story-title">{story.title}</h1>
-              <p className="story-meta">by <span className="author-name">{story.authorName}</span></p>
             </div>
 
             {/* Stats and Genres */}
@@ -218,7 +217,6 @@ const StoryPlayer = () => {
               </footer>
             ) : (
               <nav className="choices-navigation">
-                <h3 className="choices-label">What happens next?</h3>
                 <ul className="choices-list">
                   {currentNode?.choices && currentNode.choices.map((choice, index) => (
                     <li key={index} className="choice-item">
