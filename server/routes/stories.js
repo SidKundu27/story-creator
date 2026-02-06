@@ -3,6 +3,7 @@ const router = express.Router();
 const auth = require('../middleware/auth');
 const Story = require('../models/Story');
 const User = require('../models/User');
+const { isValidObjectId } = require('../utils/validation');
 
 // @route   GET /api/stories
 // @desc    Get all published stories (feed)
@@ -26,6 +27,10 @@ router.get('/', async (req, res) => {
 // @access  Public for published, Private for unpublished
 router.get('/:id', async (req, res) => {
   try {
+    if (!isValidObjectId(req.params.id)) {
+      return res.status(404).json({ message: 'Story not found' });
+    }
+
     const story = await Story.findById(req.params.id);
     
     if (!story) {
@@ -53,7 +58,7 @@ router.get('/:id', async (req, res) => {
         
         // User is authorized - continue to serve the story
       } catch (err) {
-        return res.status(401).json({ message: 'Invalid token', error: err.message });
+        return res.status(401).json({ message: 'Invalid token' });
       }
     }
 
@@ -115,6 +120,9 @@ router.post('/', auth, async (req, res) => {
     res.json(story);
   } catch (err) {
     console.error(err.message);
+    if (err.name === 'ValidationError') {
+      return res.status(400).json({ message: 'Validation error', errors: err.errors });
+    }
     res.status(500).json({ message: 'Server error' });
   }
 });
@@ -124,6 +132,10 @@ router.post('/', auth, async (req, res) => {
 // @access  Private
 router.put('/:id', auth, async (req, res) => {
   try {
+    if (!isValidObjectId(req.params.id)) {
+      return res.status(404).json({ message: 'Story not found' });
+    }
+
     let story = await Story.findById(req.params.id);
 
     if (!story) {
@@ -154,6 +166,9 @@ router.put('/:id', auth, async (req, res) => {
     res.json(story);
   } catch (err) {
     console.error(err.message);
+    if (err.name === 'ValidationError') {
+      return res.status(400).json({ message: 'Validation error', errors: err.errors });
+    }
     if (err.kind === 'ObjectId') {
       return res.status(404).json({ message: 'Story not found' });
     }
@@ -166,6 +181,10 @@ router.put('/:id', auth, async (req, res) => {
 // @access  Private
 router.delete('/:id', auth, async (req, res) => {
   try {
+    if (!isValidObjectId(req.params.id)) {
+      return res.status(404).json({ message: 'Story not found' });
+    }
+
     const story = await Story.findById(req.params.id);
 
     if (!story) {
@@ -199,6 +218,10 @@ router.delete('/:id', auth, async (req, res) => {
 // @access  Private
 router.post('/:id/like', auth, async (req, res) => {
   try {
+    if (!isValidObjectId(req.params.id)) {
+      return res.status(404).json({ message: 'Story not found' });
+    }
+
     const story = await Story.findById(req.params.id);
 
     if (!story) {
@@ -211,6 +234,9 @@ router.post('/:id/like', auth, async (req, res) => {
     res.json({ likes: story.likes });
   } catch (err) {
     console.error(err.message);
+    if (err.kind === 'ObjectId') {
+      return res.status(404).json({ message: 'Story not found' });
+    }
     res.status(500).json({ message: 'Server error' });
   }
 });
