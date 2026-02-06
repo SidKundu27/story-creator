@@ -42,6 +42,23 @@ A fullstack web application for creating and playing interactive choose-your-own
    - Backend server on http://localhost:5000
    - React frontend on http://localhost:3000
 
+   **Note**: If your database is empty, the server will automatically seed it with starter stories on first run.
+
+## Seeding the Database
+
+To manually populate the database with example stories:
+
+```bash
+npm run seed
+```
+
+This will:
+- Prompt you to keep or delete existing data
+- Create a test user (Email: `test@gmail.com`, Password: `password123`)
+- Import stories from `server/story-creator.stories.json`
+
+The seed data is also automatically loaded when you start the server with an empty database.
+
 ## Project Structure
 
 ```
