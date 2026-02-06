@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import MarkdownToolbar from '../components/MarkdownToolbar';
 import MarkdownPreview from '../components/MarkdownPreview';
 import NodeGraph from '../components/NodeGraph';
+import ConfirmDialog from '../components/ConfirmDialog';
+import LineNumberedTextarea from '../components/LineNumberedTextarea';
 import './StoryCreatorStep2.css';
 
 const StoryCreatorStep2 = ({ nodes, setNodes }) => {
@@ -9,6 +11,7 @@ const StoryCreatorStep2 = ({ nodes, setNodes }) => {
   const [showPreview, setShowPreview] = useState(false);
   const [showGraph, setShowGraph] = useState(false);
   const [sceneSearchQuery, setSceneSearchQuery] = useState('');
+  const [confirmDialog, setConfirmDialog] = useState({ isOpen: false, sceneIndex: null });
   const textareaRef = React.useRef(null);
   const [pasteError, setPasteError] = useState('');
 
@@ -80,6 +83,15 @@ const StoryCreatorStep2 = ({ nodes, setNodes }) => {
   };
 
   const toggleNodeEnding = () => {
+        
+            <button
+              type="button"
+              onClick={() => setShowGraph(!showGraph)}
+              className="map-toggle"
+              title={showGraph ? 'Hide map' : 'Show map'}
+            >
+              {showGraph ? 'Hide Map' : 'Show Map'}
+            </button>
     const updatedNodes = [...nodes];
     updatedNodes[selectedNodeIndex].isEnding = !updatedNodes[selectedNodeIndex].isEnding;
     setNodes(updatedNodes);
@@ -122,12 +134,15 @@ const StoryCreatorStep2 = ({ nodes, setNodes }) => {
 
   const removeNode = (index) => {
     if (nodes.length === 1) return;
-    if (!window.confirm(`Delete scene "${nodes[index].name || 'Untitled'}"? This cannot be undone.`)) {
-      return;
-    }
+    setConfirmDialog({ isOpen: true, sceneIndex: index });
+  };
+
+  const confirmRemoveNode = () => {
+    const index = confirmDialog.sceneIndex;
     const updatedNodes = nodes.filter((_, i) => i !== index);
     setNodes(updatedNodes);
     setSelectedNodeIndex(Math.min(selectedNodeIndex, updatedNodes.length - 1));
+    setConfirmDialog({ isOpen: false, sceneIndex: null });
   };
 
   return (
@@ -135,13 +150,15 @@ const StoryCreatorStep2 = ({ nodes, setNodes }) => {
       <div className="nodes-sidebar">
         <div className="sidebar-header">
           <h3>Story Scenes</h3>
-          <button
-            type="button"
-            onClick={addNode}
-            className="btn btn-success btn-small"
-          >
-            + Add
-          </button>
+          <div className="sidebar-header-actions">
+            <button
+              type="button"
+              onClick={addNode}
+              className="btn btn-success btn-small"
+            >
+              + Add
+            </button>
+          </div>
         </div>
 
         <div className="scene-search">
@@ -153,6 +170,15 @@ const StoryCreatorStep2 = ({ nodes, setNodes }) => {
             className="scene-search-input"
           />
         </div>
+
+        <button
+          type="button"
+          onClick={() => setShowGraph(!showGraph)}
+          className="map-toggle"
+          title={showGraph ? 'Hide map' : 'Show map'}
+        >
+          {showGraph ? 'Hide Map' : 'Show Map'}
+        </button>
 
         <div className="nodes-list">
           {nodes
@@ -238,7 +264,7 @@ const StoryCreatorStep2 = ({ nodes, setNodes }) => {
                   className={`mode-btn ${!showPreview ? 'active' : ''}`}
                   title="Edit markdown"
                 >
-                  ✏️ Edit
+                  Edit
                 </button>
                 <button
                   type="button"
@@ -246,7 +272,7 @@ const StoryCreatorStep2 = ({ nodes, setNodes }) => {
                   className={`mode-btn ${showPreview ? 'active' : ''}`}
                   title="Preview formatted content"
                 >
-                  👁️ Preview
+                  Preview
                 </button>
               </div>
             </div>
@@ -258,16 +284,15 @@ const StoryCreatorStep2 = ({ nodes, setNodes }) => {
               />
             )}
 
-            <div className="editor-wrapper">
+            <div className={`editor-wrapper ${!showPreview ? 'with-lines' : ''}`}>
               {!showPreview ? (
                 <>
-                  <textarea
-                    ref={textareaRef}
+                  <LineNumberedTextarea
                     value={currentNode.content}
                     onChange={handleNodeContentChange}
                     onPaste={handleImagePaste}
-                    placeholder="Write your scene content here. Use **bold**, *italic*, __underline__, ~~strike~~, [#highlight], and [link text](url). You can also paste images!"
-                    className="content-textarea"
+                    placeholder="Write your scene content here. Use **bold**, *italic*, __underline__, ~~strike~~, [#highlight]. You can also paste images!"
+                    textareaRef={textareaRef}
                   />
                   {pasteError && <div className="paste-error">{pasteError}</div>}
                 </>
@@ -338,15 +363,16 @@ const StoryCreatorStep2 = ({ nodes, setNodes }) => {
             </div>
           )}
         </div>
-
-        <button
-          type="button"
-          onClick={() => setShowGraph(!showGraph)}
-          className="btn btn-secondary btn-hide-map"
-        >
-          {showGraph ? '📖' : '📊'} {showGraph ? 'Hide' : 'Show'} Map
-        </button>
       </div>
+
+      <ConfirmDialog
+        isOpen={confirmDialog.isOpen}
+        message={`Delete scene "${confirmDialog.sceneIndex !== null ? (nodes[confirmDialog.sceneIndex]?.name || 'Untitled') : ''}"? This cannot be undone.`}
+        onConfirm={confirmRemoveNode}
+        onCancel={() => setConfirmDialog({ isOpen: false, sceneIndex: null })}
+        confirmText="Delete"
+        cancelText="Cancel"
+      />
     </div>
   );
 };

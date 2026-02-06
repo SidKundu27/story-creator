@@ -65,6 +65,20 @@ const StoryCreatorStep1 = ({ formData, setFormData, availableGenres }) => {
           />
           <small>{formData.description.length}/300</small>
         </div>
+
+        <div className="form-group">
+          <label>Main Category</label>
+          <select
+            value={formData.mainCategory}
+            onChange={(e) => setFormData({ ...formData, mainCategory: e.target.value })}
+          >
+            <option value="">Select a main category...</option>
+            {availableGenres.map((genre) => (
+              <option key={genre} value={genre}>{genre}</option>
+            ))}
+          </select>
+          <small>Pick one primary category for your story</small>
+        </div>
       </div>
 
       <div className="form-section">

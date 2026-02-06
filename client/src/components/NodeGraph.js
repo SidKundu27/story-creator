@@ -52,9 +52,10 @@ const NodeGraph = ({ nodes, selectedNodeIndex, onNodeSelect, startNodeId }) => {
     const positions = new Array(nodes.length);
     
     // Use BFS to calculate depth (column position) from start node
-    const depths = new Array(nodes.length).fill(0);
+    const depths = new Array(nodes.length).fill(-1);
     const visited = new Set(['start']);
     const queue = [0]; // Start with node 0 (start node)
+    depths[0] = 0;
     
     while (queue.length > 0) {
       const currentIdx = queue.shift();
@@ -73,32 +74,63 @@ const NodeGraph = ({ nodes, selectedNodeIndex, onNodeSelect, startNodeId }) => {
       }
     }
 
-    // Get max depth for column positioning
-    const maxDepth = Math.max(...depths);
+    // Separate connected and disconnected nodes
+    const connectedNodes = [];
+    const disconnectedNodes = [];
+    for (let i = 0; i < nodes.length; i++) {
+      if (depths[i] >= 0) {
+        connectedNodes.push({ idx: i, depth: depths[i] });
+      } else {
+        disconnectedNodes.push(i);
+      }
+    }
+
+    const padding = 60;
+    let maxConnectedY = padding;
+    let columnWidth = (width - padding * 2);
     
-    // Count nodes at each depth level
-    const nodesPerDepth = {};
-    for (let i = 0; i < depths.length; i++) {
-      const depth = depths[i];
-      nodesPerDepth[depth] = (nodesPerDepth[depth] || 0) + 1;
+    if (connectedNodes.length > 0) {
+      // Get max depth for column positioning
+      const maxDepth = Math.max(...connectedNodes.map(n => n.depth));
+      
+      // Count nodes at each depth level
+      const nodesPerDepth = {};
+      connectedNodes.forEach(({ depth }) => {
+        nodesPerDepth[depth] = (nodesPerDepth[depth] || 0) + 1;
+      });
+      
+      // Position connected nodes in columns
+      const nodeCountAtDepth = {};
+      columnWidth = (width - padding * 2) / (maxDepth + 1);
+      const availableHeight = disconnectedNodes.length > 0 ? height - 120 : height - padding * 2;
+      
+      connectedNodes.forEach(({ idx, depth }) => {
+        const countAtDepth = nodesPerDepth[depth];
+        const indexAtDepth = (nodeCountAtDepth[depth] || 0);
+        nodeCountAtDepth[depth] = indexAtDepth + 1;
+        
+        const x = padding + columnWidth * (depth + 0.5);
+        const rowHeight = availableHeight / Math.max(countAtDepth, 1);
+        const y = padding + rowHeight * (indexAtDepth + 0.5);
+        
+        positions[idx] = { x, y };
+        if (y > maxConnectedY) {
+          maxConnectedY = y;
+        }
+      });
     }
     
-    // Position nodes in columns
-    const nodeCountAtDepth = {};
-    const padding = 60;
-    const columnWidth = (width - padding * 2) / (maxDepth + 1);
-    
-    for (let i = 0; i < nodes.length; i++) {
-      const depth = depths[i];
-      const countAtDepth = nodesPerDepth[depth];
-      const indexAtDepth = (nodeCountAtDepth[depth] || 0);
-      nodeCountAtDepth[depth] = indexAtDepth + 1;
-      
-      const x = padding + columnWidth * (depth + 0.5);
-      const rowHeight = (height - padding * 2) / Math.max(countAtDepth, 1);
-      const y = padding + rowHeight * (indexAtDepth + 0.5);
-      
-      positions[i] = { x, y };
+    // Position disconnected nodes horizontally at bottom
+    if (disconnectedNodes.length > 0) {
+      const startColumnX = padding + columnWidth * 0.5;
+      const spacing = Math.min(columnWidth, 120);
+      const disconnectedY = Math.min(height - padding, maxConnectedY + 80);
+      disconnectedNodes.forEach((idx, i) => {
+        positions[idx] = {
+          x: startColumnX + spacing * i,
+          y: disconnectedY
+        };
+      });
     }
 
     return positions;
@@ -179,23 +211,53 @@ const NodeGraph = ({ nodes, selectedNodeIndex, onNodeSelect, startNodeId }) => {
       ctx.shadowColor = 'transparent';
 
       // Draw label - show scene name
-      ctx.fillStyle = '#ffffff';
-      ctx.font = 'bold 11px sans-serif';
+      ctx.fillStyle = '#1f2937';
+      ctx.font = 'bold 10px sans-serif';
       ctx.textAlign = 'center';
       ctx.textBaseline = 'middle';
       
       let label;
       if (isStart) {
         label = 'Start';
-      } else if (isEnding) {
-        label = 'End';
       } else {
-        // Truncate long names to fit in circle
         const sceneName = node.name || 'Scene';
-        label = sceneName.length > 10 ? sceneName.substring(0, 10) + '...' : sceneName;
+        label = sceneName.length > 14 ? `${sceneName.substring(0, 14)}…` : sceneName;
       }
       
       ctx.fillText(label, pos.x, pos.y);
+
+      if (isSelected && !isStart) {
+        const fullName = node.name || 'Scene';
+        ctx.font = '600 11px sans-serif';
+        const paddingX = 8;
+        const textWidth = ctx.measureText(fullName).width;
+        const boxWidth = Math.min(textWidth + paddingX * 2, 220);
+        const boxHeight = 22;
+        const boxX = Math.min(Math.max(pos.x - boxWidth / 2, 8), ctx.canvas.width - boxWidth - 8);
+        const boxY = Math.min(pos.y + 35, ctx.canvas.height - boxHeight - 8);
+
+        ctx.fillStyle = 'rgba(255, 255, 255, 0.95)';
+        ctx.strokeStyle = '#d1d5db';
+        ctx.lineWidth = 1;
+        ctx.beginPath();
+        ctx.moveTo(boxX + 6, boxY);
+        ctx.lineTo(boxX + boxWidth - 6, boxY);
+        ctx.quadraticCurveTo(boxX + boxWidth, boxY, boxX + boxWidth, boxY + 6);
+        ctx.lineTo(boxX + boxWidth, boxY + boxHeight - 6);
+        ctx.quadraticCurveTo(boxX + boxWidth, boxY + boxHeight, boxX + boxWidth - 6, boxY + boxHeight);
+        ctx.lineTo(boxX + 6, boxY + boxHeight);
+        ctx.quadraticCurveTo(boxX, boxY + boxHeight, boxX, boxY + boxHeight - 6);
+        ctx.lineTo(boxX, boxY + 6);
+        ctx.quadraticCurveTo(boxX, boxY, boxX + 6, boxY);
+        ctx.closePath();
+        ctx.fill();
+        ctx.stroke();
+
+        ctx.fillStyle = '#111827';
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        ctx.fillText(fullName, boxX + boxWidth / 2, boxY + boxHeight / 2);
+      }
     });
   };
 

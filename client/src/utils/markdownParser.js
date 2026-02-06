@@ -28,14 +28,14 @@ export const parseMarkdown = (text) => {
   // ~~strikethrough~~
   escaped = escaped.replace(/~~(.*?)~~/g, '<del>$1</del>');
 
-  // [link text](url)
-  escaped = escaped.replace(/\[(.*?)\]\((.*?)\)/g, '<a href="$2" target="_blank" rel="noopener noreferrer">$1</a>');
-
   // [#highlight text] - for highlighted sections
   escaped = escaped.replace(/\[#(.*?)\]/g, '<mark>$1</mark>');
 
   // {center text} - for centered text
   escaped = escaped.replace(/\{(.*?)\}/g, '<div style="text-align: center; margin: 20px 0;"><em>$1</em></div>');
+
+  // Preserve line breaks
+  escaped = escaped.replace(/\n/g, '<br />');
 
   return escaped;
 };

@@ -72,8 +72,16 @@
 }
 
 @media (max-width: 768px) {
+  .nav-content {
+    flex-wrap: wrap;
+  }
+
   .nav-links {
-    gap: 8px;
+    gap: 12px;
+    flex-wrap: wrap;
+    width: 100%;
+    padding-top: 12px;
+    justify-content: center;
   }
   
   .nav-logo {
@@ -81,6 +89,17 @@
   }
   
   .nav-links a {
+    font-size: 13px;
+  }
+
+  .nav-user {
+    font-size: 12px;
+    padding: 4px 10px;
+  }
+
+  .nav-links .btn {
+    margin-left: 0;
+    padding: 6px 16px;
     font-size: 13px;
   }
 }

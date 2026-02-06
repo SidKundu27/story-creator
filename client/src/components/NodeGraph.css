@@ -3,7 +3,7 @@
   border: 1px solid #e5e7eb;
   border-radius: 8px;
   overflow: hidden;
-  margin: 20px 0;
+  margin-bottom: 20px;
 }
 
 .graph-header {
@@ -32,6 +32,8 @@
   height: 400px;
   background: #f8f9fa;
   border-top: 1px solid #e5e7eb;
+  image-rendering: crisp-edges;
+  image-rendering: -webkit-optimize-contrast;
 }
 
 @media (max-width: 768px) {

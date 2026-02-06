@@ -2,12 +2,14 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { getUserStories, deleteStory } from '../services/storyService';
 import StoryCard from '../components/StoryCard';
+import ConfirmDialog from '../components/ConfirmDialog';
 import './MyStories.css';
 
 const MyStories = () => {
   const [stories, setStories] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
+  const [deleteConfirm, setDeleteConfirm] = useState({ isOpen: false, storyId: null });
 
   useEffect(() => {
     loadStories();
@@ -25,13 +27,17 @@ const MyStories = () => {
   };
 
   const handleDelete = async (id) => {
-    if (window.confirm('Are you sure you want to delete this story?')) {
-      try {
-        await deleteStory(id);
-        setStories(stories.filter(story => story._id !== id));
-      } catch (err) {
-        setError(err);
-      }
+    setDeleteConfirm({ isOpen: true, storyId: id });
+  };
+
+  const confirmDelete = async () => {
+    const id = deleteConfirm.storyId;
+    setDeleteConfirm({ isOpen: false, storyId: null });
+    try {
+      await deleteStory(id);
+      setStories(stories.filter(story => story._id !== id));
+    } catch (err) {
+      setError(err);
     }
   };
 
@@ -71,6 +77,15 @@ const MyStories = () => {
           ))}
         </div>
       )}
+
+      <ConfirmDialog
+        isOpen={deleteConfirm.isOpen}
+        message="Are you sure you want to delete this story? This cannot be undone."
+        onConfirm={confirmDelete}
+        onCancel={() => setDeleteConfirm({ isOpen: false, storyId: null })}
+        confirmText="Delete"
+        cancelText="Cancel"
+      />
     </div>
   );
 };

@@ -3,6 +3,7 @@ import { createStory, updateStory } from '../services/storyService';
 import StoryCoverPage from '../components/StoryCoverPage';
 import NodeGraph from '../components/NodeGraph';
 import StoryPreviewPlayer from '../components/StoryPreviewPlayer';
+import ConfirmDialog from '../components/ConfirmDialog';
 import './StoryCreatorStep3.css';
 
 const StoryCreatorStep3 = ({ formData, setFormData, nodes, isEditing, storyId, onComplete }) => {
@@ -10,6 +11,7 @@ const StoryCreatorStep3 = ({ formData, setFormData, nodes, isEditing, storyId, o
   const [error, setError] = useState('');
   const [activeTab, setActiveTab] = useState('cover');
   const [selectedNodeIndex, setSelectedNodeIndex] = useState(0);
+  const [showPublishConfirm, setShowPublishConfirm] = useState(false);
 
   const handleSaveDraft = async () => {
     setSaving(true);
@@ -45,10 +47,11 @@ const StoryCreatorStep3 = ({ formData, setFormData, nodes, isEditing, storyId, o
   };
 
   const handlePublish = async () => {
-    if (!window.confirm('Ready to publish this story? It will be visible to all users.')) {
-      return;
-    }
+    setShowPublishConfirm(true);
+  };
 
+  const confirmPublish = async () => {
+    setShowPublishConfirm(false);
     setSaving(true);
     setError('');
     
@@ -176,24 +179,16 @@ const StoryCreatorStep3 = ({ formData, setFormData, nodes, isEditing, storyId, o
             </span>
           </div>
         </div>
-
-        <div className="action-buttons">
-          <button
-            onClick={handleSaveDraft}
-            disabled={saving}
-            className="btn btn-secondary"
-          >
-            {saving ? '⏳ Saving...' : '💾 Save as Draft'}
-          </button>
-          <button
-            onClick={handlePublish}
-            disabled={saving}
-            className="btn btn-success"
-          >
-            {saving ? '⏳ Publishing...' : '🚀 Publish Story'}
-          </button>
-        </div>
       </div>
+
+      <ConfirmDialog
+        isOpen={showPublishConfirm}
+        message="Ready to publish this story? It will be visible to all users."
+        onConfirm={confirmPublish}
+        onCancel={() => setShowPublishConfirm(false)}
+        confirmText="Publish"
+        cancelText="Cancel"
+      />
     </div>
   );
 };

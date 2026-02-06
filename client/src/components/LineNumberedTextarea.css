@@ -1,0 +1,39 @@
+.line-numbered-editor {
+  display: flex;
+  position: relative;
+  width: 100%;
+  background: white;
+}
+
+.line-numbers {
+  background: #f3f4f6;
+  border-right: 1px solid #e5e7eb;
+  color: #9ca3af;
+  font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+  font-size: 13px;
+  line-height: 1.6;
+  padding: 16px 8px;
+  text-align: right;
+  user-select: none;
+  width: 50px;
+  overflow: hidden;
+  white-space: pre;
+}
+
+.content-textarea-lined {
+  flex: 1;
+  padding: 16px;
+  border: none;
+  font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+  font-size: 13px;
+  line-height: 1.6;
+  resize: vertical;
+  min-height: 400px;
+  color: #1f2937;
+  overflow: auto;
+}
+
+.content-textarea-lined:focus {
+  outline: none;
+  background: #f9fafb;
+}

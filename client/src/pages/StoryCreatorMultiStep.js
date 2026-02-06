@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { getStoryById, createStory, updateStory } from '../services/storyService';
+import ConfirmDialog from '../components/ConfirmDialog';
 import StoryCreatorStep1 from './StoryCreatorStep1';
 import StoryCreatorStep2 from './StoryCreatorStep2';
 import StoryCreatorStep3 from './StoryCreatorStep3';
@@ -15,6 +16,8 @@ const StoryCreatorMultiStep = () => {
   const [loading, setLoading] = useState(isEditing);
   const [error, setError] = useState('');
   const [autoSaving, setAutoSaving] = useState(false);
+  const [manualSaving, setManualSaving] = useState(false);
+  const [showPublishConfirm, setShowPublishConfirm] = useState(false);
   const [lastSavedTime, setLastSavedTime] = useState(null);
   const autoSaveTimeoutRef = useRef(null);
   
@@ -23,6 +26,7 @@ const StoryCreatorMultiStep = () => {
     description: '',
     coverImage: '',
     coverImageCaption: '',
+    mainCategory: '',
     tags: [],
     genres: [],
     colorTheme: 'light',
@@ -110,6 +114,7 @@ const StoryCreatorMultiStep = () => {
         description: story.description,
         coverImage: story.coverImage || '',
         coverImageCaption: story.coverImageCaption || '',
+        mainCategory: story.mainCategory || '',
         tags: story.tags || [],
         genres: story.genres || [],
         colorTheme: story.colorTheme || 'light',
@@ -154,6 +159,77 @@ const StoryCreatorMultiStep = () => {
   const handlePrevious = () => {
     setError('');
     setCurrentStep(currentStep - 1);
+  };
+
+  const handleSaveDraft = async () => {
+    setManualSaving(true);
+    setError('');
+    try {
+      const storyData = {
+        title: formData.title,
+        description: formData.description,
+        coverImage: formData.coverImage,
+        coverImageCaption: formData.coverImageCaption,
+        mainCategory: formData.mainCategory,
+        tags: formData.tags,
+        genres: formData.genres,
+        colorTheme: formData.colorTheme,
+        nodes: nodes,
+        startNodeId: 'start',
+        isPublished: false
+      };
+
+      if (storyIdRef.current) {
+        await updateStory(storyIdRef.current, storyData);
+      } else {
+        const created = await createStory(storyData);
+        storyIdRef.current = created._id;
+      }
+
+      setLastSavedTime(new Date());
+    } catch (err) {
+      setError(err.message || 'Failed to save draft');
+    } finally {
+      setManualSaving(false);
+    }
+  };
+
+  const handlePublish = () => {
+    setShowPublishConfirm(true);
+  };
+
+  const confirmPublish = async () => {
+    setShowPublishConfirm(false);
+    setManualSaving(true);
+    setError('');
+    try {
+      const storyData = {
+        title: formData.title,
+        description: formData.description,
+        coverImage: formData.coverImage,
+        coverImageCaption: formData.coverImageCaption,
+        mainCategory: formData.mainCategory,
+        tags: formData.tags,
+        genres: formData.genres,
+        colorTheme: formData.colorTheme,
+        nodes: nodes,
+        startNodeId: 'start',
+        isPublished: true
+      };
+
+      if (storyIdRef.current) {
+        await updateStory(storyIdRef.current, storyData);
+      } else {
+        const created = await createStory(storyData);
+        storyIdRef.current = created._id;
+      }
+
+      navigate('/my-stories');
+    } catch (err) {
+      setError(err.message || 'Failed to publish story');
+    } finally {
+      setManualSaving(false);
+    }
   };
 
   if (loading) {
@@ -247,20 +323,31 @@ const StoryCreatorMultiStep = () => {
         {currentStep === 3 && (
           <div style={{ display: 'flex', gap: '10px' }}>
             <button
-              onClick={() => {/* Save draft logic */}}
+              onClick={handleSaveDraft}
               className="btn btn-secondary"
+              disabled={manualSaving}
             >
-              Save Draft
+              {manualSaving ? 'Saving...' : 'Save Draft'}
             </button>
             <button
-              onClick={() => {/* Publish logic */}}
+              onClick={handlePublish}
               className="btn btn-success"
+              disabled={manualSaving}
             >
-              Publish Story
+              {manualSaving ? 'Publishing...' : 'Publish Story'}
             </button>
           </div>
         )}
       </div>
+
+      <ConfirmDialog
+        isOpen={showPublishConfirm}
+        message="Ready to publish this story? It will be visible to all users."
+        onConfirm={confirmPublish}
+        onCancel={() => setShowPublishConfirm(false)}
+        confirmText="Publish"
+        cancelText="Cancel"
+      />
     </div>
   );
 };

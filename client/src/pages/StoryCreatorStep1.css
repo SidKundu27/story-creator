@@ -1,7 +1,9 @@
 .story-info-form {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
+  display: flex;
+  flex-direction: column;
   gap: 30px;
+  max-width: 900px;
+  margin: 0 auto;
 }
 
 .form-section {
@@ -47,7 +49,8 @@
 }
 
 .form-group input,
-.form-group textarea {
+.form-group textarea,
+.form-group select {
   padding: 10px 14px;
   border: 1px solid #d1d5db;
   border-radius: 6px;
@@ -57,7 +60,8 @@
 }
 
 .form-group input:focus,
-.form-group textarea:focus {
+.form-group textarea:focus,
+.form-group select:focus {
   outline: none;
   border-color: #667eea;
   box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
