@@ -11,6 +11,25 @@ const StoryCoverPage = ({ story, onStart, onBack }) => {
 
   return (
     <div className="story-cover-page">
+      {/* Blurred Background */}
+      <div 
+        className="cover-background-blur" 
+        style={{
+          backgroundImage: story.coverImage ? `url(${story.coverImage})` : 'none'
+        }}
+      />
+      
+      {/* Breadcrumb Navigation Bar */}
+      {onBack && (
+        <div className="cover-breadcrumb-bar">
+          <div className="cover-breadcrumb-content">
+            <button onClick={onBack} className="breadcrumb-link">
+              ← Back to Dashboard
+            </button>
+          </div>
+        </div>
+      )}
+      
       <div className="cover-content">
         <div className="cover-left-column">
           <div className="cover-image-container">
@@ -19,24 +38,21 @@ const StoryCoverPage = ({ story, onStart, onBack }) => {
               <p className="cover-caption">{story.coverImageCaption}</p>
             )}
           </div>
-          
-          {story.genres && story.genres.length > 0 && (
-            <div className="cover-genres-sidebar">
-              <h3>Genres</h3>
-              <div className="cover-genres">
-                {story.genres.map((genre, idx) => (
-                  <span key={idx} className="cover-genre-tag">{genre}</span>
-                ))}
-              </div>
-            </div>
-          )}
         </div>
 
         <div className="story-info">
           <div className="cover-header">
             <h1 className="cover-title">{story.title}</h1>
-            <p className="cover-author">by <strong>{story.authorName}</strong></p>
+            <p className="cover-author">by {story.authorName}</p>
             <p className="cover-date">{formatDate()}</p>
+            
+            {story.genres && story.genres.length > 0 && (
+              <div className="cover-genres">
+                {story.genres.map((genre, idx) => (
+                  <span key={idx} className="cover-genre-tag">{genre}</span>
+                ))}
+              </div>
+            )}
           </div>
 
           {story.description && (
@@ -46,11 +62,11 @@ const StoryCoverPage = ({ story, onStart, onBack }) => {
           <div className="cover-stats">
             <div className="cover-stat">
               <span className="stat-number">{story.plays || 0}</span>
-              <span className="stat-label">Plays</span>
+              <span className="stat-label">PLAYS</span>
             </div>
             <div className="cover-stat">
               <span className="stat-number">{story.likes || 0}</span>
-              <span className="stat-label">Likes</span>
+              <span className="stat-label">LIKES</span>
             </div>
           </div>
 
@@ -58,11 +74,6 @@ const StoryCoverPage = ({ story, onStart, onBack }) => {
             <button onClick={onStart} className="btn btn-primary btn-large">
               ▶ Start Reading
             </button>
-            {onBack && (
-              <button onClick={onBack} className="btn btn-secondary">
-                ← Back
-              </button>
-            )}
           </div>
         </div>
       </div>

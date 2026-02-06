@@ -1,0 +1,123 @@
+/* Design System - Global Theme Variables */
+:root {
+  /* Brand Colors */
+  --color-primary: #6366f1;
+  --color-primary-hover: #4f46e5;
+  --color-primary-light: rgba(99, 102, 241, 0.1);
+  --color-primary-shadow: rgba(99, 102, 241, 0.4);
+  
+  /* Dashboard/Dark Theme */
+  --color-background-dark: #0f172a;
+  --color-surface-dark: #1e293b;
+  --color-card-dark: #1f2937;
+  --color-gradient-dark-start: #1e1b4b;
+  --color-gradient-dark-end: #312e81;
+  
+  /* Reader/Light Theme */
+  --color-background-light: #FAF9F6; /* Cream, not white */
+  --color-surface-light: #ffffff;
+  --color-text-light: #1f2937;
+  --color-text-light-muted: #6b7280;
+  
+  /* Reader/Dark Theme Alternative */
+  --color-background-reader-dark: #1a1a1a;
+  --color-surface-reader-dark: #2a2a2a;
+  --color-text-dark: #e5e5e5;
+  --color-text-dark-muted: #a3a3a3;
+  
+  /* Neutral Grays */
+  --color-gray-50: #f9fafb;
+  --color-gray-100: #f3f4f6;
+  --color-gray-200: #e5e7eb;
+  --color-gray-300: #d1d5db;
+  --color-gray-400: #9ca3af;
+  --color-gray-500: #6b7280;
+  --color-gray-600: #4b5563;
+  --color-gray-700: #374151;
+  --color-gray-800: #1f2937;
+  --color-gray-900: #111827;
+  
+  /* Semantic Colors */
+  --color-success: #10b981;
+  --color-warning: #f59e0b;
+  --color-error: #ef4444;
+  --color-info: #3b82f6;
+  
+  /* Text Colors */
+  --text-primary: #1f2937;
+  --text-secondary: #6b7280;
+  --text-muted: #9ca3af;
+  --text-inverse: #ffffff;
+  --text-inverse-muted: rgba(255, 255, 255, 0.7);
+  
+  /* Border Colors */
+  --border-light: #e5e7eb;
+  --border-dark: rgba(255, 255, 255, 0.1);
+  --border-focus: var(--color-primary);
+  
+  /* Shadows */
+  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+  --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+  --shadow-2xl: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+  
+  /* Spacing Scale */
+  --space-xs: 4px;
+  --space-sm: 8px;
+  --space-md: 16px;
+  --space-lg: 24px;
+  --space-xl: 32px;
+  --space-2xl: 48px;
+  --space-3xl: 64px;
+  
+  /* Typography */
+  --font-sans: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  --font-serif: 'Merriweather', 'Georgia', 'Palatino', serif;
+  --font-mono: 'Courier New', monospace;
+  
+  /* Font Sizes */
+  --text-xs: 11px;
+  --text-sm: 13px;
+  --text-base: 16px;
+  --text-lg: 18px;
+  --text-xl: 20px;
+  --text-2xl: 24px;
+  --text-3xl: 32px;
+  --text-4xl: 42px;
+  
+  /* Border Radius */
+  --radius-sm: 6px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  --radius-xl: 16px;
+  --radius-full: 9999px;
+  
+  /* Transitions */
+  --transition-fast: 0.15s ease;
+  --transition-base: 0.2s ease;
+  --transition-slow: 0.3s ease;
+  
+  /* Z-Index Scale */
+  --z-base: 1;
+  --z-dropdown: 1000;
+  --z-sticky: 1020;
+  --z-fixed: 1030;
+  --z-modal-backdrop: 1040;
+  --z-modal: 1050;
+  --z-popover: 1060;
+  --z-tooltip: 1070;
+  
+  /* Layout */
+  --max-width-reader: 700px;
+  --max-width-content: 1200px;
+  --max-width-wide: 1400px;
+}
+
+/* Dark Mode Overrides (if needed in future) */
+[data-theme="dark"] {
+  --color-background-light: var(--color-background-reader-dark);
+  --color-surface-light: var(--color-surface-reader-dark);
+  --color-text-light: var(--color-text-dark);
+  --color-text-light-muted: var(--color-text-dark-muted);
+}

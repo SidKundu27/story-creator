@@ -116,10 +116,7 @@ const StoryPlayer = () => {
   const accentColor = theme.accent;
 
   return (
-    <div className="webnovel-reader" style={{
-      backgroundColor: nodeStyle,
-      color: nodeTextColor
-    }}>
+    <div className="webnovel-reader">
       <div className="reader-wrapper">
         {/* Preview Banner */}
         {isPreview && (
@@ -128,45 +125,30 @@ const StoryPlayer = () => {
           </div>
         )}
 
-        {/* Compact Header with Metadata */}
-        <header className="reader-header" style={{
-          background: `linear-gradient(135deg, ${theme.titleBg}dd 0%, ${theme.titleBg}aa 100%)`
-        }}>
+        {/* Minimal Reader Header */}
+        <header className="reader-header">
           <div className="header-content">
-            <div className="title-section">
-              <h1 className="story-title">{story.title}</h1>
+            <button 
+              onClick={() => navigate('/feed')} 
+              className="btn-exit"
+              title="Exit to dashboard"
+            >
+              ←
+            </button>
+            
+            <div className="header-center">
+              <span className="chapter-title">{currentNode.name || 'Reading'}</span>
             </div>
 
-            {/* Stats and Genres */}
-            <div className="story-metadata">
-              <div className="genre-tags">
-                {story.genres && story.genres.slice(0, 4).map((genre, idx) => (
-                  <span key={idx} className="genre-tag">{genre}</span>
-                ))}
-              </div>
-              <div className="story-stats">
-                <span className="stat-item">
-                  <span className="stat-label">By</span>
-                  <span className="stat-value">{story.authorName}</span>
-                </span>
-                <span className="stat-item">
-                  <span className="stat-label">Plays</span>
-                  <span className="stat-value">{story.plays || 0}</span>
-                </span>
-                <span className="stat-item">
-                  <span className="stat-label">Likes</span>
-                  <span className="stat-value">
-                    <button 
-                      onClick={handleLike} 
-                      className="btn-like"
-                      disabled={isPreview}
-                      title={isPreview ? "Not available in preview" : "Like this story"}
-                    >
-                      ♥ {story.likes || 0}
-                    </button>
-                  </span>
-                </span>
-              </div>
+            <div className="header-actions">
+              <button 
+                onClick={handleLike} 
+                className="btn-header-action"
+                disabled={isPreview}
+                title={isPreview ? "Not available in preview" : "Like this story"}
+              >
+                ♥
+              </button>
             </div>
           </div>
         </header>
@@ -177,11 +159,9 @@ const StoryPlayer = () => {
           <article 
             className="story-content-area"
             style={{
-              backgroundColor: nodeStyle,
-              color: nodeTextColor,
               fontSize: `${fontSize}px`,
               lineHeight: lineHeight,
-              fontFamily: fontFamily === 'serif' ? "'Georgia', 'Palatino', serif" : 
+              fontFamily: fontFamily === 'serif' ? "'Merriweather', 'Georgia', serif" : 
                           fontFamily === 'monospace' ? "'Courier New', monospace" :
                           "'Segoe UI', system-ui, sans-serif"
             }}
@@ -207,10 +187,6 @@ const StoryPlayer = () => {
                 <button 
                   onClick={restart} 
                   className="btn-restart"
-                  style={{
-                    backgroundColor: accentColor,
-                    color: story.colorTheme.includes('light') ? '#333' : '#fff'
-                  }}
                 >
                   ← Play Again
                 </button>
@@ -223,12 +199,8 @@ const StoryPlayer = () => {
                       <button
                         onClick={() => makeChoice(choice.nextNodeId)}
                         className="choice-link"
-                        style={{
-                          color: accentColor,
-                          borderColor: accentColor
-                        }}
                       >
-                        <span className="choice-arrow">→</span>
+                        <span className="choice-arrow">➜</span>
                         <span className="choice-text">{choice.text}</span>
                       </button>
                     </li>
