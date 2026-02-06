@@ -65,87 +65,79 @@ const StoryCard = ({ story, showEdit = false, onDelete, showBadge = true }) => {
   };
 
   return (
-    <div 
-      className={`story-card ${isDraft ? 'is-draft' : 'is-published'}`}
-      style={{ '--spine-color': getSpineColor() }}
-    >
-      <div className="story-card-cover" aria-hidden="true">
-        {story.coverImage ? (
-          <img src={story.coverImage} alt={story.title} />
-        ) : (
-          <div className="story-cover-placeholder">{getInitials(story.title)}</div>
-        )}
-      </div>
-
-      <div className="story-card-body">
-        {/* Zone A: Title + Badge Row */}
-        <div className="story-title-row">
-          <h3 className="story-title">{story.title}</h3>
-          {showBadge && (
-            <span className={isDraft ? 'draft-badge' : 'published-badge'}>
-              {isDraft ? 'Draft' : 'Published'}
-            </span>
+    <div className={`story-card ${isDraft ? 'is-draft' : 'is-published'}`}>
+      {/* Top Section: Image + Content (Flex Row) */}
+      <div className="story-card-top">
+        {/* Cover Image */}
+        <div className="story-card-cover">
+          {story.coverImage ? (
+            <img src={story.coverImage} alt={story.title} />
+          ) : (
+            <div className="story-cover-placeholder">{getInitials(story.title)}</div>
           )}
         </div>
 
-        {/* Zone B: Byline - Author + Date + Stats (all on one line) */}
-        <div className="story-byline">
-          {story.authorName && <span>By {story.authorName}</span>}
-          {story.authorName && getLastUpdated() && <span className="byline-separator">•</span>}
-          {getLastUpdated() && <span>{getLastUpdated()}</span>}
-          {(story.plays > 0 || story.likes > 0) && getLastUpdated() && <span className="byline-separator">•</span>}
-          {(story.plays > 0 || story.likes > 0) && (
-            <div className="byline-stats">
-              {typeof story.likes === 'number' && story.likes > 0 && (
-                <span className="stat-item">♥ {story.likes}</span>
+        {/* Content Column */}
+        <div className="story-card-content">
+          {/* Title + Badge + Stats Row */}
+          <div className="story-title-row">
+            <h3 className="story-title">{story.title}</h3>
+            <div className="story-badges">
+              {showBadge && (
+                <span className={isDraft ? 'draft-badge' : 'published-badge'}>
+                  {isDraft ? 'Draft' : 'Published'}
+                </span>
               )}
-              {typeof story.plays === 'number' && story.plays > 0 && (
-                <span className="stat-item">▶ {story.plays}</span>
+              {(!showEdit || story.plays > 0 || story.likes > 0) && !isDraft && (
+                <div className="stats-chip">
+                  {typeof story.likes === 'number' && <span>♥ {story.likes}</span>}
+                  {typeof story.plays === 'number' && <span>▶ {story.plays}</span>}
+                </div>
               )}
             </div>
-          )}
-        </div>
+          </div>
 
-        {/* Zone C: Description (moved up) */}
-        {story.description && (
-          <p className="story-description">{story.description}</p>
-        )}
+          {/* Byline - Author + Date */}
+          <div className="story-byline">
+            {story.authorName && <span>By {story.authorName}</span>}
+            {story.authorName && getLastUpdated() && <span className="byline-separator">•</span>}
+            {getLastUpdated() && <span>{getLastUpdated()}</span>}
+          </div>
 
-        {/* Tags and Stats Row at bottom */}
-        <div className="story-tags-stats-row">
-          <div className="story-genres">
-            {story.genres && story.genres.length > 0 && (
-              story.genres.slice(0, 3).map((genre, index) => (
+          {/* Tags */}
+          {story.genres && story.genres.length > 0 && (
+            <div className="story-genres">
+              {story.genres.slice(0, 3).map((genre, index) => (
                 <span key={index} className="genre-tag">{genre}</span>
-              ))
+              ))}
+            </div>
+          )}
+
+          {/* Buttons */}
+          <div className="story-actions">
+            <Link to={primaryTo} className="btn btn-primary">
+              {primaryLabel}
+            </Link>
+
+            {showEdit && (
+              <div className="story-actions-secondary">
+                {isDraft ? (
+                  <button onClick={() => window.location.href = `/play/${story._id}?preview=true`} className="action-link">
+                    Preview
+                  </button>
+                ) : (
+                  <button onClick={() => window.location.href = `/edit/${story._id}`} className="action-link">
+                    Edit
+                  </button>
+                )}
+                {onDelete && (
+                  <button onClick={() => onDelete(story._id)} className="action-link action-delete">
+                    Delete
+                  </button>
+                )}
+              </div>
             )}
           </div>
-        </div>
-
-        {/* Zone D: Actions */}
-        <div className="story-actions">
-          <Link to={primaryTo} className="btn btn-primary">
-            {primaryLabel}
-          </Link>
-
-          {showEdit && (
-            <div className="story-actions-secondary">
-              {isDraft ? (
-                <Link to={`/play/${story._id}?preview=true`} className="action-link">
-                  Preview
-                </Link>
-              ) : (
-                <Link to={`/edit/${story._id}`} className="action-link">
-                  Edit
-                </Link>
-              )}
-              {onDelete && (
-                <button onClick={() => onDelete(story._id)} className="action-link action-delete">
-                  Delete
-                </button>
-              )}
-            </div>
-          )}
         </div>
       </div>
     </div>
