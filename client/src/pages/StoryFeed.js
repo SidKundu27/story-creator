@@ -138,7 +138,7 @@ const StoryFeed = () => {
       ) : (
         <div className="story-grid">
           {filteredStories.map(story => (
-            <StoryCard key={story._id} story={story} />
+            <StoryCard key={story._id} story={story} showBadge={false} />
           ))}
         </div>
       )}

@@ -77,13 +77,13 @@
 
 .step.active .step-number {
   background: transparent;
-  color: #6366f1;
+  color: #111827;
   box-shadow: none;
 }
 
 .step.completed .step-number {
   background: transparent;
-  color: #4f46e5;
+  color: #111827;
   box-shadow: none;
 }
 

@@ -54,7 +54,7 @@ const MyStories = () => {
       <div className="my-stories-header">
         <h1>My Stories</h1>
         <Link to="/create" className="btn btn-primary">
-          ➕ Create New Story
+          Create New Story
         </Link>
       </div>
 
