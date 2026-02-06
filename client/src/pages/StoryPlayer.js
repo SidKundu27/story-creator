@@ -1,14 +1,16 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { useParams, useSearchParams, useNavigate } from 'react-router-dom';
 import { getStoryById, likeStory } from '../services/storyService';
 import { parseMarkdown, stripFormattingDirectives, parseFormattingDirectives } from '../utils/markdownParser';
 import StoryCoverPage from '../components/StoryCoverPage';
+import { AuthContext } from '../context/AuthContext';
 import './StoryPlayer.css';
 
 const StoryPlayer = () => {
   const { id } = useParams();
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
+  const { loading: authLoading } = useContext(AuthContext);
   const isPreview = searchParams.get('preview') === 'true';
   const [story, setStory] = useState(null);
   const [currentNode, setCurrentNode] = useState(null);
@@ -17,23 +19,35 @@ const StoryPlayer = () => {
   const [history, setHistory] = useState([]);
   const [showCover, setShowCover] = useState(true);
 
-  const colorThemes = {
-    light: { name: 'Light', bg: '#ffffff', text: '#333333', titleBg: '#f8f9fa', accent: '#667eea' },
-    dark: { name: 'Dark', bg: '#2c3e50', text: '#ecf0f1', titleBg: '#34495e', accent: '#64b5f6' },
-    horror: { name: 'Horror', bg: '#1a1a1a', text: '#b8b8b8', titleBg: '#2d0a0a', accent: '#d32f2f' },
-    fantasy: { name: 'Fantasy', bg: '#4a148c', text: '#e1bee7', titleBg: '#6a1b9a', accent: '#b39ddb' },
-    scifi: { name: 'Sci-Fi', bg: '#01579b', text: '#b3e5fc', titleBg: '#0277bd', accent: '#4fc3f7' },
-    nature: { name: 'Nature', bg: '#1b5e20', text: '#c8e6c9', titleBg: '#2e7d32', accent: '#81c784' },
-    sunset: { name: 'Sunset', bg: '#ff6f00', text: '#fff3e0', titleBg: '#f57c00', accent: '#ffb74d' },
-    ocean: { name: 'Ocean', bg: '#006064', text: '#b2ebf2', titleBg: '#00838f', accent: '#4dd0e1' }
-  };
+  // Use a single default theme for all stories
+  const theme = { name: 'Light', bg: '#ffffff', text: '#333333', titleBg: '#f8f9fa', accent: '#667eea' };
 
   useEffect(() => {
-    loadStory();
-  }, [id]);
+    // Wait for auth to load before fetching story
+    if (!authLoading) {
+      const fetchStory = async () => {
+        try {
+          setError(''); // Clear any previous errors
+          const url = isPreview ? `${id}?preview=true` : id;
+          const data = await getStoryById(url);
+          setStory(data);
+          const startNode = data.nodes.find(node => node.nodeId === data.startNodeId);
+          setCurrentNode(startNode);
+          setHistory([startNode.nodeId]);
+        } catch (err) {
+          setError(err);
+        } finally {
+          setLoading(false);
+        }
+      };
+      
+      fetchStory();
+    }
+  }, [id, authLoading, isPreview]);
 
   const loadStory = async () => {
     try {
+      setError(''); // Clear any previous errors
       const url = isPreview ? `${id}?preview=true` : id;
       const data = await getStoryById(url);
       setStory(data);
@@ -93,15 +107,13 @@ const StoryPlayer = () => {
     );
   }
 
-  const theme = colorThemes[story.colorTheme] || colorThemes.light;
-  
-  // Use creator styles if available, otherwise fall back to theme
-  const nodeStyle = currentNode?.backgroundColor || theme.bg;
-  const nodeTextColor = currentNode?.textColor || story?.creatorStyle?.textColor || theme.text;
-  const fontSize = story?.creatorStyle?.fontSize || 16;
-  const lineHeight = story?.creatorStyle?.lineHeight || 2;
-  const fontFamily = story?.creatorStyle?.fontFamily || 'serif';
-  const accentColor = story?.creatorStyle?.accentColor || theme.accent;
+  // Use theme colors
+  const nodeStyle = theme.bg;
+  const nodeTextColor = theme.text;
+  const fontSize = 16;
+  const lineHeight = 2;
+  const fontFamily = 'serif';
+  const accentColor = theme.accent;
 
   return (
     <div className="webnovel-reader" style={{

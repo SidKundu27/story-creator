@@ -11,33 +11,6 @@ const ChoiceSchema = new mongoose.Schema({
   }
 });
 
-const CreatorStyleSchema = new mongoose.Schema({
-  backgroundColor: {
-    type: String,
-    default: '#ffffff'
-  },
-  textColor: {
-    type: String,
-    default: '#333333'
-  },
-  accentColor: {
-    type: String,
-    default: '#667eea'
-  },
-  fontFamily: {
-    type: String,
-    default: 'serif'
-  },
-  fontSize: {
-    type: Number,
-    default: 16
-  },
-  lineHeight: {
-    type: Number,
-    default: 2
-  }
-}, { _id: false });
-
 const StoryNodeSchema = new mongoose.Schema({
   nodeId: {
     type: String,
@@ -92,11 +65,10 @@ const StorySchema = new mongoose.Schema({
   },
   tags: [String],
   genres: [String],
-  colorTheme: {
+  mainCategory: {
     type: String,
-    default: 'light'
+    default: null
   },
-  creatorStyle: CreatorStyleSchema,
   isPublished: {
     type: Boolean,
     default: false

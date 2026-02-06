@@ -29,7 +29,6 @@ const StoryCreatorMultiStep = () => {
     mainCategory: '',
     tags: [],
     genres: [],
-    colorTheme: 'light',
     isDraft: true
   });
 
@@ -90,7 +89,6 @@ const StoryCreatorMultiStep = () => {
         coverImageCaption: formData.coverImageCaption,
         tags: formData.tags,
         genres: formData.genres,
-        colorTheme: formData.colorTheme,
         nodes: nodes,
         startNodeId: 'start',
         isPublished: false
@@ -117,7 +115,6 @@ const StoryCreatorMultiStep = () => {
         mainCategory: story.mainCategory || '',
         tags: story.tags || [],
         genres: story.genres || [],
-        colorTheme: story.colorTheme || 'light',
         isDraft: !story.isPublished
       });
       setNodes(story.nodes);
@@ -173,7 +170,6 @@ const StoryCreatorMultiStep = () => {
         mainCategory: formData.mainCategory,
         tags: formData.tags,
         genres: formData.genres,
-        colorTheme: formData.colorTheme,
         nodes: nodes,
         startNodeId: 'start',
         isPublished: false
@@ -212,7 +208,6 @@ const StoryCreatorMultiStep = () => {
         tags: formData.tags,
         genres: formData.genres,
         colorTheme: formData.colorTheme,
-        nodes: nodes,
         startNodeId: 'start',
         isPublished: true
       };
