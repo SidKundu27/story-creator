@@ -8,6 +8,7 @@ const StoryCreatorStep2 = ({ nodes, setNodes }) => {
   const [selectedNodeIndex, setSelectedNodeIndex] = useState(0);
   const [showPreview, setShowPreview] = useState(false);
   const [showGraph, setShowGraph] = useState(false);
+  const [sceneSearchQuery, setSceneSearchQuery] = useState('');
   const textareaRef = React.useRef(null);
   const [pasteError, setPasteError] = useState('');
 
@@ -121,6 +122,9 @@ const StoryCreatorStep2 = ({ nodes, setNodes }) => {
 
   const removeNode = (index) => {
     if (nodes.length === 1) return;
+    if (!window.confirm(`Delete scene "${nodes[index].name || 'Untitled'}"? This cannot be undone.`)) {
+      return;
+    }
     const updatedNodes = nodes.filter((_, i) => i !== index);
     setNodes(updatedNodes);
     setSelectedNodeIndex(Math.min(selectedNodeIndex, updatedNodes.length - 1));
@@ -140,8 +144,23 @@ const StoryCreatorStep2 = ({ nodes, setNodes }) => {
           </button>
         </div>
 
+        <div className="scene-search">
+          <input
+            type="text"
+            placeholder="Search scenes..."
+            value={sceneSearchQuery}
+            onChange={(e) => setSceneSearchQuery(e.target.value)}
+            className="scene-search-input"
+          />
+        </div>
+
         <div className="nodes-list">
-          {nodes.map((node, idx) => (
+          {nodes
+            .map((node, idx) => ({ node, idx }))
+            .filter(({ node }) => 
+              node.name.toLowerCase().includes(sceneSearchQuery.toLowerCase())
+            )
+            .map(({ node, idx }) => (
             <div key={node.nodeId} className="node-item-container">
               <button
                 className={`node-item ${idx === selectedNodeIndex ? 'active' : ''}`}
@@ -154,7 +173,7 @@ const StoryCreatorStep2 = ({ nodes, setNodes }) => {
                 <button
                   className="node-delete"
                   onClick={() => removeNode(idx)}
-                  title="Delete this node"
+                  title="Delete this scene (requires confirmation)"
                 >
                   ✕
                 </button>
@@ -162,15 +181,6 @@ const StoryCreatorStep2 = ({ nodes, setNodes }) => {
             </div>
           ))}
         </div>
-
-        <button
-          type="button"
-          onClick={() => setShowGraph(!showGraph)}
-          className="btn btn-secondary"
-          style={{ width: '100%', marginTop: '10px' }}
-        >
-          {showGraph ? '📖' : '📊'} {showGraph ? 'Hide' : 'Show'} Map
-        </button>
       </div>
 
       <div className="nodes-editor">
@@ -221,31 +231,47 @@ const StoryCreatorStep2 = ({ nodes, setNodes }) => {
           <div className="content-editor">
             <div className="editor-label">
               <label>Scene Content</label>
-              <button
-                type="button"
-                onClick={() => setShowPreview(!showPreview)}
-                className="preview-toggle"
-              >
-                {showPreview ? '✕' : '👁'} Preview
-              </button>
+              <div className="editor-mode-buttons">
+                <button
+                  type="button"
+                  onClick={() => setShowPreview(false)}
+                  className={`mode-btn ${!showPreview ? 'active' : ''}`}
+                  title="Edit markdown"
+                >
+                  ✏️ Edit
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setShowPreview(true)}
+                  className={`mode-btn ${showPreview ? 'active' : ''}`}
+                  title="Preview formatted content"
+                >
+                  👁️ Preview
+                </button>
+              </div>
             </div>
 
-            <MarkdownToolbar 
-              onInsert={handleMarkdownInsert}
-              textareaRef={textareaRef}
-            />
+            {!showPreview && (
+              <MarkdownToolbar 
+                onInsert={handleMarkdownInsert}
+                textareaRef={textareaRef}
+              />
+            )}
 
             <div className="editor-wrapper">
-              <textarea
-                ref={textareaRef}
-                value={currentNode.content}
-                onChange={handleNodeContentChange}
-                onPaste={handleImagePaste}
-                placeholder="Write your scene content here. Use **bold**, *italic*, __underline__, ~~strike~~, [#highlight], and [link text](url). You can also paste images!"
-                className="content-textarea"
-              />
-              {pasteError && <div className="paste-error">{pasteError}</div>}
-              {showPreview && (
+              {!showPreview ? (
+                <>
+                  <textarea
+                    ref={textareaRef}
+                    value={currentNode.content}
+                    onChange={handleNodeContentChange}
+                    onPaste={handleImagePaste}
+                    placeholder="Write your scene content here. Use **bold**, *italic*, __underline__, ~~strike~~, [#highlight], and [link text](url). You can also paste images!"
+                    className="content-textarea"
+                  />
+                  {pasteError && <div className="paste-error">{pasteError}</div>}
+                </>
+              ) : (
                 <MarkdownPreview 
                   content={currentNode.content}
                   isVisible={true}
@@ -312,6 +338,14 @@ const StoryCreatorStep2 = ({ nodes, setNodes }) => {
             </div>
           )}
         </div>
+
+        <button
+          type="button"
+          onClick={() => setShowGraph(!showGraph)}
+          className="btn btn-secondary btn-hide-map"
+        >
+          {showGraph ? '📖' : '📊'} {showGraph ? 'Hide' : 'Show'} Map
+        </button>
       </div>
     </div>
   );

@@ -40,6 +40,7 @@ const StoryCreatorMultiStep = () => {
   ]);
 
   const storyIdRef = useRef(id);
+  const stepContentRef = useRef(null);
 
   const availableGenres = ['Adventure', 'Fantasy', 'Mystery', 'Sci-Fi', 'Horror', 'Romance', 'Comedy', 'Thriller'];
 
@@ -128,17 +129,26 @@ const StoryCreatorMultiStep = () => {
     if (currentStep === 1) {
       if (!formData.title || !formData.description) {
         setError('Title and description are required');
+        scrollToTop();
         return;
       }
     } else if (currentStep === 2) {
       if (nodes.some(node => !node.content)) {
         setError('All nodes must have content');
+        scrollToTop();
         return;
       }
     }
 
     setError('');
     setCurrentStep(currentStep + 1);
+    scrollToTop();
+  };
+
+  const scrollToTop = () => {
+    if (stepContentRef.current) {
+      stepContentRef.current.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
   };
 
   const handlePrevious = () => {
@@ -179,7 +189,7 @@ const StoryCreatorMultiStep = () => {
 
       {error && <div className="error-banner">{error}</div>}
 
-      <div className="step-content">
+      <div className="step-content" ref={stepContentRef}>
         {currentStep === 1 && (
           <StoryCreatorStep1
             formData={formData}

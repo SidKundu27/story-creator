@@ -49,16 +49,56 @@ const NodeGraph = ({ nodes, selectedNodeIndex, onNodeSelect, startNodeId }) => {
       return [{ x: width / 2, y: height / 2 }];
     }
 
-    const nodeCount = nodes.length;
-    const positions = [];
-    const radius = Math.min(width, height) / 3;
+    const positions = new Array(nodes.length);
+    
+    // Use BFS to calculate depth (column position) from start node
+    const depths = new Array(nodes.length).fill(0);
+    const visited = new Set(['start']);
+    const queue = [0]; // Start with node 0 (start node)
+    
+    while (queue.length > 0) {
+      const currentIdx = queue.shift();
+      const currentDepth = depths[currentIdx];
+      
+      const node = nodes[currentIdx];
+      if (node.choices && node.choices.length > 0) {
+        node.choices.forEach((choice) => {
+          const targetIdx = nodes.findIndex(n => n.nodeId === choice.nextNodeId);
+          if (targetIdx !== -1 && !visited.has(choice.nextNodeId)) {
+            visited.add(choice.nextNodeId);
+            depths[targetIdx] = currentDepth + 1;
+            queue.push(targetIdx);
+          }
+        });
+      }
+    }
 
-    // Arrange in circular pattern
-    for (let i = 0; i < nodeCount; i++) {
-      const angle = (i / nodeCount) * 2 * Math.PI - Math.PI / 2;
-      const x = width / 2 + radius * Math.cos(angle);
-      const y = height / 2 + radius * Math.sin(angle);
-      positions.push({ x, y });
+    // Get max depth for column positioning
+    const maxDepth = Math.max(...depths);
+    
+    // Count nodes at each depth level
+    const nodesPerDepth = {};
+    for (let i = 0; i < depths.length; i++) {
+      const depth = depths[i];
+      nodesPerDepth[depth] = (nodesPerDepth[depth] || 0) + 1;
+    }
+    
+    // Position nodes in columns
+    const nodeCountAtDepth = {};
+    const padding = 60;
+    const columnWidth = (width - padding * 2) / (maxDepth + 1);
+    
+    for (let i = 0; i < nodes.length; i++) {
+      const depth = depths[i];
+      const countAtDepth = nodesPerDepth[depth];
+      const indexAtDepth = (nodeCountAtDepth[depth] || 0);
+      nodeCountAtDepth[depth] = indexAtDepth + 1;
+      
+      const x = padding + columnWidth * (depth + 0.5);
+      const rowHeight = (height - padding * 2) / Math.max(countAtDepth, 1);
+      const y = padding + rowHeight * (indexAtDepth + 0.5);
+      
+      positions[i] = { x, y };
     }
 
     return positions;
@@ -138,13 +178,23 @@ const NodeGraph = ({ nodes, selectedNodeIndex, onNodeSelect, startNodeId }) => {
 
       ctx.shadowColor = 'transparent';
 
-      // Draw label
+      // Draw label - show scene name
       ctx.fillStyle = '#ffffff';
-      ctx.font = 'bold 12px sans-serif';
+      ctx.font = 'bold 11px sans-serif';
       ctx.textAlign = 'center';
       ctx.textBaseline = 'middle';
       
-      const label = isStart ? 'Start' : isEnding ? 'End' : `Node ${idx}`;
+      let label;
+      if (isStart) {
+        label = 'Start';
+      } else if (isEnding) {
+        label = 'End';
+      } else {
+        // Truncate long names to fit in circle
+        const sceneName = node.name || 'Scene';
+        label = sceneName.length > 10 ? sceneName.substring(0, 10) + '...' : sceneName;
+      }
+      
       ctx.fillText(label, pos.x, pos.y);
     });
   };

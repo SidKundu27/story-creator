@@ -1,7 +1,10 @@
-import React from 'react';
+import React, { useState } from 'react';
 import './MarkdownToolbar.css';
 
 const MarkdownToolbar = ({ onInsert, textareaRef }) => {
+  const [lastClickTime, setLastClickTime] = useState(0);
+  const CLICK_DEBOUNCE_MS = 200; // Prevent clicks within 200ms
+
   const insertMarkdown = (before, after = before) => {
     const textarea = textareaRef.current;
     if (!textarea) return;
@@ -23,6 +26,15 @@ const MarkdownToolbar = ({ onInsert, textareaRef }) => {
       const newCursorPos = start + before.length + selectedText.length;
       textarea.setSelectionRange(newCursorPos, newCursorPos);
     }, 0);
+  };
+
+  const handleFormatClick = (action) => {
+    const now = Date.now();
+    if (now - lastClickTime < CLICK_DEBOUNCE_MS) {
+      return; // Ignore rapid clicks
+    }
+    setLastClickTime(now);
+    action();
   };
 
   const formatOptions = [
@@ -86,7 +98,7 @@ const MarkdownToolbar = ({ onInsert, textareaRef }) => {
             key={idx}
             type="button"
             className="format-btn"
-            onClick={option.action}
+            onClick={() => handleFormatClick(option.action)}
             title={`${option.title} (${option.shortcut})`}
             aria-label={option.label}
           >

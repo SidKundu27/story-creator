@@ -46,11 +46,12 @@
   align-items: center;
   gap: 6px;
   flex: 1;
+  position: relative;
 }
 
 .step-number {
-  width: 40px;
-  height: 40px;
+  width: 50px;
+  height: 50px;
   border-radius: 50%;
   background: #e5e7eb;
   color: #6b7280;
@@ -60,6 +61,7 @@
   font-weight: 700;
   font-size: 16px;
   transition: all 0.3s;
+  z-index: 2;
 }
 
 .step.active .step-number {
@@ -78,7 +80,13 @@
   font-weight: 600;
   color: #6b7280;
   text-transform: uppercase;
-  letter-spacing: 0.5px;
+  text-align: center;
+  max-width: 80px;
+  position: relative;
+  z-index: 3;
+  background: white;
+  padding: 0 8px;
+  margin-top: -2px;
 }
 
 .step.active .step-label {
