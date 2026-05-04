@@ -5,3 +5,4 @@ client/build
 npm-debug.log
 .vscode/
 *.log
+dist
