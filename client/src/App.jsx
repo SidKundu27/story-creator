@@ -7,6 +7,7 @@ import Navbar from './components/Navbar';
 import Home from './pages/Home';
 import Login from './pages/Login';
 import Register from './pages/Register';
+import Profile from './pages/Profile';
 import StoryFeed from './pages/StoryFeed';
 import StoryPlayer from './pages/StoryPlayer';
 import StoryCreatorMultiStep from './pages/StoryCreatorMultiStep';
@@ -49,6 +50,7 @@ function App() {
                 </ProtectedRoute>
               } 
             />
+            <Route path="/profile" element={<Profile />} />
             <Route path="*" element={<Navigate to="/" />} />
           </Routes>
         </div>

@@ -1,55 +1,51 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
-import './Home.css';
+import { Link as RouterLink } from 'react-router-dom';
+import Container from '@mui/material/Container';
+import Typography from '@mui/material/Typography';
+import Button from '@mui/material/Button';
+import Grid from '@mui/material/Grid';
+import Card from '@mui/material/Card';
+import CardContent from '@mui/material/CardContent';
+import Box from '@mui/material/Box';
 
 const Home = () => {
   return (
-    <div className="home">
-      <div className="hero">
-        <div className="container">
-          <h1>Create Your Own Adventure</h1>
-          <p className="hero-subtitle">
-            Build interactive stories where every choice matters. 
-            Share your creations with the world.
-          </p>
-          <div className="hero-actions">
-            <Link to="/feed" className="btn btn-primary btn-large">
-              Browse Stories
-            </Link>
-            <Link to="/create" className="btn btn-success btn-large">
-              Start Creating
-            </Link>
-          </div>
-        </div>
-      </div>
+    <div>
+      <Box sx={{ bgcolor: 'background.paper', py: 8, pt: 12 }}>
+        <Container maxWidth="md">
+          <Typography component="h1" variant="h3" align="center" gutterBottom>
+            Create Your Own Adventure
+          </Typography>
+          <Typography variant="h6" align="center" color="text.secondary" paragraph>
+            Build interactive stories where every choice matters. Share your creations with the world.
+          </Typography>
+          <Box sx={{ display: 'flex', justifyContent: 'center', gap: 2, mt: 4 }}>
+            <Button variant="contained" size="large" component={RouterLink} to="/feed">Browse Stories</Button>
+            <Button variant="outlined" size="large" component={RouterLink} to="/create">Start Creating</Button>
+          </Box>
+        </Container>
+      </Box>
 
-      <div className="container">
-        <div className="features">
-          <div className="feature">
-            <div className="feature-icon">✍️</div>
-            <h3>Create Stories</h3>
-            <p>Build branching narratives with multiple paths and endings</p>
-          </div>
-
-          <div className="feature">
-            <div className="feature-icon">🎮</div>
-            <h3>Interactive Gameplay</h3>
-            <p>Let players make choices that determine the outcome</p>
-          </div>
-
-          <div className="feature">
-            <div className="feature-icon">🌐</div>
-            <h3>Share & Play</h3>
-            <p>Publish your stories and explore creations from the community</p>
-          </div>
-
-          <div className="feature">
-            <div className="feature-icon">📱</div>
-            <h3>Export (Coming Soon)</h3>
-            <p>Turn your stories into standalone apps or websites</p>
-          </div>
-        </div>
-      </div>
+      <Container sx={{ py: 6 }} maxWidth="lg">
+        <Grid container spacing={4}>
+          {[
+            {icon: '✍️', title: 'Create Stories', desc: 'Build branching narratives with multiple paths and endings'},
+            {icon: '🎮', title: 'Interactive Gameplay', desc: 'Let players make choices that determine the outcome'},
+            {icon: '🌐', title: 'Share & Play', desc: 'Publish your stories and explore creations from the community'},
+            {icon: '📱', title: 'Export (Coming Soon)', desc: 'Turn your stories into standalone apps or websites'}
+          ].map((f) => (
+            <Grid item key={f.title} xs={12} sm={6} md={3}>
+              <Card variant="outlined" sx={{ height: '100%' }}>
+                <CardContent>
+                  <Typography variant="h4">{f.icon}</Typography>
+                  <Typography variant="h6" sx={{ mt: 1 }}>{f.title}</Typography>
+                  <Typography variant="body2" color="text.secondary" sx={{ mt: 1 }}>{f.desc}</Typography>
+                </CardContent>
+              </Card>
+            </Grid>
+          ))}
+        </Grid>
+      </Container>
     </div>
   );
 };
