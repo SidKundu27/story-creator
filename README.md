@@ -12,7 +12,7 @@ A fullstack web application for creating and playing interactive choose-your-own
 
 ## Tech Stack
 
-- **Frontend**: React, React Router, Axios
+- **Frontend**: React 18, Vite, React Router, Axios
 - **Backend**: Node.js, Express
 - **Database**: MongoDB with Mongoose
 - **Authentication**: JWT (JSON Web Tokens)
@@ -40,7 +40,7 @@ A fullstack web application for creating and playing interactive choose-your-own
 
    This will start:
    - Backend server on http://localhost:5000
-   - React frontend on http://localhost:3000
+   - Vite frontend on http://localhost:5173
 
    **Note**: If your database is empty, the server will automatically seed it with starter stories on first run.
 
@@ -63,13 +63,15 @@ The seed data is also automatically loaded when you start the server with an emp
 
 ```
 story-creator/
-├── client/              # React frontend
+├── client/              # Vite + React frontend
 │   ├── src/
 │   │   ├── components/  # React components
 │   │   ├── pages/       # Page components
 │   │   ├── context/     # Context API
-│   │   ├── services/    # API services
-│   │   └── App.js
+│   │   ├── services/    # API services (utils)
+│   │   ├── App.jsx
+│   │   └── main.jsx
+│   ├── vite.config.mjs  # Vite configuration
 │   └── package.json
 ├── server/              # Express backend
 │   ├── models/          # Mongoose models
