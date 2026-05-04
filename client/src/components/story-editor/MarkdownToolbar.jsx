@@ -3,7 +3,7 @@ import './MarkdownToolbar.css';
 
 const MarkdownToolbar = ({ onInsert, textareaRef }) => {
   const [lastClickTime, setLastClickTime] = useState(0);
-  const CLICK_DEBOUNCE_MS = 200; // Prevent clicks within 200ms
+  const CLICK_DEBOUNCE_MS = 200;
 
   const insertMarkdown = (before, after = before) => {
     const textarea = textareaRef.current;
@@ -16,11 +16,8 @@ const MarkdownToolbar = ({ onInsert, textareaRef }) => {
     const afterText = textarea.value.substring(end);
 
     const newValue = beforeText + before + selectedText + after + afterText;
-    
-    // Update via callback
     onInsert(newValue);
-    
-    // Restore focus and selection
+
     setTimeout(() => {
       textarea.focus();
       const newCursorPos = start + before.length + selectedText.length;
@@ -30,63 +27,19 @@ const MarkdownToolbar = ({ onInsert, textareaRef }) => {
 
   const handleFormatClick = (action) => {
     const now = Date.now();
-    if (now - lastClickTime < CLICK_DEBOUNCE_MS) {
-      return; // Ignore rapid clicks
-    }
+    if (now - lastClickTime < CLICK_DEBOUNCE_MS) return;
     setLastClickTime(now);
     action();
   };
 
   const formatOptions = [
-    {
-      label: 'Bold',
-      title: 'Make text bold',
-      icon: '𝐁',
-      action: () => insertMarkdown('**', '**'),
-      shortcut: 'Ctrl+B'
-    },
-    {
-      label: 'Italic',
-      title: 'Make text italic',
-      icon: '𝐈',
-      action: () => insertMarkdown('*', '*'),
-      shortcut: 'Ctrl+I'
-    },
-    {
-      label: 'Underline',
-      title: 'Underline text',
-      icon: 'U',
-      action: () => insertMarkdown('__', '__'),
-      shortcut: 'Ctrl+U'
-    },
-    {
-      label: 'Strike',
-      title: 'Strikethrough text',
-      icon: 'S',
-      action: () => insertMarkdown('~~', '~~'),
-      shortcut: 'Ctrl+S'
-    },
-    {
-      label: 'Highlight',
-      title: 'Highlight text',
-      icon: '✎',
-      action: () => insertMarkdown('[#', ']'),
-      shortcut: 'Ctrl+H'
-    },
-    {
-      label: 'Link',
-      title: 'Insert link',
-      icon: '🔗',
-      action: () => insertMarkdown('[link text](', ')'),
-      shortcut: 'Ctrl+K'
-    },
-    {
-      label: 'Center',
-      title: 'Center text',
-      icon: '◆',
-      action: () => insertMarkdown('{', '}'),
-      shortcut: 'Ctrl+E'
-    }
+    { label: 'Bold', title: 'Make text bold', icon: '𝐁', action: () => insertMarkdown('**', '**'), shortcut: 'Ctrl+B' },
+    { label: 'Italic', title: 'Make text italic', icon: '𝐈', action: () => insertMarkdown('*', '*'), shortcut: 'Ctrl+I' },
+    { label: 'Underline', title: 'Underline text', icon: 'U', action: () => insertMarkdown('__', '__'), shortcut: 'Ctrl+U' },
+    { label: 'Strike', title: 'Strikethrough text', icon: 'S', action: () => insertMarkdown('~~', '~~'), shortcut: 'Ctrl+S' },
+    { label: 'Highlight', title: 'Highlight text', icon: '✎', action: () => insertMarkdown('[#', ']'), shortcut: 'Ctrl+H' },
+    { label: 'Link', title: 'Insert link', icon: '🔗', action: () => insertMarkdown('[link text](', ')'), shortcut: 'Ctrl+K' },
+    { label: 'Center', title: 'Center text', icon: '◆', action: () => insertMarkdown('{', '}'), shortcut: 'Ctrl+E' }
   ];
 
   return (
@@ -106,14 +59,10 @@ const MarkdownToolbar = ({ onInsert, textareaRef }) => {
           </button>
         ))}
       </div>
-      
+
       <div className="toolbar-legend">
         <small>
-          <strong>**bold**</strong> • 
-          <em>*italic*</em> • 
-          <u>__underline__</u> • 
-          <del>~~strike~~</del> • 
-          [#highlight] • [text](url) • {'{center}'}
+          <strong>**bold**</strong> • <em>*italic*</em> • <u>__underline__</u> • <del>~~strike~~</del> • [#highlight] • [text](url) • {'{center}'}
         </small>
       </div>
     </div>

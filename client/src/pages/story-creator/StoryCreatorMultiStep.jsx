@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { getStoryById, createStory, updateStory } from '../services/storyService';
-import ConfirmDialog from '../components/ConfirmDialog';
+import { getStoryById, createStory, updateStory } from '../../services/storyService';
+import ConfirmDialog from '../../components/story-editor/ConfirmDialog';
 import StoryCreatorStep1 from './StoryCreatorStep1';
 import StoryCreatorStep2 from './StoryCreatorStep2';
 import StoryCreatorStep3 from './StoryCreatorStep3';
@@ -20,7 +20,7 @@ const StoryCreatorMultiStep = () => {
   const [showPublishConfirm, setShowPublishConfirm] = useState(false);
   const [lastSavedTime, setLastSavedTime] = useState(null);
   const autoSaveTimeoutRef = useRef(null);
-  
+
   const [formData, setFormData] = useState({
     title: '',
     description: '',
@@ -33,13 +33,7 @@ const StoryCreatorMultiStep = () => {
   });
 
   const [nodes, setNodes] = useState([
-    {
-      nodeId: 'start',
-      name: 'Start',
-      content: '',
-      isEnding: false,
-      choices: []
-    }
+    { nodeId: 'start', name: 'Start', content: '', isEnding: false, choices: [] }
   ]);
 
   const storyIdRef = useRef(id);
@@ -48,32 +42,19 @@ const StoryCreatorMultiStep = () => {
   const availableGenres = ['Adventure', 'Fantasy', 'Mystery', 'Sci-Fi', 'Horror', 'Romance', 'Comedy', 'Thriller'];
 
   useEffect(() => {
-    if (isEditing) {
-      loadStory();
-    }
+    if (isEditing) loadStory();
   }, [id]);
 
-  // Auto-save functionality
   useEffect(() => {
-    // Clear existing timeout
-    if (autoSaveTimeoutRef.current) {
-      clearTimeout(autoSaveTimeoutRef.current);
-    }
+    if (autoSaveTimeoutRef.current) clearTimeout(autoSaveTimeoutRef.current);
+    if (!isEditing || !storyIdRef.current) return;
 
-    // Only auto-save if editing and we have a story ID
-    if (!isEditing || !storyIdRef.current) {
-      return;
-    }
-
-    // Set a new timeout for auto-save (every 30 seconds)
     autoSaveTimeoutRef.current = setTimeout(() => {
       performAutoSave();
     }, 30000);
 
     return () => {
-      if (autoSaveTimeoutRef.current) {
-        clearTimeout(autoSaveTimeoutRef.current);
-      }
+      if (autoSaveTimeoutRef.current) clearTimeout(autoSaveTimeoutRef.current);
     };
   }, [formData, nodes, isEditing]);
 
@@ -89,7 +70,7 @@ const StoryCreatorMultiStep = () => {
         coverImageCaption: formData.coverImageCaption,
         tags: formData.tags,
         genres: formData.genres,
-        nodes: nodes,
+        nodes,
         startNodeId: 'start',
         isPublished: false
       };
@@ -127,7 +108,6 @@ const StoryCreatorMultiStep = () => {
   };
 
   const handleNext = () => {
-    // Validation based on step
     if (currentStep === 1) {
       if (!formData.title || !formData.description) {
         setError('Title and description are required');
@@ -135,7 +115,7 @@ const StoryCreatorMultiStep = () => {
         return;
       }
     } else if (currentStep === 2) {
-      if (nodes.some(node => !node.content)) {
+      if (nodes.some((node) => !node.content)) {
         setError('All nodes must have content');
         scrollToTop();
         return;
@@ -170,7 +150,7 @@ const StoryCreatorMultiStep = () => {
         mainCategory: formData.mainCategory,
         tags: formData.tags,
         genres: formData.genres,
-        nodes: nodes,
+        nodes,
         startNodeId: 'start',
         isPublished: false
       };
@@ -209,7 +189,8 @@ const StoryCreatorMultiStep = () => {
         genres: formData.genres,
         colorTheme: formData.colorTheme,
         startNodeId: 'start',
-        isPublished: true
+        isPublished: true,
+        nodes
       };
 
       if (storyIdRef.current) {
@@ -238,7 +219,7 @@ const StoryCreatorMultiStep = () => {
       <div className="creator-header">
         <h1>{isEditing ? 'Edit Story' : 'Create New Story'}</h1>
         <div className="progress-bar">
-          <div className="progress-fill" style={{ width: `${progressPercentage}%` }}></div>
+          <div className="progress-fill" style={{ width: `${progressPercentage}%` }} />
         </div>
         <div className="step-indicator">
           <div className={`step ${currentStep === 1 ? 'active' : currentStep > 1 ? 'completed' : ''}`}>
@@ -261,20 +242,9 @@ const StoryCreatorMultiStep = () => {
       {error && <div className="error-banner">{error}</div>}
 
       <div className="step-content" ref={stepContentRef}>
-        {currentStep === 1 && (
-          <StoryCreatorStep1
-            formData={formData}
-            setFormData={setFormData}
-            availableGenres={availableGenres}
-          />
-        )}
+        {currentStep === 1 && <StoryCreatorStep1 formData={formData} setFormData={setFormData} availableGenres={availableGenres} />}
 
-        {currentStep === 2 && (
-          <StoryCreatorStep2
-            nodes={nodes}
-            setNodes={setNodes}
-          />
-        )}
+        {currentStep === 2 && <StoryCreatorStep2 nodes={nodes} setNodes={setNodes} />}
 
         {currentStep === 3 && (
           <StoryCreatorStep3
@@ -289,11 +259,7 @@ const StoryCreatorMultiStep = () => {
       </div>
 
       <div className="step-actions">
-        <button
-          onClick={handlePrevious}
-          disabled={currentStep === 1}
-          className="btn btn-secondary"
-        >
+        <button onClick={handlePrevious} disabled={currentStep === 1} className="btn btn-secondary">
           ← Back
         </button>
 
@@ -307,28 +273,17 @@ const StoryCreatorMultiStep = () => {
         </div>
 
         {currentStep < 3 && (
-          <button
-            onClick={handleNext}
-            className="btn btn-primary"
-          >
+          <button onClick={handleNext} className="btn btn-primary">
             Next →
           </button>
         )}
 
         {currentStep === 3 && (
           <div style={{ display: 'flex', gap: '10px' }}>
-            <button
-              onClick={handleSaveDraft}
-              className="btn btn-secondary"
-              disabled={manualSaving}
-            >
+            <button onClick={handleSaveDraft} className="btn btn-secondary" disabled={manualSaving}>
               {manualSaving ? 'Saving...' : 'Save Draft'}
             </button>
-            <button
-              onClick={handlePublish}
-              className="btn btn-success"
-              disabled={manualSaving}
-            >
+            <button onClick={handlePublish} className="btn btn-success" disabled={manualSaving}>
               {manualSaving ? 'Publishing...' : 'Publish Story'}
             </button>
           </div>

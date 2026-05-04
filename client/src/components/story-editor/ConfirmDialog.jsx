@@ -9,12 +9,8 @@ const ConfirmDialog = ({ isOpen, message, onConfirm, onCancel, confirmText = 'Co
       <div className="confirm-dialog-box" onClick={(e) => e.stopPropagation()}>
         <div className="confirm-dialog-message">{message}</div>
         <div className="confirm-dialog-actions">
-          <button className="btn btn-secondary" onClick={onCancel}>
-            {cancelText}
-          </button>
-          <button className="btn btn-danger" onClick={onConfirm}>
-            {confirmText}
-          </button>
+          <button className="btn btn-secondary" onClick={onCancel}>{cancelText}</button>
+          <button className="btn btn-danger" onClick={onConfirm}>{confirmText}</button>
         </div>
       </div>
     </div>

@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { getUserStories, deleteStory } from '../services/storyService';
-import StoryCard from '../components/StoryCard';
-import ConfirmDialog from '../components/ConfirmDialog';
+import StoryCard from '../components/story/StoryCard';
+import ConfirmDialog from '../components/story-editor/ConfirmDialog';
 import './MyStories.css';
 
 const MyStories = () => {

@@ -11,15 +11,11 @@ const StoryCoverPage = ({ story, onStart, onBack }) => {
 
   return (
     <div className="story-cover-page">
-      {/* Blurred Background */}
-      <div 
-        className="cover-background-blur" 
-        style={{
-          backgroundImage: story.coverImage ? `url(${story.coverImage})` : 'none'
-        }}
+      <div
+        className="cover-background-blur"
+        style={{ backgroundImage: story.coverImage ? `url(${story.coverImage})` : 'none' }}
       />
-      
-      {/* Breadcrumb Navigation Bar */}
+
       {onBack && (
         <div className="cover-breadcrumb-bar">
           <div className="cover-breadcrumb-content">
@@ -29,14 +25,12 @@ const StoryCoverPage = ({ story, onStart, onBack }) => {
           </div>
         </div>
       )}
-      
+
       <div className="cover-content">
         <div className="cover-left-column">
           <div className="cover-image-container">
             <img src={story.coverImage || defaultCoverImage} alt={story.title} className="cover-image" />
-            {story.coverImageCaption && (
-              <p className="cover-caption">{story.coverImageCaption}</p>
-            )}
+            {story.coverImageCaption && <p className="cover-caption">{story.coverImageCaption}</p>}
           </div>
         </div>
 
@@ -45,7 +39,7 @@ const StoryCoverPage = ({ story, onStart, onBack }) => {
             <h1 className="cover-title">{story.title}</h1>
             <p className="cover-author">by {story.authorName}</p>
             <p className="cover-date">{formatDate()}</p>
-            
+
             {story.genres && story.genres.length > 0 && (
               <div className="cover-genres">
                 {story.genres.map((genre, idx) => (
@@ -55,9 +49,7 @@ const StoryCoverPage = ({ story, onStart, onBack }) => {
             )}
           </div>
 
-          {story.description && (
-            <p className="cover-description">{story.description}</p>
-          )}
+          {story.description && <p className="cover-description">{story.description}</p>}
 
           <div className="cover-stats">
             <div className="cover-stat">

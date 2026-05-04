@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
-import { createStory, updateStory } from '../services/storyService';
-import StoryCoverPage from '../components/StoryCoverPage';
-import NodeGraph from '../components/NodeGraph';
-import StoryPreviewPlayer from '../components/StoryPreviewPlayer';
-import ConfirmDialog from '../components/ConfirmDialog';
+import { createStory, updateStory } from '../../services/storyService';
+import StoryCoverPage from '../../components/story/StoryCoverPage';
+import NodeGraph from '../../components/story-editor/NodeGraph';
+import StoryPreviewPlayer from '../../components/story/StoryPreviewPlayer';
+import ConfirmDialog from '../../components/story-editor/ConfirmDialog';
 import './StoryCreatorStep3.css';
 
 const StoryCreatorStep3 = ({ formData, setFormData, nodes, isEditing, storyId, onComplete }) => {
@@ -16,7 +16,7 @@ const StoryCreatorStep3 = ({ formData, setFormData, nodes, isEditing, storyId, o
   const handleSaveDraft = async () => {
     setSaving(true);
     setError('');
-    
+
     try {
       const storyData = {
         title: formData.title,
@@ -26,7 +26,7 @@ const StoryCreatorStep3 = ({ formData, setFormData, nodes, isEditing, storyId, o
         tags: formData.tags,
         genres: formData.genres,
         colorTheme: formData.colorTheme,
-        nodes: nodes,
+        nodes,
         startNodeId: 'start',
         isPublished: false
       };
@@ -37,7 +37,6 @@ const StoryCreatorStep3 = ({ formData, setFormData, nodes, isEditing, storyId, o
         await createStory(storyData);
       }
 
-      // Show success message
       alert('Draft saved successfully!');
     } catch (err) {
       setError(err.message || 'Failed to save draft');
@@ -54,7 +53,7 @@ const StoryCreatorStep3 = ({ formData, setFormData, nodes, isEditing, storyId, o
     setShowPublishConfirm(false);
     setSaving(true);
     setError('');
-    
+
     try {
       const storyData = {
         title: formData.title,
@@ -64,7 +63,7 @@ const StoryCreatorStep3 = ({ formData, setFormData, nodes, isEditing, storyId, o
         tags: formData.tags,
         genres: formData.genres,
         colorTheme: formData.colorTheme,
-        nodes: nodes,
+        nodes,
         startNodeId: 'start',
         isPublished: true
       };
@@ -87,22 +86,13 @@ const StoryCreatorStep3 = ({ formData, setFormData, nodes, isEditing, storyId, o
   return (
     <div className="story-preview-container">
       <div className="preview-tabs">
-        <button
-          className={`preview-tab ${activeTab === 'cover' ? 'active' : ''}`}
-          onClick={() => setActiveTab('cover')}
-        >
+        <button className={`preview-tab ${activeTab === 'cover' ? 'active' : ''}`} onClick={() => setActiveTab('cover')}>
           📖 Cover Page
         </button>
-        <button
-          className={`preview-tab ${activeTab === 'map' ? 'active' : ''}`}
-          onClick={() => setActiveTab('map')}
-        >
+        <button className={`preview-tab ${activeTab === 'map' ? 'active' : ''}`} onClick={() => setActiveTab('map')}>
           📊 Story Map
         </button>
-        <button
-          className={`preview-tab ${activeTab === 'preview' ? 'active' : ''}`}
-          onClick={() => setActiveTab('preview')}
-        >
+        <button className={`preview-tab ${activeTab === 'preview' ? 'active' : ''}`} onClick={() => setActiveTab('preview')}>
           👁️ Preview
         </button>
       </div>
@@ -112,7 +102,7 @@ const StoryCreatorStep3 = ({ formData, setFormData, nodes, isEditing, storyId, o
       <div className="preview-content">
         {activeTab === 'cover' && (
           <div className="preview-section">
-            <StoryCoverPage 
+            <StoryCoverPage
               story={{
                 title: formData.title,
                 description: formData.description,
@@ -135,7 +125,7 @@ const StoryCreatorStep3 = ({ formData, setFormData, nodes, isEditing, storyId, o
               <h2>Story Structure Map</h2>
               <p>This shows how your story branches and connects</p>
             </div>
-            <NodeGraph 
+            <NodeGraph
               nodes={nodes}
               selectedNodeIndex={selectedNodeIndex}
               onNodeSelect={setSelectedNodeIndex}
@@ -154,7 +144,7 @@ const StoryCreatorStep3 = ({ formData, setFormData, nodes, isEditing, storyId, o
                 authorName: 'You',
                 genres: formData.genres,
                 colorTheme: formData.colorTheme,
-                nodes: nodes,
+                nodes,
                 startNodeId: 'start'
               }}
             />
@@ -170,13 +160,11 @@ const StoryCreatorStep3 = ({ formData, setFormData, nodes, isEditing, storyId, o
           </div>
           <div className="stat">
             <span className="stat-label">Endings</span>
-            <span className="stat-value">{nodes.filter(n => n.isEnding).length}</span>
+            <span className="stat-value">{nodes.filter((n) => n.isEnding).length}</span>
           </div>
           <div className="stat">
             <span className="stat-label">Total Choices</span>
-            <span className="stat-value">
-              {nodes.reduce((sum, n) => sum + (n.choices ? n.choices.length : 0), 0)}
-            </span>
+            <span className="stat-value">{nodes.reduce((sum, n) => sum + (n.choices ? n.choices.length : 0), 0)}</span>
           </div>
         </div>
       </div>

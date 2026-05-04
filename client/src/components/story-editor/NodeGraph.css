@@ -37,7 +37,5 @@
 }
 
 @media (max-width: 768px) {
-  .node-graph-canvas {
-    height: 300px;
-  }
+  .node-graph-canvas { height: 300px; }
 }
