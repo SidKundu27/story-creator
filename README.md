@@ -4,9 +4,10 @@ A fullstack web application for creating and playing interactive choose-your-own
 
 ## Live Demo
 
-The frontend can be published as a static GitHub Pages site.
+The frontend is published as a static GitHub Pages site:
 
-- Demo URL: [https://SidKundu27.github.io/story-creator/](https://SidKundu27.github.io/story-creator/)
+- **Demo URL:** [https://SidKundu27.github.io/story-creator/](https://SidKundu27.github.io/story-creator/)
+- **Note:** The demo site is frontend-only (static). To test login/story creation locally, see **Local Development** below. Browsing other stories is also not possible.
 - GitHub Actions workflow: `.github/workflows/deploy-pages.yml`
 
 
