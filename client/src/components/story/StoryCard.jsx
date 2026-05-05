@@ -127,11 +127,11 @@ const StoryCard = ({ story, showEdit = false, onDelete, showBadge = true }) => {
             {showEdit && (
               <Stack direction="row" spacing={1.5} className="story-actions-secondary">
                 {isDraft ? (
-                  <Button onClick={() => window.location.href = `/play/${story._id}?preview=true`} variant="text" color="inherit" size="small" className="action-link">
+                  <Button onClick={() => { window.location.hash = `/play/${story._id}?preview=true`; }} variant="text" color="inherit" size="small" className="action-link">
                     Preview
                   </Button>
                 ) : (
-                  <Button onClick={() => window.location.href = `/edit/${story._id}`} variant="text" color="inherit" size="small" className="action-link">
+                  <Button onClick={() => { window.location.hash = `/edit/${story._id}`; }} variant="text" color="inherit" size="small" className="action-link">
                     Edit
                   </Button>
                 )}
