@@ -21,6 +21,7 @@ jobs:
     env:
       GITHUB_PAGES: "true"
       GITHUB_REPOSITORY: ${{ github.repository }}
+      VITE_API_BASE_URL: ${{ vars.VITE_API_BASE_URL }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -49,7 +50,7 @@ jobs:
         uses: actions/configure-pages@v5
         with:
           enablement: true
-          github-token: ${{ secrets.GITHUB_TOKEN }}
+          token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
