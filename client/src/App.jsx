@@ -1,15 +1,16 @@
 import React from 'react';
-import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import { HashRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { AuthProvider } from './context/AuthContext';
 
 // Components
-import Navbar from './components/Navbar';
+import Navbar from './components/layout/Navbar';
 import Home from './pages/Home';
 import Login from './pages/Login';
 import Register from './pages/Register';
+import Profile from './pages/Profile';
 import StoryFeed from './pages/StoryFeed';
-import StoryPlayer from './pages/StoryPlayer';
-import StoryCreatorMultiStep from './pages/StoryCreatorMultiStep';
+import StoryPlayer from './pages/story/StoryPlayer';
+import StoryCreatorMultiStep from './pages/story-creator/StoryCreatorMultiStep';
 import MyStories from './pages/MyStories';
 import ProtectedRoute from './components/ProtectedRoute';
 
@@ -49,6 +50,7 @@ function App() {
                 </ProtectedRoute>
               } 
             />
+            <Route path="/profile" element={<Profile />} />
             <Route path="*" element={<Navigate to="/" />} />
           </Routes>
         </div>

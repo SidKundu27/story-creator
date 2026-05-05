@@ -24,14 +24,8 @@
   white-space: nowrap;
 }
 
-.preview-tab:hover {
-  color: #1f2937;
-}
-
-.preview-tab.active {
-  color: #667eea;
-  border-bottom-color: #667eea;
-}
+.preview-tab:hover { color: #1f2937; }
+.preview-tab.active { color: #667eea; border-bottom-color: #667eea; }
 
 .error-banner {
   background: #fee2e2;
@@ -128,21 +122,8 @@
 }
 
 @media (max-width: 768px) {
-  .preview-footer {
-    flex-direction: column;
-    align-items: stretch;
-  }
-
-  .story-stats {
-    justify-content: space-around;
-    width: 100%;
-  }
-
-  .action-buttons {
-    width: 100%;
-  }
-
-  .action-buttons .btn {
-    flex: 1;
-  }
+  .preview-footer { flex-direction: column; align-items: stretch; }
+  .story-stats { justify-content: space-around; width: 100%; }
+  .action-buttons { width: 100%; }
+  .action-buttons .btn { flex: 1; }
 }

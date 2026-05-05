@@ -54,10 +54,7 @@
   border-color: #667eea;
 }
 
-.format-icon {
-  display: block;
-  font-size: 14px;
-}
+.format-icon { display: block; font-size: 14px; }
 
 .toolbar-legend {
   display: flex;
@@ -71,37 +68,13 @@
   font-size: 11px;
 }
 
-.toolbar-legend strong {
-  font-weight: 700;
-  margin: 0 2px;
-}
-
-.toolbar-legend em {
-  font-style: italic;
-  margin: 0 2px;
-}
-
-.toolbar-legend u {
-  text-decoration: underline;
-  margin: 0 2px;
-}
-
-.toolbar-legend del {
-  text-decoration: line-through;
-  margin: 0 2px;
-  opacity: 0.8;
-}
+.toolbar-legend strong { font-weight: 700; margin: 0 2px; }
+.toolbar-legend em { font-style: italic; margin: 0 2px; }
+.toolbar-legend u { text-decoration: underline; margin: 0 2px; }
+.toolbar-legend del { text-decoration: line-through; margin: 0 2px; opacity: 0.8; }
 
 @media (max-width: 640px) {
-  .markdown-toolbar {
-    padding: 8px 10px;
-  }
-
-  .toolbar-legend {
-    display: none;
-  }
-
-  .toolbar-label {
-    min-width: 100%;
-  }
+  .markdown-toolbar { padding: 8px 10px; }
+  .toolbar-legend { display: none; }
+  .toolbar-label { min-width: 100%; }
 }

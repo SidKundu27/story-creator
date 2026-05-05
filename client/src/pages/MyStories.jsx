@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link as RouterLink } from 'react-router-dom';
+import Button from '@mui/material/Button';
 import { getUserStories, deleteStory } from '../services/storyService';
-import StoryCard from '../components/StoryCard';
-import ConfirmDialog from '../components/ConfirmDialog';
+import StoryCard from '../components/story/StoryCard';
+import ConfirmDialog from '../components/story-editor/ConfirmDialog';
 import './MyStories.css';
 
 const MyStories = () => {
@@ -53,17 +54,13 @@ const MyStories = () => {
     <div className="container">
       <div className="my-stories-header">
         <h1>My Stories</h1>
-        <Link to="/create" className="btn btn-primary">
-          Create New Story
-        </Link>
+        <Button component={RouterLink} to="/create" variant="contained">Create New Story</Button>
       </div>
 
       {stories.length === 0 ? (
         <div className="no-stories">
           <p>You haven't created any stories yet.</p>
-          <Link to="/create" className="btn btn-primary">
-            Create Your First Story
-          </Link>
+          <Button component={RouterLink} to="/create" variant="contained">Create Your First Story</Button>
         </div>
       ) : (
         <div className="story-grid">

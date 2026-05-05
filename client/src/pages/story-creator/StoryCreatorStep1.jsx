@@ -15,7 +15,7 @@ const StoryCreatorStep1 = ({ formData, setFormData, availableGenres }) => {
 
   const toggleGenre = (genre) => {
     const genres = formData.genres.includes(genre)
-      ? formData.genres.filter(g => g !== genre)
+      ? formData.genres.filter((g) => g !== genre)
       : [...formData.genres, genre];
     setFormData({ ...formData, genres });
   };
@@ -33,7 +33,7 @@ const StoryCreatorStep1 = ({ formData, setFormData, availableGenres }) => {
   const removeTag = (tagToRemove) => {
     setFormData({
       ...formData,
-      tags: formData.tags.filter(tag => tag !== tagToRemove)
+      tags: formData.tags.filter((tag) => tag !== tagToRemove)
     });
   };
 
@@ -41,7 +41,7 @@ const StoryCreatorStep1 = ({ formData, setFormData, availableGenres }) => {
     <div className="story-info-form">
       <div className="form-section">
         <h2>Story Information</h2>
-        
+
         <div className="form-group">
           <label>Title *</label>
           <input
@@ -68,10 +68,7 @@ const StoryCreatorStep1 = ({ formData, setFormData, availableGenres }) => {
 
         <div className="form-group">
           <label>Main Category</label>
-          <select
-            value={formData.mainCategory}
-            onChange={(e) => setFormData({ ...formData, mainCategory: e.target.value })}
-          >
+          <select value={formData.mainCategory} onChange={(e) => setFormData({ ...formData, mainCategory: e.target.value })}>
             <option value="">Select a main category...</option>
             {availableGenres.map((genre) => (
               <option key={genre} value={genre}>{genre}</option>
@@ -83,15 +80,10 @@ const StoryCreatorStep1 = ({ formData, setFormData, availableGenres }) => {
 
       <div className="form-section">
         <h2>Cover Image</h2>
-        
+
         <div className="cover-upload-area">
           <div className="upload-input-group">
-            <input
-              type="file"
-              accept="image/*"
-              onChange={handleCoverImageUpload}
-              id="cover-upload"
-            />
+            <input type="file" accept="image/*" onChange={handleCoverImageUpload} id="cover-upload" />
             <label htmlFor="cover-upload" className="upload-button">
               <span>📸 Upload Cover Image</span>
               <small>Or drag and drop</small>
@@ -101,11 +93,7 @@ const StoryCreatorStep1 = ({ formData, setFormData, availableGenres }) => {
           {formData.coverImage && (
             <div className="cover-preview">
               <img src={formData.coverImage} alt="Cover preview" />
-              <button
-                type="button"
-                onClick={() => setFormData({ ...formData, coverImage: '' })}
-                className="btn btn-danger btn-small"
-              >
+              <button type="button" onClick={() => setFormData({ ...formData, coverImage: '' })} className="btn btn-danger btn-small">
                 Remove
               </button>
               <div className="form-group">
@@ -125,9 +113,9 @@ const StoryCreatorStep1 = ({ formData, setFormData, availableGenres }) => {
       <div className="form-section">
         <h2>Genres</h2>
         <p className="section-description">Select one or more genres that fit your story</p>
-        
+
         <div className="genre-grid">
-          {availableGenres.map(genre => (
+          {availableGenres.map((genre) => (
             <button
               key={genre}
               type="button"
@@ -143,14 +131,9 @@ const StoryCreatorStep1 = ({ formData, setFormData, availableGenres }) => {
       <div className="form-section">
         <h2>Tags</h2>
         <p className="section-description">Add custom tags to help readers find your story</p>
-        
+
         <div className="tag-input-group">
-          <input
-            type="text"
-            onKeyPress={handleTagInput}
-            placeholder="Type a tag and press Enter..."
-            maxLength={20}
-          />
+          <input type="text" onKeyPress={handleTagInput} placeholder="Type a tag and press Enter..." maxLength={20} />
           <small>Press Enter to add a tag</small>
         </div>
 
@@ -159,13 +142,7 @@ const StoryCreatorStep1 = ({ formData, setFormData, availableGenres }) => {
             {formData.tags.map((tag, idx) => (
               <span key={idx} className="tag-chip">
                 <span>{tag}</span>
-                <button
-                  type="button"
-                  onClick={() => removeTag(tag)}
-                  className="tag-remove"
-                >
-                  ✕
-                </button>
+                <button type="button" onClick={() => removeTag(tag)} className="tag-remove">✕</button>
               </span>
             ))}
           </div>

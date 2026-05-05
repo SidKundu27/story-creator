@@ -3,15 +3,13 @@ import './LineNumberedTextarea.css';
 
 const LineNumberedTextarea = ({ value, onChange, onPaste, placeholder, textareaRef }) => {
   const lineNumbersRef = useRef(null);
-  
+
   const updateLineNumbers = () => {
     if (!lineNumbersRef.current || !textareaRef.current) return;
-    
+
     const lines = value.split('\n').length;
     const lineNumbers = Array.from({ length: lines }, (_, i) => i + 1).join('\n');
     lineNumbersRef.current.textContent = lineNumbers;
-    
-    // Sync scroll
     lineNumbersRef.current.scrollTop = textareaRef.current.scrollTop;
   };
 

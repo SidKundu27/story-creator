@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
-import { parseMarkdown, stripFormattingDirectives } from '../utils/markdownParser';
+import { parseMarkdown } from '../../utils/markdownParser';
 import './StoryPreviewPlayer.css';
 
 const StoryPreviewPlayer = ({ story }) => {
   const [currentNodeId, setCurrentNodeId] = useState(story.startNodeId || 'start');
   const [history, setHistory] = useState([story.startNodeId || 'start']);
 
-  const currentNode = story.nodes.find(n => n.nodeId === currentNodeId);
+  const currentNode = story.nodes.find((n) => n.nodeId === currentNodeId);
 
   const makeChoice = (nextNodeId) => {
     setCurrentNodeId(nextNodeId);
@@ -39,13 +39,10 @@ const StoryPreviewPlayer = ({ story }) => {
       <main className="preview-main">
         <div className="preview-scene">
           <h3 className="scene-title">{currentNode.name}</h3>
-          
+
           <article className="scene-content">
             {currentNode.content.split('\n\n').map((paragraph, idx) => (
-              <p
-                key={idx}
-                dangerouslySetInnerHTML={{ __html: parseMarkdown(paragraph) }}
-              />
+              <p key={idx} dangerouslySetInnerHTML={{ __html: parseMarkdown(paragraph) }} />
             ))}
           </article>
 
@@ -62,10 +59,7 @@ const StoryPreviewPlayer = ({ story }) => {
               <ul className="choices-buttons">
                 {currentNode.choices && currentNode.choices.map((choice, idx) => (
                   <li key={idx}>
-                    <button
-                      onClick={() => makeChoice(choice.nextNodeId)}
-                      className="choice-button"
-                    >
+                    <button onClick={() => makeChoice(choice.nextNodeId)} className="choice-button">
                       → {choice.text}
                     </button>
                   </li>
@@ -80,10 +74,10 @@ const StoryPreviewPlayer = ({ story }) => {
             <h4>Progress</h4>
             <p className="progress-text">{history.length} / {story.nodes.length} scenes</p>
             <div className="progress-bar">
-              <div 
-                className="progress-fill" 
+              <div
+                className="progress-fill"
                 style={{ width: `${(history.length / story.nodes.length) * 100}%` }}
-              ></div>
+              />
             </div>
           </div>
 

@@ -9,25 +9,17 @@ const NodeGraph = ({ nodes, selectedNodeIndex, onNodeSelect, startNodeId }) => {
 
     const canvas = canvasRef.current;
     const ctx = canvas.getContext('2d');
-    
-    // Set canvas size
+
     canvas.width = canvas.offsetWidth;
     canvas.height = canvas.offsetHeight;
 
-    // Clear canvas
     ctx.fillStyle = '#ffffff';
     ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-    // Calculate node positions (hierarchical layout)
     const nodePositions = calculateNodePositions(nodes, canvas.width, canvas.height);
-
-    // Draw connections
     drawConnections(ctx, nodes, nodePositions);
-
-    // Draw nodes
     drawNodes(ctx, nodes, nodePositions, selectedNodeIndex, startNodeId);
 
-    // Make nodes clickable
     canvas.onclick = (e) => {
       const rect = canvas.getBoundingClientRect();
       const x = e.clientX - rect.left;
@@ -35,9 +27,7 @@ const NodeGraph = ({ nodes, selectedNodeIndex, onNodeSelect, startNodeId }) => {
 
       nodePositions.forEach((pos, idx) => {
         const distance = Math.sqrt((x - pos.x) ** 2 + (y - pos.y) ** 2);
-        if (distance <= 25) {
-          onNodeSelect(idx);
-        }
+        if (distance <= 25) onNodeSelect(idx);
       });
     };
 
@@ -50,21 +40,19 @@ const NodeGraph = ({ nodes, selectedNodeIndex, onNodeSelect, startNodeId }) => {
     }
 
     const positions = new Array(nodes.length);
-    
-    // Use BFS to calculate depth (column position) from start node
     const depths = new Array(nodes.length).fill(-1);
     const visited = new Set(['start']);
-    const queue = [0]; // Start with node 0 (start node)
+    const queue = [0];
     depths[0] = 0;
-    
+
     while (queue.length > 0) {
       const currentIdx = queue.shift();
       const currentDepth = depths[currentIdx];
-      
       const node = nodes[currentIdx];
+
       if (node.choices && node.choices.length > 0) {
         node.choices.forEach((choice) => {
-          const targetIdx = nodes.findIndex(n => n.nodeId === choice.nextNodeId);
+          const targetIdx = nodes.findIndex((n) => n.nodeId === choice.nextNodeId);
           if (targetIdx !== -1 && !visited.has(choice.nextNodeId)) {
             visited.add(choice.nextNodeId);
             depths[targetIdx] = currentDepth + 1;
@@ -74,62 +62,49 @@ const NodeGraph = ({ nodes, selectedNodeIndex, onNodeSelect, startNodeId }) => {
       }
     }
 
-    // Separate connected and disconnected nodes
     const connectedNodes = [];
     const disconnectedNodes = [];
     for (let i = 0; i < nodes.length; i++) {
-      if (depths[i] >= 0) {
-        connectedNodes.push({ idx: i, depth: depths[i] });
-      } else {
-        disconnectedNodes.push(i);
-      }
+      if (depths[i] >= 0) connectedNodes.push({ idx: i, depth: depths[i] });
+      else disconnectedNodes.push(i);
     }
 
     const padding = 60;
     let maxConnectedY = padding;
-    let columnWidth = (width - padding * 2);
-    
+    let columnWidth = width - padding * 2;
+
     if (connectedNodes.length > 0) {
-      // Get max depth for column positioning
-      const maxDepth = Math.max(...connectedNodes.map(n => n.depth));
-      
-      // Count nodes at each depth level
+      const maxDepth = Math.max(...connectedNodes.map((n) => n.depth));
       const nodesPerDepth = {};
       connectedNodes.forEach(({ depth }) => {
         nodesPerDepth[depth] = (nodesPerDepth[depth] || 0) + 1;
       });
-      
-      // Position connected nodes in columns
+
       const nodeCountAtDepth = {};
       columnWidth = (width - padding * 2) / (maxDepth + 1);
       const availableHeight = disconnectedNodes.length > 0 ? height - 120 : height - padding * 2;
-      
+
       connectedNodes.forEach(({ idx, depth }) => {
         const countAtDepth = nodesPerDepth[depth];
-        const indexAtDepth = (nodeCountAtDepth[depth] || 0);
+        const indexAtDepth = nodeCountAtDepth[depth] || 0;
         nodeCountAtDepth[depth] = indexAtDepth + 1;
-        
+
         const x = padding + columnWidth * (depth + 0.5);
         const rowHeight = availableHeight / Math.max(countAtDepth, 1);
         const y = padding + rowHeight * (indexAtDepth + 0.5);
-        
+
         positions[idx] = { x, y };
-        if (y > maxConnectedY) {
-          maxConnectedY = y;
-        }
+        if (y > maxConnectedY) maxConnectedY = y;
       });
     }
-    
-    // Position disconnected nodes horizontally at bottom
+
     if (disconnectedNodes.length > 0) {
       const startColumnX = padding + columnWidth * 0.5;
       const spacing = Math.min(columnWidth, 120);
       const disconnectedY = Math.min(height - padding, maxConnectedY + 80);
+
       disconnectedNodes.forEach((idx, i) => {
-        positions[idx] = {
-          x: startColumnX + spacing * i,
-          y: disconnectedY
-        };
+        positions[idx] = { x: startColumnX + spacing * i, y: disconnectedY };
       });
     }
 
@@ -143,14 +118,13 @@ const NodeGraph = ({ nodes, selectedNodeIndex, onNodeSelect, startNodeId }) => {
     nodes.forEach((node, idx) => {
       if (node.choices && node.choices.length > 0) {
         node.choices.forEach((choice) => {
-          const targetIdx = nodes.findIndex(n => n.nodeId === choice.nextNodeId);
+          const targetIdx = nodes.findIndex((n) => n.nodeId === choice.nextNodeId);
           if (targetIdx !== -1 && positions[targetIdx]) {
             ctx.beginPath();
             ctx.moveTo(positions[idx].x, positions[idx].y);
             ctx.lineTo(positions[targetIdx].x, positions[targetIdx].y);
             ctx.stroke();
 
-            // Draw arrow
             const angle = Math.atan2(
               positions[targetIdx].y - positions[idx].y,
               positions[targetIdx].x - positions[idx].x
@@ -158,10 +132,7 @@ const NodeGraph = ({ nodes, selectedNodeIndex, onNodeSelect, startNodeId }) => {
             const arrowSize = 10;
             ctx.fillStyle = '#cbd5e0';
             ctx.beginPath();
-            ctx.moveTo(
-              positions[targetIdx].x,
-              positions[targetIdx].y
-            );
+            ctx.moveTo(positions[targetIdx].x, positions[targetIdx].y);
             ctx.lineTo(
               positions[targetIdx].x - arrowSize * Math.cos(angle - Math.PI / 6),
               positions[targetIdx].y - arrowSize * Math.sin(angle - Math.PI / 6)
@@ -184,7 +155,6 @@ const NodeGraph = ({ nodes, selectedNodeIndex, onNodeSelect, startNodeId }) => {
       const isStart = node.nodeId === startNodeId;
       const isEnding = node.isEnding;
 
-      // Draw node background
       if (isSelected) {
         ctx.fillStyle = '#667eea';
         ctx.shadowColor = 'rgba(102, 126, 234, 0.4)';
@@ -203,19 +173,16 @@ const NodeGraph = ({ nodes, selectedNodeIndex, onNodeSelect, startNodeId }) => {
       ctx.arc(pos.x, pos.y, 25, 0, 2 * Math.PI);
       ctx.fill();
 
-      // Draw border
       ctx.strokeStyle = isSelected ? '#667eea' : '#e5e7eb';
       ctx.lineWidth = isSelected ? 3 : 2;
       ctx.stroke();
 
       ctx.shadowColor = 'transparent';
-
-      // Draw label - show scene name
       ctx.fillStyle = '#1f2937';
       ctx.font = 'bold 10px sans-serif';
       ctx.textAlign = 'center';
       ctx.textBaseline = 'middle';
-      
+
       let label;
       if (isStart) {
         label = 'Start';
@@ -223,7 +190,7 @@ const NodeGraph = ({ nodes, selectedNodeIndex, onNodeSelect, startNodeId }) => {
         const sceneName = node.name || 'Scene';
         label = sceneName.length > 14 ? `${sceneName.substring(0, 14)}…` : sceneName;
       }
-      
+
       ctx.fillText(label, pos.x, pos.y);
 
       if (isSelected && !isStart) {

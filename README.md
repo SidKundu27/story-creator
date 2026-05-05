@@ -2,6 +2,14 @@
 
 A fullstack web application for creating and playing interactive choose-your-own-adventure stories.
 
+## Live Demo
+
+The frontend can be published as a static GitHub Pages site.
+
+- Demo URL: [https://SidKundu27.github.io/story-creator/](https://SidKundu27.github.io/story-creator/)
+- GitHub Actions workflow: `.github/workflows/deploy-pages.yml`
+
+
 ## Features
 
 - **Story Creation**: Build branching narratives with multiple paths and endings
@@ -43,6 +51,19 @@ A fullstack web application for creating and playing interactive choose-your-own
    - Vite frontend on http://localhost:5173
 
    **Note**: If your database is empty, the server will automatically seed it with starter stories on first run.
+
+## GitHub Pages Deployment
+
+This repo includes a GitHub Pages workflow that builds the client from `client/` and publishes the static site automatically on pushes to `main`.
+
+To enable it in GitHub:
+
+1. Open the repository settings.
+2. Go to `Pages`.
+3. Set the source to `GitHub Actions`.
+4. Push to `main` or run the workflow manually from the Actions tab.
+
+The production build uses hash-based routing so Pages can serve the app without custom rewrite rules.
 
 ## Seeding the Database
 

@@ -1,5 +1,5 @@
 import React from 'react';
-import { parseMarkdown, stripFormattingDirectives } from '../utils/markdownParser';
+import { parseMarkdown, stripFormattingDirectives } from '../../utils/markdownParser';
 import './MarkdownPreview.css';
 
 const MarkdownPreview = ({ content, isVisible }) => {
@@ -15,11 +15,7 @@ const MarkdownPreview = ({ content, isVisible }) => {
       <div className="preview-content">
         {displayContent ? (
           displayContent.split('\n\n').map((paragraph, idx) => (
-            <p
-              key={idx}
-              className="preview-paragraph"
-              dangerouslySetInnerHTML={{ __html: parseMarkdown(paragraph) }}
-            />
+            <p key={idx} className="preview-paragraph" dangerouslySetInnerHTML={{ __html: parseMarkdown(paragraph) }} />
           ))
         ) : (
           <p className="preview-empty">Your formatted text will appear here...</p>

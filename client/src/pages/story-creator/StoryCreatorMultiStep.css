@@ -101,13 +101,8 @@
   z-index: 1;
 }
 
-.step.active .step-label {
-  color: #667eea;
-}
-
-.step.completed .step-label {
-  color: #10b981;
-}
+.step.active .step-label { color: #667eea; }
+.step.completed .step-label { color: #10b981; }
 
 .step-divider {
   width: 60px;
@@ -118,9 +113,7 @@
   z-index: 0;
 }
 
-.step.completed ~ .step-divider {
-  background: #10b981;
-}
+.step.completed ~ .step-divider { background: #10b981; }
 
 .error-banner {
   background: #fee2e2;
@@ -169,12 +162,8 @@
 }
 
 @keyframes pulse {
-  0%, 100% {
-    opacity: 1;
-  }
-  50% {
-    opacity: 0.7;
-  }
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.7; }
 }
 
 .step-actions button:disabled {
@@ -183,34 +172,11 @@
 }
 
 @media (max-width: 768px) {
-  .creator-header {
-    padding: 20px;
-  }
-
-  .creator-header h1 {
-    font-size: 24px;
-  }
-
-  .step-indicator {
-    flex-wrap: wrap;
-    gap: 10px;
-  }
-
-  .step-divider {
-    display: none;
-  }
-
-  .step-content {
-    padding: 20px;
-  }
-
-  .step-actions {
-    flex-wrap: wrap;
-    padding: 15px 20px;
-  }
-
-  .step-actions > button {
-    flex: 1;
-    min-width: 120px;
-  }
+  .creator-header { padding: 20px; }
+  .creator-header h1 { font-size: 24px; }
+  .step-indicator { flex-wrap: wrap; gap: 10px; }
+  .step-divider { display: none; }
+  .step-content { padding: 20px; }
+  .step-actions { flex-wrap: wrap; padding: 15px 20px; }
+  .step-actions > button { flex: 1; min-width: 120px; }
 }

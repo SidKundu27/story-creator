@@ -1,8 +1,14 @@
 import React, { useState, useEffect, useContext } from 'react';
-import { Link } from 'react-router-dom';
+import { Link as RouterLink } from 'react-router-dom';
+import Button from '@mui/material/Button';
+import TextField from '@mui/material/TextField';
+import FormControl from '@mui/material/FormControl';
+import InputLabel from '@mui/material/InputLabel';
+import Select from '@mui/material/Select';
+import MenuItem from '@mui/material/MenuItem';
 import { getAllStories } from '../services/storyService';
 import { AuthContext } from '../context/AuthContext';
-import StoryCard from '../components/StoryCard';
+import StoryCard from '../components/story/StoryCard';
 import './StoryFeed.css';
 
 const StoryFeed = () => {
@@ -81,30 +87,25 @@ const StoryFeed = () => {
             <p>Discover and play community-created adventures</p>
           </div>
           {user && (
-            <Link to="/my-stories" className="btn btn-success">
-              Create New Story
-            </Link>
+            <Button component={RouterLink} to="/my-stories" variant="contained" color="success">Create New Story</Button>
           )}
         </div>
       </div>
 
       <div className="feed-controls">
         <div className="search-box">
-          <input
-            type="text"
-            placeholder="Search stories, tags..."
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-          />
+          <TextField size="small" placeholder="Search stories, tags..." value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)} />
         </div>
 
         <div className="sort-controls">
-          <label>Sort by:</label>
-          <select value={sortBy} onChange={(e) => setSortBy(e.target.value)}>
-            <option value="recent">Most Recent</option>
-            <option value="popular">Most Played</option>
-            <option value="liked">Most Liked</option>
-          </select>
+          <FormControl size="small" sx={{ minWidth: 160 }}>
+            <InputLabel id="sort-by-label">Sort by</InputLabel>
+            <Select labelId="sort-by-label" value={sortBy} label="Sort by" onChange={(e) => setSortBy(e.target.value)}>
+              <MenuItem value="recent">Most Recent</MenuItem>
+              <MenuItem value="popular">Most Played</MenuItem>
+              <MenuItem value="liked">Most Liked</MenuItem>
+            </Select>
+          </FormControl>
         </div>
       </div>
 
@@ -119,20 +120,14 @@ const StoryFeed = () => {
             <>
               <p style={{ fontSize: '16px', marginBottom: '30px' }}>No published stories yet. Be the first to create one!</p>
               {user ? (
-                <Link to="/my-stories" className="btn btn-primary">
-                  Create Your First Story
-                </Link>
+                <Button component={RouterLink} to="/my-stories" variant="contained">Create Your First Story</Button>
               ) : (
-                <Link to="/register" className="btn btn-primary">
-                  Sign Up to Create Stories
-                </Link>
+                <Button component={RouterLink} to="/register" variant="contained">Sign Up to Create Stories</Button>
               )}
             </>
           )}
           {searchTerm && (
-            <button onClick={() => setSearchTerm('')} className="btn btn-secondary">
-              Clear Search
-            </button>
+            <Button onClick={() => setSearchTerm('')} variant="outlined">Clear Search</Button>
           )}
         </div>
       ) : (
