@@ -69,8 +69,18 @@ export const AuthProvider = ({ children }) => {
     delete axios.defaults.headers.common['x-auth-token'];
   };
 
+  const updateProfile = async (profileData) => {
+    try {
+      const res = await axios.patch('/api/users/profile', profileData);
+      setUser(res.data);
+      return { success: true, user: res.data };
+    } catch (err) {
+      return { success: false, message: err.response?.data?.message || 'Update failed' };
+    }
+  };
+
   return (
-    <AuthContext.Provider value={{ user, token, loading, register, login, logout }}>
+    <AuthContext.Provider value={{ user, token, loading, register, login, logout, updateProfile }}>
       {children}
     </AuthContext.Provider>
   );

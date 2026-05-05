@@ -1,19 +1,23 @@
 import React from 'react';
-import './ConfirmDialog.css';
+import Dialog from '@mui/material/Dialog';
+import DialogTitle from '@mui/material/DialogTitle';
+import DialogContent from '@mui/material/DialogContent';
+import DialogActions from '@mui/material/DialogActions';
+import Button from '@mui/material/Button';
+import Typography from '@mui/material/Typography';
 
 const ConfirmDialog = ({ isOpen, message, onConfirm, onCancel, confirmText = 'Confirm', cancelText = 'Cancel' }) => {
-  if (!isOpen) return null;
-
   return (
-    <div className="confirm-dialog-overlay" onClick={onCancel}>
-      <div className="confirm-dialog-box" onClick={(e) => e.stopPropagation()}>
-        <div className="confirm-dialog-message">{message}</div>
-        <div className="confirm-dialog-actions">
-          <button className="btn btn-secondary" onClick={onCancel}>{cancelText}</button>
-          <button className="btn btn-danger" onClick={onConfirm}>{confirmText}</button>
-        </div>
-      </div>
-    </div>
+    <Dialog open={!!isOpen} onClose={onCancel} aria-labelledby="confirm-dialog-title">
+      <DialogTitle id="confirm-dialog-title">Confirm</DialogTitle>
+      <DialogContent>
+        <Typography>{message}</Typography>
+      </DialogContent>
+      <DialogActions>
+        <Button onClick={onCancel} color="inherit">{cancelText}</Button>
+        <Button onClick={onConfirm} color="error" variant="contained">{confirmText}</Button>
+      </DialogActions>
+    </Dialog>
   );
 };
 

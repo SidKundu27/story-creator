@@ -1,4 +1,8 @@
 import React, { useState } from 'react';
+import Box from '@mui/material/Box';
+import IconButton from '@mui/material/IconButton';
+import Tooltip from '@mui/material/Tooltip';
+import Typography from '@mui/material/Typography';
 import './MarkdownToolbar.css';
 
 const MarkdownToolbar = ({ onInsert, textareaRef }) => {
@@ -43,29 +47,24 @@ const MarkdownToolbar = ({ onInsert, textareaRef }) => {
   ];
 
   return (
-    <div className="markdown-toolbar">
-      <div className="toolbar-group">
-        <span className="toolbar-label">Formatting:</span>
+    <Box className="markdown-toolbar" sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
+      <Box className="toolbar-group" sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+        <Typography variant="body2" sx={{ mr: 1 }}>Formatting:</Typography>
         {formatOptions.map((option, idx) => (
-          <button
-            key={idx}
-            type="button"
-            className="format-btn"
-            onClick={() => handleFormatClick(option.action)}
-            title={`${option.title} (${option.shortcut})`}
-            aria-label={option.label}
-          >
-            <span className="format-icon">{option.icon}</span>
-          </button>
+          <Tooltip key={idx} title={`${option.title} (${option.shortcut})`}>
+            <IconButton size="small" onClick={() => handleFormatClick(option.action)} aria-label={option.label}>
+              <span className="format-icon">{option.icon}</span>
+            </IconButton>
+          </Tooltip>
         ))}
-      </div>
+      </Box>
 
-      <div className="toolbar-legend">
-        <small>
+      <Box className="toolbar-legend">
+        <Typography variant="caption">
           <strong>**bold**</strong> • <em>*italic*</em> • <u>__underline__</u> • <del>~~strike~~</del> • [#highlight] • [text](url) • {'{center}'}
-        </small>
-      </div>
-    </div>
+        </Typography>
+      </Box>
+    </Box>
   );
 };
 

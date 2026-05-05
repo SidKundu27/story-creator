@@ -1,5 +1,13 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import Box from '@mui/material/Box';
+import Button from '@mui/material/Button';
+import Card from '@mui/material/Card';
+import CardContent from '@mui/material/CardContent';
+import Chip from '@mui/material/Chip';
+import Divider from '@mui/material/Divider';
+import Stack from '@mui/material/Stack';
+import Typography from '@mui/material/Typography';
 import './StoryCard.css';
 
 const StoryCard = ({ story, showEdit = false, onDelete, showBadge = true }) => {
@@ -31,6 +39,11 @@ const StoryCard = ({ story, showEdit = false, onDelete, showBadge = true }) => {
     .map((word) => word[0].toUpperCase())
     .join('');
 
+  const stats = [
+    typeof story.likes === 'number' ? { label: 'likes', value: story.likes } : null,
+    typeof story.plays === 'number' ? { label: 'plays', value: story.plays } : null
+  ].filter(Boolean);
+
   const getLastUpdated = () => {
     if (!story.updatedAt) return null;
     const date = new Date(story.updatedAt);
@@ -57,71 +70,82 @@ const StoryCard = ({ story, showEdit = false, onDelete, showBadge = true }) => {
   };
 
   return (
-    <div className={`story-card ${isDraft ? 'is-draft' : 'is-published'}`}>
-      <div className="story-card-top">
-        <div className="story-card-cover" style={{ borderLeftColor: getSpineColor() }}>
+    <Card className={`story-card ${isDraft ? 'is-draft' : 'is-published'}`} elevation={0}>
+      <Box className="story-card-top">
+        <Box className="story-card-cover" sx={{ borderLeftColor: getSpineColor() }}>
           {story.coverImage ? (
             <img src={story.coverImage} alt={story.title} />
           ) : (
             <div className="story-cover-placeholder">{getInitials(story.title)}</div>
           )}
-        </div>
+        </Box>
 
-        <div className="story-card-content">
-          <div className="story-title-row">
-            <h3 className="story-title">{story.title}</h3>
-            <div className="story-badges">
-              {showBadge && <span className={isDraft ? 'draft-badge' : 'published-badge'}>{isDraft ? 'Draft' : 'Published'}</span>}
-              {(!showEdit || story.plays > 0 || story.likes > 0) && !isDraft && (
-                <div className="stats-chip">
-                  {typeof story.likes === 'number' && <span>♥ {story.likes}</span>}
-                  {typeof story.plays === 'number' && <span>▶ {story.plays}</span>}
-                </div>
+        <CardContent className="story-card-content">
+          <Box className="story-title-row">
+            <Typography component="h3" className="story-title">
+              {story.title}
+            </Typography>
+            <Box className="story-badges">
+              {showBadge && (
+                <Chip
+                  label={isDraft ? 'Draft' : 'Published'}
+                  size="small"
+                  color={isDraft ? 'warning' : 'primary'}
+                  variant={isDraft ? 'filled' : 'outlined'}
+                  className={isDraft ? 'draft-badge' : 'published-badge'}
+                />
               )}
-            </div>
-          </div>
+              {(!showEdit || story.plays > 0 || story.likes > 0) && !isDraft && stats.length > 0 && (
+                <Stack direction="row" spacing={0.75} className="stats-chip">
+                  {stats.map((stat) => (
+                    <Chip key={stat.label} label={`${stat.value} ${stat.label}`} size="small" variant="outlined" />
+                  ))}
+                </Stack>
+              )}
+            </Box>
+          </Box>
 
-          <div className="story-byline">
+          <Typography variant="body2" className="story-byline">
             {story.authorName && <span>By {story.authorName}</span>}
             {story.authorName && getLastUpdated() && <span className="byline-separator">•</span>}
             {getLastUpdated() && <span>{getLastUpdated()}</span>}
-          </div>
+          </Typography>
 
           {story.genres && story.genres.length > 0 && (
-            <div className="story-genres">
+            <Box className="story-genres">
               {story.genres.slice(0, 3).map((genre, index) => (
-                <span key={index} className="genre-tag">{genre}</span>
+                <Chip key={index} label={genre} size="small" className="genre-tag" />
               ))}
-            </div>
+            </Box>
           )}
 
-          <div className="story-actions">
-            <Link to={primaryTo} className="btn btn-primary">
+          <Box className="story-actions">
+            <Button component={Link} to={primaryTo} variant="contained" className="story-primary-action">
               {primaryLabel}
-            </Link>
+            </Button>
 
             {showEdit && (
-              <div className="story-actions-secondary">
+              <Stack direction="row" spacing={1.5} className="story-actions-secondary">
                 {isDraft ? (
-                  <button onClick={() => window.location.href = `/play/${story._id}?preview=true`} className="action-link">
+                  <Button onClick={() => window.location.href = `/play/${story._id}?preview=true`} variant="text" color="inherit" size="small" className="action-link">
                     Preview
-                  </button>
+                  </Button>
                 ) : (
-                  <button onClick={() => window.location.href = `/edit/${story._id}`} className="action-link">
+                  <Button onClick={() => window.location.href = `/edit/${story._id}`} variant="text" color="inherit" size="small" className="action-link">
                     Edit
-                  </button>
+                  </Button>
                 )}
                 {onDelete && (
-                  <button onClick={() => onDelete(story._id)} className="action-link action-delete">
+                  <Button onClick={() => onDelete(story._id)} variant="text" color="error" size="small" className="action-link action-delete">
                     Delete
-                  </button>
+                  </Button>
                 )}
-              </div>
+              </Stack>
             )}
-          </div>
-        </div>
-      </div>
-    </div>
+          </Box>
+        </CardContent>
+      </Box>
+    </Card>
   );
 };
 
