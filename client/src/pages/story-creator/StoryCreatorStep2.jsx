@@ -240,7 +240,7 @@ const StoryCreatorStep2 = ({ nodes, setNodes }) => {
             <div className="choices-section">
               <div className="choices-header">
                 <h3>Options for Reader</h3>
-                <button type="button" onClick={addChoice} className="btn btn-secondary btn-small">+ Add Option</button>
+                <button type="button" onClick={addChoice} className="btn btn-danger btn-small">+ Add Option</button>
               </div>
 
               {currentNode.choices && currentNode.choices.length > 0 ? (

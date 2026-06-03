@@ -65,25 +65,25 @@ code {
 }
 
 .btn-secondary {
-  background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+  background: #475569;
   color: white;
 }
 
 .btn-secondary:hover {
-  background: linear-gradient(135deg, #e67ae0 0%, #e84463 100%);
+  background: #475569;
 }
 
 .btn-danger {
-  background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);
+  background: #bdbdbd;
   color: white;
 }
 
 .btn-danger:hover {
-  background: linear-gradient(135deg, #f65a8f 0%, #fed835 100%);
+  background: #9e9e9e;
 }
 
 .btn-success {
-  background: linear-gradient(135deg, #30cfd0 0%, #330867 100%);
+  background: #81709D ;
   color: white;
 }
 

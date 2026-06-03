@@ -212,7 +212,7 @@
   background: var(--color-primary);
   color: var(--text-inverse);
   border: none;
-  padding: 14px 32px;
+  /* padding: 14px 32px; */
   border-radius: var(--radius-md);
   font-size: var(--text-base);
   font-weight: 600;
