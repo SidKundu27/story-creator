@@ -48,7 +48,7 @@ const StoryCoverPage = ({ story, onStart, onBack }) => {
             {story.genres && story.genres.length > 0 && (
               <Stack direction="row" spacing={1} useFlexGap flexWrap="wrap" className="cover-genres">
                 {story.genres.map((genre, idx) => (
-                  <Chip key={idx} label={genre} size="small" variant="outlined" className="cover-genre-tag" />
+                  <Chip key={idx} label={genre} size="small" variant="outlined" color="primary" className="cover-genre-tag" />
                 ))}
               </Stack>
             )}
