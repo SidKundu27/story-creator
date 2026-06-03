@@ -20,6 +20,7 @@ import { getAllStories } from '../services/storyService';
 import { AuthContext } from '../context/AuthContext';
 import CircularProgress from '@mui/material/CircularProgress';
 import './BrowseV2.css';
+import { useServerStatus } from '../context/ServerStatusContext';
 
 const getPlaceholderCat = (story) => {
   const seed = encodeURIComponent(story?._id || story?.title || 'story');
@@ -63,23 +64,49 @@ const BrowseV2 = () => {
   const [stories, setStories] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
+  const [waitSeconds, setWaitSeconds] = useState(60);
   const [searchTerm, setSearchTerm] = useState('');
   const [sortBy, setSortBy] = useState('recent');
+  const { isLoadingServer } = useServerStatus();
 
   useEffect(() => {
+    let mounted = true;
     const loadStories = async () => {
       try {
         const data = await getAllStories();
+        if (!mounted) return;
         setStories(data);
       } catch (err) {
-        setError(err);
+        if (!mounted) return;
+        setError(err?.message || String(err));
       } finally {
+        if (!mounted) return;
         setLoading(false);
       }
     };
 
+    // If server is still loading, don't attempt to fetch yet
+    if (isLoadingServer) {
+      setLoading(true);
+      return () => { mounted = false; };
+    }
+
     loadStories();
-  }, []);
+
+    return () => { mounted = false; };
+  }, [isLoadingServer]);
+
+  // Countdown while waiting for server
+  useEffect(() => {
+    let timer;
+    if (isLoadingServer) {
+      setWaitSeconds(60);
+      timer = setInterval(() => setWaitSeconds((s) => Math.max(0, s - 1)), 1000);
+    } else {
+      setWaitSeconds(0);
+    }
+    return () => clearInterval(timer);
+  }, [isLoadingServer]);
 
   const { visibleStories, genres } = useMemo(() => {
     let filtered = [...stories];
@@ -130,6 +157,27 @@ const BrowseV2 = () => {
   }, [stories, searchTerm, sortBy]);
 
   const featuredStories = visibleStories.slice(0, 6);
+
+  if (isLoadingServer) {
+    return (
+      <div className="container browse-v2-page">
+        <Box
+          className="browse-v2-loading"
+          display="flex"
+          flexDirection="column"
+          alignItems="center"
+          justifyContent="center"
+          gap={2}
+          py={8}
+        >
+          <CircularProgress size={48} />
+          <Typography variant="body1" color="text.secondary">
+            Waiting for server to respond (up to 60 seconds)... {waitSeconds > 0 ? `(${waitSeconds}s)` : ''}
+          </Typography>
+        </Box>
+      </div>
+    );
+  }
 
   if (loading) {
     return (

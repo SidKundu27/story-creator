@@ -4,6 +4,7 @@ import { AuthProvider } from './context/AuthContext';
 
 // Components
 import Navbar from './components/layout/Navbar';
+import ServerStatusInitializer from './components/ServerStatusInitializer';
 import Home from './pages/Home';
 import About from './pages/About';
 import Login from './pages/Login';
@@ -22,6 +23,7 @@ function App() {
       <Router>
         <div className="App">
           <Navbar />
+          <ServerStatusInitializer />
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/about" element={<About />} />

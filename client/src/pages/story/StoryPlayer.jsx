@@ -13,6 +13,7 @@ import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import ReplayIcon from '@mui/icons-material/Replay';
 import './StoryPlayer.css';
+import { useServerStatus } from '../../context/ServerStatusContext';
 
 const StoryPlayer = () => {
   const { id } = useParams();
@@ -29,27 +30,35 @@ const StoryPlayer = () => {
 
   const theme = { name: 'Light', bg: '#ffffff', text: '#333333', titleBg: '#f8f9fa', accent: '#667eea' };
 
-  useEffect(() => {
-    if (!authLoading) {
-      const fetchStory = async () => {
-        try {
-          setError('');
-          const url = isPreview ? `${id}?preview=true` : id;
-          const data = await getStoryById(url);
-          setStory(data);
-          const startNode = data.nodes.find((node) => node.nodeId === data.startNodeId);
-          setCurrentNode(startNode);
-          setHistory([startNode.nodeId]);
-        } catch (err) {
-          setError(err);
-        } finally {
-          setLoading(false);
-        }
-      };
+  const { isLoadingServer } = useServerStatus();
 
-      fetchStory();
-    }
-  }, [id, authLoading, isPreview]);
+  useEffect(() => {
+    if (authLoading || isLoadingServer) return;
+
+    let mounted = true;
+    const fetchStory = async () => {
+      try {
+        setError('');
+        const url = isPreview ? `${id}?preview=true` : id;
+        const data = await getStoryById(url);
+        if (!mounted) return;
+        setStory(data);
+        const startNode = data.nodes.find((node) => node.nodeId === data.startNodeId);
+        setCurrentNode(startNode);
+        setHistory([startNode.nodeId]);
+      } catch (err) {
+        if (!mounted) return;
+        setError(err?.message || String(err));
+      } finally {
+        if (!mounted) return;
+        setLoading(false);
+      }
+    };
+
+    fetchStory();
+
+    return () => { mounted = false; };
+  }, [id, authLoading, isPreview, isLoadingServer]);
 
   const makeChoice = (nextNodeId) => {
     const nextNode = story.nodes.find((node) => node.nodeId === nextNodeId);
@@ -74,6 +83,7 @@ const StoryPlayer = () => {
     }
   };
 
+  if (isLoadingServer) return <div className="container">Waiting for server to respond...</div>;
   if (loading) return <div className="container">Loading story...</div>;
   if (error) return <div className="container error">{error}</div>;
   if (!story || !currentNode) return <div className="container error">Story not found</div>;
