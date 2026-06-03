@@ -18,6 +18,7 @@ import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
 import { getAllStories } from '../services/storyService';
 import { AuthContext } from '../context/AuthContext';
+import CircularProgress from '@mui/material/CircularProgress';
 import './BrowseV2.css';
 
 const getPlaceholderCat = (story) => {
@@ -133,10 +134,20 @@ const BrowseV2 = () => {
   if (loading) {
     return (
       <div className="container browse-v2-page">
-        <div className="browse-v2-loading">
-          <div className="spinner" />
-          <p>Loading Stories...</p>
-        </div>
+        <Box
+          className="browse-v2-loading"
+          display="flex"
+          flexDirection="column"
+          alignItems="center"
+          justifyContent="center"
+          gap={2}
+          py={8}
+        >
+          <CircularProgress size={48} />
+          <Typography variant="body1" color="text.secondary">
+            Loading stories...
+          </Typography>
+        </Box>
       </div>
     );
   }

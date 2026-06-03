@@ -25,11 +25,11 @@ const Home = () => {
       position: 'relative',
       overflow: 'hidden',
       minHeight: 'calc(100vh - 72px)',
-      background: `
-        radial-gradient(circle at top left, rgba(99, 102, 241, 0.16), transparent 30%),
-        radial-gradient(circle at top right, rgba(245, 158, 11, 0.15), transparent 26%),
-        linear-gradient(180deg, #fffdf8 0%, #f7f5ef 42%, #f3efe7 100%)
-      `
+      // background: `
+      //   radial-gradient(circle at top left, rgba(99, 102, 241, 0.16), transparent 30%),
+      //   radial-gradient(circle at top right, rgba(245, 158, 11, 0.15), transparent 26%),
+      //   linear-gradient(180deg, #fffdf8 0%, #f7f5ef 42%, #f3efe7 100%)
+      // `
     }}>
       <Box sx={{
         position: 'absolute',
@@ -55,9 +55,9 @@ const Home = () => {
               </Box>
 
               <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2}>
-                <Button variant="contained" size="large" component={RouterLink} to="/feed">Browse Stories</Button>
-                <Button variant="outlined" size="large" component={RouterLink} to="/about">About</Button>
-                <Button variant="outlined" size="large" component={RouterLink} to="/create">Start Creating</Button>
+                <Button variant="contained" size="large" style={{ borderRadius: 12 }} component={RouterLink} to="/feed">Browse Stories</Button>
+                <Button variant="outlined" size="large" style={{ borderRadius: 12 }} component={RouterLink} to="/about">About</Button>
+                <Button variant="outlined" size="large" style={{ borderRadius: 12 }} component={RouterLink} to="/create">Start Creating</Button>
               </Stack>
 
               <Stack direction="row" spacing={2} divider={<Divider orientation="vertical" flexItem />} sx={{ color: 'text.secondary', flexWrap: 'wrap' }}>
@@ -69,7 +69,7 @@ const Home = () => {
           </Grid>
 
           <Grid item xs={12} md={5}>
-            <Paper elevation={0} sx={{ p: 3, borderRadius: 4, border: '1px solid rgba(15, 23, 42, 0.08)', bgcolor: 'rgba(255,255,255,0.75)', backdropFilter: 'blur(14px)', boxShadow: '0 24px 70px rgba(15, 23, 42, 0.12)' }}>
+            <Paper elevation={0} sx={{ p: 3, borderRadius: 2, border: '1px solid rgba(15, 23, 42, 0.08)', bgcolor: 'rgba(255,255,255,0.75)', backdropFilter: 'blur(14px)', boxShadow: '0 24px 70px rgba(15, 23, 42, 0.02)' }}>
               <Typography variant="overline" sx={{ color: 'text.secondary', letterSpacing: 2 }}>Story preview</Typography>
               <Typography variant="h5" sx={{ fontWeight: 800, mt: 1 }}>The Clockwork Door</Typography>
               <Typography variant="body2" sx={{ mt: 1.5, color: 'text.secondary', lineHeight: 1.7 }}>
@@ -108,7 +108,7 @@ const Home = () => {
           <Grid container spacing={4}>
             {featureCards.map((feature) => (
               <Grid item key={feature.title} xs={12} sm={6} md={3}>
-                <Card variant="outlined" sx={{ height: '100%', borderRadius: 4, borderColor: 'rgba(15, 23, 42, 0.08)', bgcolor: 'rgba(255,255,255,0.82)', backdropFilter: 'blur(10px)', boxShadow: '0 14px 42px rgba(15, 23, 42, 0.08)' }}>
+                <Card variant="outlined" sx={{ height: '100%', borderRadius: 2, borderColor: 'rgba(15, 23, 42, 0.08)', bgcolor: 'rgba(255,255,255,0.82)', backdropFilter: 'blur(10px)', boxShadow: '0 14px 42px rgba(15, 23, 42, 0.08)' }}>
                   <CardContent sx={{ p: 3 }}>
                     <Typography variant="h4">{feature.icon}</Typography>
                     <Typography variant="h6" sx={{ mt: 1, fontWeight: 800 }}>{feature.title}</Typography>
