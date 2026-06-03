@@ -45,7 +45,6 @@ async function fetchWithTimeout(url, timeoutMs) {
     const res = await fetch(url, {
       method: 'GET',
       signal: controller.signal,
-      credentials: 'include',
       cache: 'no-store',
     });
     clearTimeout(id);
