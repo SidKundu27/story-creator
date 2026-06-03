@@ -1,18 +1,17 @@
 <!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="theme-color" content="#000000" />
-    <meta
-      name="description"
-      content="Create and play choose-your-own-adventure stories"
-    />
-    <title>Story Creator</title>
-  </head>
-  <body>
-    <noscript>You need to enable JavaScript to run this app.</noscript>
-    <div id="loader" style="
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#000000" />
+  <meta name="description" content="Create and play choose-your-own-adventure stories" />
+  <title>Story Creator</title>
+</head>
+
+<body>
+  <noscript>You need to enable JavaScript to run this app.</noscript>
+  <div id="loader" style="
         position: fixed;
         top: 0;
         left: 0;
@@ -20,18 +19,26 @@
         height: 100%;
         background-color: #333; /* Dark background */
         color: white;
-        display: flex;
+        display: none;
         justify-content: center;
         align-items: center;
         font-size: 2em;
         z-index: 1000;
         transition: opacity 0.5s ease-in-out;
     ">
+    <div
+      style="display: flex; flex-direction: column; align-items: center; gap: 0.75rem; text-align: center; padding: 1rem 1.25rem; max-width: 24rem;">
       <div class="spinner"></div>
+      <div style="font-size: 1rem; font-weight: 700; line-height: 1.4;">Server is loading</div>
+      <div id="loader-message" style="font-size: 0.95rem; line-height: 1.5; opacity: 0.9;">Waking up the backend now.
+      </div>
+      <div id="loader-timer" style="font-size: 0.85rem; opacity: 0.7;">Checking again in a moment...</div>
     </div>
-    <div id="content" style="display: none;">
-      <div id="root"></div>
-    </div>
-    <script type="module" src="/src/main.jsx"></script>
-  </body>
+  </div>
+  <div id="content" style="display: none;">
+    <div id="root"></div>
+  </div>
+  <script type="module" src="/src/main.jsx"></script>
+</body>
+
 </html>
