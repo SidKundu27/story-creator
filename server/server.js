@@ -18,11 +18,6 @@ app.get('/healthz', (req, res) => {
   res.status(200).json({ status: 'ok' });
 });
 
-// Health check endpoint for the client dev proxy
-app.get('/api/healthz', (req, res) => {
-  res.status(200).json({ status: 'ok' });
-});
-
 // MongoDB Connection with auto-seeding
 mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/story-creator')
   .then(async () => {
