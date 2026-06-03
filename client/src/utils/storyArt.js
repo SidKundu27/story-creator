@@ -77,5 +77,8 @@ export const buildStoryArt = (story = {}, options = {}) => {
 
 export const getStoryCoverImage = (story, options = {}) => {
   if (story?.coverImage) return story.coverImage;
-  return buildStoryArt(story, options);
+  return buildStoryArt(story, {
+    width: options.width || 400,
+    height: options.height || 500,
+  });
 };

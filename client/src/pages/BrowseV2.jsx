@@ -23,14 +23,7 @@ import './BrowseV2.css';
 import { useServerStatus } from '../context/ServerStatusContext';
 import { getStoryCoverImage } from '../utils/storyArt';
 
-const getStoryImage = (story) => getStoryCoverImage(story, { width: 900, height: 640 });
-
-const getInitials = (title) => title
-  .split(' ')
-  .filter(Boolean)
-  .slice(0, 2)
-  .map((word) => word[0].toUpperCase())
-  .join('');
+const getStoryImage = (story) => getStoryCoverImage(story, { width: 400, height: 500 });
 
 const getLastUpdated = (updatedAt) => {
   if (!updatedAt) return null;
@@ -266,7 +259,7 @@ const BrowseV2 = () => {
             </Box>
           ) : (
             <Stack spacing={2.25} className="browse-v2-feed">
-              {featuredStories.map((story, index) => {
+              {featuredStories.map((story) => {
                 const tags = (Array.isArray(story.tags) && story.tags.length) ? story.tags.slice(0, 4) : (Array.isArray(story.genres) ? story.genres.slice(0, 4) : []);
                 const stats = [
                   typeof story.likes === 'number' ? { label: 'likes', value: story.likes } : null,
@@ -285,11 +278,6 @@ const BrowseV2 = () => {
                             alt={story.title}
                             className={`browse-v2-image ${!story.coverImage ? 'browse-v2-image-fallback' : ''}`}
                           />
-                          {!story.coverImage && (
-                            <Box className="browse-v2-initials-overlay">
-                              {getInitials(story.title)}
-                            </Box>
-                          )}
                         </Box>
 
                         <CardContent className="browse-v2-content">

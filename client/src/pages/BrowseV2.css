@@ -115,15 +115,9 @@
 
 .browse-v2-row {
   display: grid;
-  grid-template-columns: 260px minmax(0, 1fr);
-  min-height: 250px;
-}
-
-.browse-v2-image-column {
-  position: relative;
-  background: linear-gradient(135deg, rgba(15, 23, 42, 0.05), rgba(99, 102, 241, 0.06));
-  overflow: hidden;
-  border-radius: 10px;
+  grid-template-columns: 180px minmax(0, 1fr);
+  gap: 0;
+  height: 270px;
 }
 
 .browse-v2-image {
@@ -133,35 +127,24 @@
   display: block;
 }
 
+.browse-v2-image-column {
+  position: relative;
+  background: linear-gradient(135deg, rgba(15, 23, 42, 0.05), rgba(99, 102, 241, 0.06));
+  overflow: hidden;
+  border-radius: 10px;
+  height: 100%;
+}
+
 .browse-v2-image-fallback {
   filter: grayscale(100%) contrast(0.92) saturate(0.9);
   opacity: 0.96;
 }
 
-.browse-v2-initials-overlay {
-  position: absolute;
-  right: 14px;
-  top: 14px;
-  width: 44px;
-  height: 44px;
-  border-radius: 10px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: rgba(255, 255, 255, 0.88);
-  color: #4338ca;
-  font-size: 0.85rem;
-  font-weight: 800;
-  backdrop-filter: blur(8px);
-  box-shadow: 0 4px 10px rgba(15, 23, 42, 0.06);
-  border: 1px solid rgba(15, 23, 42, 0.04);
-}
-
 .browse-v2-content {
   display: flex;
   flex-direction: column;
-  gap: 14px;
-  padding: 18px !important;
+  gap: 12px;
+  padding: 14px 16px !important;
 }
 
 .browse-v2-heading-row {
@@ -306,11 +289,15 @@
 @media (max-width: 768px) {
   .browse-v2-hero,
   .browse-v2-controls {
-    padding: 20px;
+    height: auto;
   }
 
   .browse-v2-controls {
-    grid-template-columns: 1fr;
+    height: 240px;
+  }
+
+  .browse-v2-content {
+    padding: 14px !important;
   }
 
   .browse-v2-count {
