@@ -1,4 +1,4 @@
-// Health check utility that polls the configured API base URL's /healthz endpoint.
+// Health check utility that polls the configured API base URL's /internal-check endpoint.
 const LOADER_DELAY_MS = 1000;
 const POLL_INTERVAL_MS = 2000;
 const COOKIE_NAME = 'server_ok';
@@ -30,12 +30,12 @@ function buildHealthUrl() {
     : '';
 
   try {
-    if (apiBase) return new URL('/healthz', apiBase).toString();
+    if (apiBase) return new URL('/internal-check', apiBase).toString();
   } catch (e) {
     // fall back to origin
   }
 
-  return `${window.location.origin}/healthz`;
+  return `${window.location.origin}/internal-check`;
 }
 
 async function fetchWithTimeout(url, timeoutMs) {
