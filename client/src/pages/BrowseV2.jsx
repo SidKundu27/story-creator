@@ -21,13 +21,9 @@ import { AuthContext } from '../context/AuthContext';
 import CircularProgress from '@mui/material/CircularProgress';
 import './BrowseV2.css';
 import { useServerStatus } from '../context/ServerStatusContext';
+import { getStoryCoverImage } from '../utils/storyArt';
 
-const getPlaceholderCat = (story) => {
-  const seed = encodeURIComponent(story?._id || story?.title || 'story');
-  return `https://cataas.com/cat?width=900&height=640&ts=${seed}`;
-};
-
-const getStoryImage = (story) => story.coverImage || getPlaceholderCat(story);
+const getStoryImage = (story) => getStoryCoverImage(story, { width: 900, height: 640 });
 
 const getInitials = (title) => title
   .split(' ')
@@ -278,10 +274,8 @@ const BrowseV2 = () => {
                 ].filter(Boolean);
                 const description = story.description || 'No description provided.';
                 const lastUpdated = getLastUpdated(story.updatedAt);
-                const isFeature = index === 0;
-
                 return (
-                  <Card key={story._id} className={`browse-v2-card ${isFeature ? 'browse-v2-card-feature' : ''}`} elevation={0}>
+                  <Card key={story._id} className="browse-v2-card" elevation={0}>
                     <CardActionArea disableRipple component={RouterLink} to={`/play/${story._id}`} className="browse-v2-card-action">
                       <Box className="browse-v2-row">
                         <Box className="browse-v2-image-column">
@@ -328,13 +322,6 @@ const BrowseV2 = () => {
                             )}
                           </Box>
 
-                          {/* {isFeature && (
-                            <Box className="browse-v2-feature-note">
-                              <Typography variant="caption">
-                                Featured row: a larger image, a wider summary area, and the same click-anywhere behavior.
-                              </Typography>
-                            </Box>
-                          )} */}
                         </CardContent>
                       </Box>
                     </CardActionArea>

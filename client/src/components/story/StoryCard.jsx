@@ -9,6 +9,7 @@ import Divider from '@mui/material/Divider';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 import './StoryCard.css';
+import { getStoryCoverImage } from '../../utils/storyArt';
 
 const StoryCard = ({ story, showEdit = false, onDelete, showBadge = true }) => {
   const isDraft = !story.isPublished;
@@ -73,11 +74,7 @@ const StoryCard = ({ story, showEdit = false, onDelete, showBadge = true }) => {
     <Card className={`story-card ${isDraft ? 'is-draft' : 'is-published'}`} elevation={0}>
       <Box className="story-card-top">
         <Box className="story-card-cover" sx={{ borderLeftColor: getSpineColor() }}>
-          {story.coverImage ? (
-            <img src={story.coverImage} alt={story.title} />
-          ) : (
-            <div className="story-cover-placeholder">{getInitials(story.title)}</div>
-          )}
+          <img src={getStoryCoverImage(story, { width: 480, height: 320 })} alt={story.title} />
         </Box>
 
         <CardContent className="story-card-content">

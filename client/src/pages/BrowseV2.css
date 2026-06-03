@@ -119,11 +119,6 @@
   min-height: 250px;
 }
 
-.browse-v2-card-feature .browse-v2-row {
-  grid-template-columns: 280px minmax(0, 1fr);
-  min-height: 260px;
-}
-
 .browse-v2-image-column {
   position: relative;
   background: linear-gradient(135deg, rgba(15, 23, 42, 0.05), rgba(99, 102, 241, 0.06));
