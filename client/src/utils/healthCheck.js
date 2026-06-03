@@ -35,7 +35,8 @@ function buildHealthUrl() {
     // fall back to origin
   }
 
-  return `${window.location.origin}/healthz`;
+  // In dev, Vite proxies /api to the backend, so prefer the proxied path.
+  return `${window.location.origin}/api/healthz`;
 }
 
 async function fetchWithTimeout(url, timeoutMs) {
