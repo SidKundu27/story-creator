@@ -6,6 +6,20 @@ const Story = require('./models/Story');
 const User = require('./models/User');
 require('dotenv').config();
 
+// Small helper to produce a short, non-sensitive label for DB URIs
+const getMongoLabel = (uri) => {
+  if (!uri) return 'unknown';
+  const lower = uri.toLowerCase();
+  if (lower.includes('localhost') || lower.includes('127.0.0.1')) return 'local';
+  if (lower.includes('atlas.mongodb.net')) return 'MongoDB Atlas';
+  let s = uri.replace(/^mongodb(\+srv)?:\/\//i, '');
+  if (s.includes('@')) s = s.split('@').pop();
+  s = s.split('/')[0];
+  s = s.split(',')[0];
+  s = s.split(':')[0];
+  return `host: ${s}`;
+};
+
 const app = express();
 
 // Middleware
@@ -21,7 +35,8 @@ app.get('/internal-check', (req, res) => {
 // MongoDB Connection with auto-seeding
 mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/story-creator')
   .then(async () => {
-    console.log('MongoDB connected successfully');
+    const label = getMongoLabel(process.env.MONGODB_URI || 'mongodb://localhost:27017/story-creator');
+    console.log(`MongoDB connected successfully (${label})`);
     
     // Check if database is empty and auto-seed
     const storyCount = await Story.countDocuments();

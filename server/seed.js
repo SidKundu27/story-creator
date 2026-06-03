@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+require('dotenv').config();
 const bcrypt = require('bcryptjs');
 const readline = require('readline');
 const fs = require('fs');
@@ -9,6 +10,24 @@ const Story = require('./models/Story');
 // MongoDB connection string
 const MONGODB_URI = process.env.MONGODB_URI || 'mongodb://localhost:27017/story-creator';
 
+// Determine a short, non-sensitive label for the connection (local / atlas / host)
+const getMongoLabel = (uri) => {
+  if (!uri) return 'unknown';
+  const lower = uri.toLowerCase();
+  if (lower.includes('localhost') || lower.includes('127.0.0.1')) return 'local';
+  if (lower.includes('atlas.mongodb.net')) return 'MongoDB Atlas';
+  // strip protocol
+  let s = uri.replace(/^mongodb(\+srv)?:\/\//i, '');
+  // remove creds before @
+  if (s.includes('@')) s = s.split('@').pop();
+  // host list comes before '/'
+  s = s.split('/')[0];
+  // take first host (in case of replicaSet)
+  s = s.split(',')[0];
+  // remove port
+  s = s.split(':')[0];
+  return `host: ${s}`;
+};
 // Prompt user for input
 const askQuestion = (rl, query) => {
   return new Promise(resolve => rl.question(query, resolve));
@@ -23,7 +42,10 @@ const seedData = async (options = {}) => {
     if (mongoose.connection.readyState === 0) {
       await mongoose.connect(MONGODB_URI);
     }
-    if (!silent) console.log('✓ Connected to MongoDB');
+    if (!silent) {
+      const label = getMongoLabel(MONGODB_URI);
+      console.log(`✓ Connected to MongoDB (${label})`);
+    }
 
     let shouldClear = clearExisting;
     
