@@ -85,8 +85,8 @@ const StoryPlayer = () => {
 
   if (isLoadingServer) return <div className="container">Waiting for server to respond...</div>;
   if (loading) return <div className="container">Loading story...</div>;
-  if (error) return <div className="container error">{error}</div>;
-  if (!story || !currentNode) return <div className="container error">Story not found</div>;
+  if (error) return <div className="error">{error}</div>;
+  if (!story || !currentNode) return <div className="error">Story not found</div>;
 
   if (showCover) {
     return (

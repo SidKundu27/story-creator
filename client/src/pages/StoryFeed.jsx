@@ -75,7 +75,7 @@ const StoryFeed = () => {
   }
 
   if (error) {
-    return <div className="container error">{error}</div>;
+    return <div className="error">{error}</div>;
   }
 
   return (

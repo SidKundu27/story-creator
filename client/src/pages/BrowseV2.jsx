@@ -201,7 +201,7 @@ const BrowseV2 = () => {
   }
 
   if (error) {
-    return <div className="container browse-v2-page error">{error}</div>;
+    return <div className="error">{error}</div>;
   }
 
   return (

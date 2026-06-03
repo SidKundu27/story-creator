@@ -1,6 +1,7 @@
 import React, { useState, useContext } from 'react';
 import { useNavigate, Link as RouterLink } from 'react-router-dom';
 import { AuthContext } from '../context/AuthContext';
+import { useServerStatus } from '../context/ServerStatusContext';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
@@ -16,6 +17,7 @@ const Login = () => {
   const [error, setError] = useState('');
   const { login } = useContext(AuthContext);
   const navigate = useNavigate();
+  const { isLoadingServer } = useServerStatus();
 
   const handleChange = (e) => setFormData({ ...formData, [e.target.name]: e.target.value });
 
@@ -40,6 +42,7 @@ const Login = () => {
             Sign in to continue your story adventure
           </Typography>
 
+          {isLoadingServer && <Alert severity="info" sx={{ width: '100%', mb: 2 }}>Waiting for server to respond — please hold on a moment.</Alert>}
           {error && <Alert severity="error" sx={{ width: '100%', mb: 2 }}>{error}</Alert>}
 
           <Box component="form" onSubmit={handleSubmit} sx={{ mt: 1, width: '100%' }}>
@@ -54,6 +57,7 @@ const Login = () => {
               autoFocus
               value={formData.email}
               onChange={handleChange}
+              disabled={isLoadingServer}
             />
             <TextField
               margin="normal"
@@ -66,10 +70,11 @@ const Login = () => {
               autoComplete="current-password"
               value={formData.password}
               onChange={handleChange}
+              disabled={isLoadingServer}
             />
 
-            <Button type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 2 }}>
-              Login
+            <Button type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 2 }} disabled={isLoadingServer}>
+              {isLoadingServer ? 'Waiting...' : 'Login'}
             </Button>
 
             <Box sx={{ display: 'flex', justifyContent: 'center' }}>
