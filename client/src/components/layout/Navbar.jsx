@@ -46,7 +46,7 @@ const Navbar = () => {
   };
 
   const navLinks = [
-    { label: 'Browse', path: '/feed' },
+    // { label: 'Browse', path: '/feed' },
     { label: 'Browse V2', path: '/browse-v2' },
     { label: 'About', path: '/about' },
     ...(user ? [{ label: 'My Stories', path: '/my-stories' }] : []),
@@ -104,11 +104,14 @@ const Navbar = () => {
           </>
         ) : (
           <>
-            <Button
-              component={RouterLink}
-              to="/feed"
-              sx={{
-                color: '#475569',
+            {/* Desktop navigation buttons */}
+            {/* if within localhost, then show v1 */}
+            {window.location.hostname === 'localhost' && (
+              <Button
+                component={RouterLink}
+                to="/browse-v1-archived"
+                sx={{
+                  color: '#475569',
                 textTransform: 'none',
                 fontSize: '15px',
                 fontWeight: 600,
@@ -118,12 +121,13 @@ const Navbar = () => {
                 '&:hover': { color: '#0f172a', backgroundColor: 'rgba(99, 102, 241, 0.12)' },
               }}
             >
-              Browse
+              Archived Browse
             </Button>
+            )}
 
             <Button
               component={RouterLink}
-              to="/browse-v2"
+              to="/feed"
               sx={{
                 color: '#475569',
                 textTransform: 'none',
@@ -136,7 +140,7 @@ const Navbar = () => {
                 '&:hover': { color: '#0f172a', backgroundColor: 'rgba(99, 102, 241, 0.12)' },
               }}
             >
-              Browse V2
+              Browse
             </Button>
 
             <Button

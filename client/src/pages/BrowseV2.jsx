@@ -135,7 +135,7 @@ const BrowseV2 = () => {
       <div className="container browse-v2-page">
         <div className="browse-v2-loading">
           <div className="spinner" />
-          <p>Loading Browse V2...</p>
+          <p>Loading Stories...</p>
         </div>
       </div>
     );
@@ -155,25 +155,22 @@ const BrowseV2 = () => {
           <Typography variant="h3" component="h1" className="browse-v2-title">
             Browse stories the way readers scan a shelf
           </Typography>
-          <Typography className="browse-v2-copy">
-            Use this view to compare titles, authors, updated times, tags, stats, and summaries at a glance. It is designed for quick scanning on a large monitor without hidden details.
-          </Typography>
+          {/* should be spaced-between */}
+          <Stack direction="row" spacing={2} alignItems="center" justifyContent="space-between" >
+            <Typography className="browse-v2-copy">
+              Use this view to compare titles, authors, updated times, tags, stats, and summaries at a glance. It is designed for quick scanning on a large monitor without hidden details.
+            </Typography>
+            {user ? (
+              <Button component={RouterLink} to="/create" variant="contained" size="medium" sx={{ textTransform: 'none', fontWeight: 700, borderRadius: '8px', minHeight: 38, px: 2.25 }}>
+                Create Story
+              </Button>
+            ) : (
+              <Button component={RouterLink} to="/login" variant="contained" size="medium" sx={{ textTransform: 'none', fontWeight: 700, borderRadius: '8px', minHeight: 38, px: 2.25 }}>
+                Log in to create
+              </Button>
+            )}
+          </Stack>
         </Box>
-
-        <Stack direction="row" spacing={1.5} className="browse-v2-actions">
-          {user ? (
-            <Button component={RouterLink} to="/create" variant="contained" size="medium" sx={{ textTransform: 'none', fontWeight: 700, borderRadius: '8px', minHeight: 38, px: 2.25 }}>
-              Create Story
-            </Button>
-          ) : (
-            <Button component={RouterLink} to="/login" variant="contained" size="medium" sx={{ textTransform: 'none', fontWeight: 700, borderRadius: '8px', minHeight: 38, px: 2.25 }}>
-              Log in to create
-            </Button>
-          )}
-          <Button component={RouterLink} to="/feed" variant="outlined" size="medium" sx={{ textTransform: 'none', fontWeight: 700, borderRadius: '8px', minHeight: 38, px: 2.25 }}>
-            Classic Browse
-          </Button>
-        </Stack>
       </Box>
 
       <Box className="browse-v2-controls">
@@ -215,7 +212,7 @@ const BrowseV2 = () => {
           ) : (
             <Stack spacing={2.25} className="browse-v2-feed">
               {featuredStories.map((story, index) => {
-                const tags = (Array.isArray(story.tags) && story.tags.length) ? story.tags.slice(0, 4) : (Array.isArray(story.genres) ? story.genres.slice(0,4) : []);
+                const tags = (Array.isArray(story.tags) && story.tags.length) ? story.tags.slice(0, 4) : (Array.isArray(story.genres) ? story.genres.slice(0, 4) : []);
                 const stats = [
                   typeof story.likes === 'number' ? { label: 'likes', value: story.likes } : null,
                   typeof story.plays === 'number' ? { label: 'plays', value: story.plays } : null,
@@ -231,9 +228,9 @@ const BrowseV2 = () => {
                         <Box className="browse-v2-image-column">
                           <CardMedia
                             component="img"
-                              image={getStoryImage(story)}
+                            image={getStoryImage(story)}
                             alt={story.title}
-                              className={`browse-v2-image ${!story.coverImage ? 'browse-v2-image-fallback' : ''}`}
+                            className={`browse-v2-image ${!story.coverImage ? 'browse-v2-image-fallback' : ''}`}
                           />
                           {!story.coverImage && (
                             <Box className="browse-v2-initials-overlay">
@@ -272,13 +269,13 @@ const BrowseV2 = () => {
                             )}
                           </Box>
 
-                          {isFeature && (
+                          {/* {isFeature && (
                             <Box className="browse-v2-feature-note">
                               <Typography variant="caption">
                                 Featured row: a larger image, a wider summary area, and the same click-anywhere behavior.
                               </Typography>
                             </Box>
-                          )}
+                          )} */}
                         </CardContent>
                       </Box>
                     </CardActionArea>

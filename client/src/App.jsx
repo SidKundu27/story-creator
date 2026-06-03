@@ -27,8 +27,9 @@ function App() {
             <Route path="/about" element={<About />} />
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
-            <Route path="/feed" element={<StoryFeed />} />
-            <Route path="/browse-v2" element={<BrowseV2 />} />
+            {/* Archived Browse Route */}
+            <Route path="/browse-v1-archived" element={<StoryFeed />} />
+            <Route path="/feed" element={<BrowseV2 />} />
             <Route path="/play/:id" element={<StoryPlayer />} />
             <Route 
               path="/create" 
