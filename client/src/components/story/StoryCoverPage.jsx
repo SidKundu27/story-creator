@@ -1,4 +1,9 @@
 import React from 'react';
+import Box from '@mui/material/Box';
+import Button from '@mui/material/Button';
+import Chip from '@mui/material/Chip';
+import Stack from '@mui/material/Stack';
+import Typography from '@mui/material/Typography';
 import './StoryCoverPage.css';
 
 const StoryCoverPage = ({ story, onStart, onBack }) => {
@@ -19,9 +24,9 @@ const StoryCoverPage = ({ story, onStart, onBack }) => {
       {onBack && (
         <div className="cover-breadcrumb-bar">
           <div className="cover-breadcrumb-content">
-            <button onClick={onBack} className="breadcrumb-link">
-              ← Back to Dashboard
-            </button>
+            <Button onClick={onBack} variant="text" color="inherit" sx={{ px: 0 }}>
+              Back to Dashboard
+            </Button>
           </div>
         </div>
       )}
@@ -36,36 +41,36 @@ const StoryCoverPage = ({ story, onStart, onBack }) => {
 
         <div className="story-info">
           <div className="cover-header">
-            <h1 className="cover-title">{story.title}</h1>
-            <p className="cover-author">by {story.authorName}</p>
-            <p className="cover-date">{formatDate()}</p>
+            <Typography variant="h2" component="h1" className="cover-title">{story.title}</Typography>
+            <Typography variant="body1" className="cover-author">by {story.authorName}</Typography>
+            <Typography variant="body2" className="cover-date">{formatDate()}</Typography>
 
             {story.genres && story.genres.length > 0 && (
-              <div className="cover-genres">
+              <Stack direction="row" spacing={1} useFlexGap flexWrap="wrap" className="cover-genres">
                 {story.genres.map((genre, idx) => (
-                  <span key={idx} className="cover-genre-tag">{genre}</span>
+                  <Chip key={idx} label={genre} size="small" variant="outlined" className="cover-genre-tag" />
                 ))}
-              </div>
+              </Stack>
             )}
           </div>
 
-          {story.description && <p className="cover-description">{story.description}</p>}
+          {story.description && <Typography variant="body1" className="cover-description">{story.description}</Typography>}
 
           <div className="cover-stats">
             <div className="cover-stat">
-              <span className="stat-number">{story.plays || 0}</span>
-              <span className="stat-label">PLAYS</span>
+              <Typography variant="h5" component="span" className="stat-number">{story.plays || 0}</Typography>
+              <Typography variant="caption" component="span" className="stat-label">PLAYS</Typography>
             </div>
             <div className="cover-stat">
-              <span className="stat-number">{story.likes || 0}</span>
-              <span className="stat-label">LIKES</span>
+              <Typography variant="h5" component="span" className="stat-number">{story.likes || 0}</Typography>
+              <Typography variant="caption" component="span" className="stat-label">LIKES</Typography>
             </div>
           </div>
 
           <div className="cover-actions">
-            <button onClick={onStart} className="btn btn-primary btn-large">
-              ▶ Start Reading
-            </button>
+            <Button onClick={onStart} variant="contained" size="large">
+              Start Reading
+            </Button>
           </div>
         </div>
       </div>

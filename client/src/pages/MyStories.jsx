@@ -54,13 +54,13 @@ const MyStories = () => {
     <div className="container">
       <div className="my-stories-header">
         <h1>My Stories</h1>
-        <Button component={RouterLink} to="/create" variant="contained">Create New Story</Button>
+        <Button component={RouterLink} to="/create" variant="contained" size="medium" sx={{ minWidth: 166, textTransform: 'none' }}>Create New Story</Button>
       </div>
 
       {stories.length === 0 ? (
         <div className="no-stories">
           <p>You haven't created any stories yet.</p>
-          <Button component={RouterLink} to="/create" variant="contained">Create Your First Story</Button>
+          <Button component={RouterLink} to="/create" variant="contained" size="medium" sx={{ minWidth: 190, textTransform: 'none' }}>Create Your First Story</Button>
         </div>
       ) : (
         <div className="story-grid">

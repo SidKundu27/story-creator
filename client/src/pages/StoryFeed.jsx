@@ -87,14 +87,14 @@ const StoryFeed = () => {
             <p>Discover and play community-created adventures</p>
           </div>
           {user && (
-            <Button component={RouterLink} to="/my-stories" variant="contained" color="success">Create New Story</Button>
+            <Button component={RouterLink} to="/my-stories" variant="contained" color="success" size="medium" sx={{ minWidth: 166, textTransform: 'none' }}>Create New Story</Button>
           )}
         </div>
       </div>
 
       <div className="feed-controls">
         <div className="search-box">
-          <TextField size="small" placeholder="Search stories, tags..." value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)} />
+          <TextField className="search-field" size="small" fullWidth placeholder="Search stories, tags..." value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)} />
         </div>
 
         <div className="sort-controls">
@@ -120,14 +120,14 @@ const StoryFeed = () => {
             <>
               <p style={{ fontSize: '16px', marginBottom: '30px' }}>No published stories yet. Be the first to create one!</p>
               {user ? (
-                <Button component={RouterLink} to="/my-stories" variant="contained">Create Your First Story</Button>
+                <Button component={RouterLink} to="/my-stories" variant="contained" size="medium" sx={{ minWidth: 190, textTransform: 'none' }}>Create Your First Story</Button>
               ) : (
-                <Button component={RouterLink} to="/register" variant="contained">Sign Up to Create Stories</Button>
+                <Button component={RouterLink} to="/register" variant="contained" size="medium" sx={{ minWidth: 198, textTransform: 'none' }}>Sign Up to Create Stories</Button>
               )}
             </>
           )}
           {searchTerm && (
-            <Button onClick={() => setSearchTerm('')} variant="outlined">Clear Search</Button>
+            <Button onClick={() => setSearchTerm('')} variant="outlined" size="small" sx={{ textTransform: 'none' }}>Clear Search</Button>
           )}
         </div>
       ) : (

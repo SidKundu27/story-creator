@@ -4,6 +4,14 @@ import { getStoryById, likeStory } from '../../services/storyService';
 import { parseMarkdown, stripFormattingDirectives, parseFormattingDirectives } from '../../utils/markdownParser';
 import StoryCoverPage from '../../components/story/StoryCoverPage';
 import { AuthContext } from '../../context/AuthContext';
+import Button from '@mui/material/Button';
+import IconButton from '@mui/material/IconButton';
+import Tooltip from '@mui/material/Tooltip';
+import Typography from '@mui/material/Typography';
+import Box from '@mui/material/Box';
+import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+import ReplayIcon from '@mui/icons-material/Replay';
 import './StoryPlayer.css';
 
 const StoryPlayer = () => {
@@ -91,21 +99,29 @@ const StoryPlayer = () => {
 
         <header className="reader-header">
           <div className="header-content">
-            <button onClick={() => navigate('/feed')} className="btn-exit" title="Exit to dashboard">←</button>
+            <Tooltip title="Exit to dashboard">
+              <IconButton onClick={() => navigate('/feed')} className="btn-exit" aria-label="Exit to dashboard">
+                <ArrowBackIcon />
+              </IconButton>
+            </Tooltip>
 
             <div className="header-center">
-              <span className="chapter-title">{currentNode.name || 'Reading'}</span>
+              <Typography variant="h6" component="span" className="chapter-title">{currentNode.name || 'Reading'}</Typography>
             </div>
 
             <div className="header-actions">
-              <button
-                onClick={handleLike}
-                className="btn-header-action"
-                disabled={isPreview}
-                title={isPreview ? 'Not available in preview' : 'Like this story'}
-              >
-                ♥
-              </button>
+              <Tooltip title={isPreview ? 'Not available in preview' : 'Like this story'}>
+                <span>
+                  <IconButton
+                    onClick={handleLike}
+                    className="btn-header-action"
+                    disabled={isPreview}
+                    aria-label="Like this story"
+                  >
+                    <FavoriteBorderIcon />
+                  </IconButton>
+                </span>
+              </Tooltip>
             </div>
           </div>
         </header>
@@ -135,18 +151,20 @@ const StoryPlayer = () => {
 
             {currentNode?.isEnding ? (
               <footer className="ending-footer">
-                <h2 className="ending-title">The End</h2>
-                <button onClick={restart} className="btn-restart">← Play Again</button>
+                <Typography variant="h4" component="h2" className="ending-title">The End</Typography>
+                <Button onClick={restart} variant="contained" startIcon={<ReplayIcon />}>
+                  Play Again
+                </Button>
               </footer>
             ) : (
               <nav className="choices-navigation">
                 <ul className="choices-list">
                   {currentNode?.choices && currentNode.choices.map((choice, index) => (
                     <li key={index} className="choice-item">
-                      <button onClick={() => makeChoice(choice.nextNodeId)} className="choice-link">
-                        <span className="choice-arrow">➜</span>
-                        <span className="choice-text">{choice.text}</span>
-                      </button>
+                      <Button onClick={() => makeChoice(choice.nextNodeId)} variant="outlined" className="choice-link" fullWidth>
+                        <Box component="span" className="choice-arrow">➜</Box>
+                        <Box component="span" className="choice-text">{choice.text}</Box>
+                      </Button>
                     </li>
                   ))}
                 </ul>
@@ -157,13 +175,13 @@ const StoryPlayer = () => {
 
         <footer className="reader-footer">
           {!currentNode?.isEnding && (
-            <button onClick={restart} className="btn-restart-footer" title="Restart the story from the beginning">
-              ↻ Restart
-            </button>
+            <Button onClick={restart} className="btn-restart-footer" title="Restart the story from the beginning" variant="outlined" startIcon={<ReplayIcon />}>
+              Restart
+            </Button>
           )}
-          <div className="progress-indicator">
-            <span className="progress-text">{history.length} / {story?.nodes?.length || 1} scenes</span>
-          </div>
+          <Box className="progress-indicator">
+            <Typography variant="body2" className="progress-text">{history.length} / {story?.nodes?.length || 1} scenes</Typography>
+          </Box>
         </footer>
       </div>
     </div>

@@ -120,23 +120,23 @@ const StoryCard = ({ story, showEdit = false, onDelete, showBadge = true }) => {
           )}
 
           <Box className="story-actions">
-            <Button component={Link} to={primaryTo} variant="contained" className="story-primary-action">
+            <Button component={Link} to={primaryTo} variant="contained" className="story-primary-action" size="medium" sx={{ textTransform: 'none' }}>
               {primaryLabel}
             </Button>
 
             {showEdit && (
               <Stack direction="row" spacing={1.5} className="story-actions-secondary">
                 {isDraft ? (
-                  <Button onClick={() => { window.location.hash = `/play/${story._id}?preview=true`; }} variant="text" color="inherit" size="small" className="action-link">
+                  <Button onClick={() => { window.location.hash = `/play/${story._id}?preview=true`; }} variant="text" color="inherit" size="small" sx={{ textTransform: 'none' }} className="action-link">
                     Preview
                   </Button>
                 ) : (
-                  <Button onClick={() => { window.location.hash = `/edit/${story._id}`; }} variant="text" color="inherit" size="small" className="action-link">
+                  <Button onClick={() => { window.location.hash = `/edit/${story._id}`; }} variant="text" color="inherit" size="small" sx={{ textTransform: 'none' }} className="action-link">
                     Edit
                   </Button>
                 )}
                 {onDelete && (
-                  <Button onClick={() => onDelete(story._id)} variant="text" color="error" size="small" className="action-link action-delete">
+                  <Button onClick={() => onDelete(story._id)} variant="text" color="error" size="small" sx={{ textTransform: 'none' }} className="action-link action-delete">
                     Delete
                   </Button>
                 )}

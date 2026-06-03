@@ -1,7 +1,23 @@
-import React from 'react';
-import './StoryCreatorStep1.css';
+import React, { useState } from 'react';
+import Box from '@mui/material/Box';
+import Button from '@mui/material/Button';
+import Chip from '@mui/material/Chip';
+import FormControl from '@mui/material/FormControl';
+import InputLabel from '@mui/material/InputLabel';
+import MenuItem from '@mui/material/MenuItem';
+import Paper from '@mui/material/Paper';
+import Select from '@mui/material/Select';
+import Stack from '@mui/material/Stack';
+import TextField from '@mui/material/TextField';
+import ToggleButton from '@mui/material/ToggleButton';
+import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
+import Typography from '@mui/material/Typography';
+import CloudUploadOutlinedIcon from '@mui/icons-material/CloudUploadOutlined';
+import CloseIcon from '@mui/icons-material/Close';
 
 const StoryCreatorStep1 = ({ formData, setFormData, availableGenres }) => {
+  const [tagInput, setTagInput] = useState('');
+
   const handleCoverImageUpload = (e) => {
     const file = e.target.files[0];
     if (file) {
@@ -22,11 +38,12 @@ const StoryCreatorStep1 = ({ formData, setFormData, availableGenres }) => {
 
   const handleTagInput = (e) => {
     if (e.key === 'Enter') {
+      e.preventDefault();
       const tag = e.target.value.trim();
       if (tag && !formData.tags.includes(tag)) {
         setFormData({ ...formData, tags: [...formData.tags, tag] });
       }
-      e.target.value = '';
+      setTagInput('');
     }
   };
 
@@ -38,117 +55,138 @@ const StoryCreatorStep1 = ({ formData, setFormData, availableGenres }) => {
   };
 
   return (
-    <div className="story-info-form">
-      <div className="form-section">
-        <h2>Story Information</h2>
+    <Box sx={{ display: 'grid', gap: 4, maxWidth: 900, mx: 'auto' }}>
+      <Paper variant="outlined" sx={{ p: { xs: 2, sm: 3 } }}>
+        <Stack spacing={2.5}>
+          <Box>
+            <Typography variant="h6" sx={{ mb: 0.5 }}>Story Information</Typography>
+            <Typography variant="body2" color="text.secondary">Set the core details readers will see first.</Typography>
+          </Box>
 
-        <div className="form-group">
-          <label>Title *</label>
-          <input
-            type="text"
+          <TextField
+            label="Title *"
             value={formData.title}
             onChange={(e) => setFormData({ ...formData, title: e.target.value })}
             placeholder="Enter an engaging title for your story"
-            maxLength={80}
+            inputProps={{ maxLength: 80, 'aria-label': 'Story title' }}
+            helperText={`${formData.title.length}/80`}
           />
-          <small>{formData.title.length}/80</small>
-        </div>
 
-        <div className="form-group">
-          <label>Description *</label>
-          <textarea
+          <TextField
+            label="Description *"
             value={formData.description}
             onChange={(e) => setFormData({ ...formData, description: e.target.value })}
             placeholder="Write a compelling summary of your story..."
-            rows={4}
-            maxLength={300}
+            multiline
+            minRows={4}
+            inputProps={{ maxLength: 300, 'aria-label': 'Story description' }}
+            helperText={`${formData.description.length}/300`}
           />
-          <small>{formData.description.length}/300</small>
-        </div>
 
-        <div className="form-group">
-          <label>Main Category</label>
-          <select value={formData.mainCategory} onChange={(e) => setFormData({ ...formData, mainCategory: e.target.value })}>
-            <option value="">Select a main category...</option>
-            {availableGenres.map((genre) => (
-              <option key={genre} value={genre}>{genre}</option>
-            ))}
-          </select>
-          <small>Pick one primary category for your story</small>
-        </div>
-      </div>
+          <FormControl fullWidth size="small">
+            <InputLabel id="main-category-label">Main Category</InputLabel>
+            <Select
+              labelId="main-category-label"
+              label="Main Category"
+              value={formData.mainCategory}
+              onChange={(e) => setFormData({ ...formData, mainCategory: e.target.value })}
+            >
+              <MenuItem value="">Select a main category...</MenuItem>
+              {availableGenres.map((genre) => (
+                <MenuItem key={genre} value={genre}>{genre}</MenuItem>
+              ))}
+            </Select>
+          </FormControl>
+        </Stack>
+      </Paper>
 
-      <div className="form-section">
-        <h2>Cover Image</h2>
+      <Paper variant="outlined" sx={{ p: { xs: 2, sm: 3 } }}>
+        <Stack spacing={2.5}>
+          <Box>
+            <Typography variant="h6" sx={{ mb: 0.5 }}>Cover Image</Typography>
+            <Typography variant="body2" color="text.secondary">Upload a cover image or keep the default placeholder.</Typography>
+          </Box>
 
-        <div className="cover-upload-area">
-          <div className="upload-input-group">
-            <input type="file" accept="image/*" onChange={handleCoverImageUpload} id="cover-upload" />
-            <label htmlFor="cover-upload" className="upload-button">
-              <span>📸 Upload Cover Image</span>
-              <small>Or drag and drop</small>
-            </label>
-          </div>
+          <Button component="label" variant="outlined" startIcon={<CloudUploadOutlinedIcon />} sx={{ alignSelf: 'flex-start' }}>
+            Upload Cover Image
+            <input type="file" accept="image/*" hidden onChange={handleCoverImageUpload} aria-label="Upload cover image" />
+          </Button>
 
           {formData.coverImage && (
-            <div className="cover-preview">
-              <img src={formData.coverImage} alt="Cover preview" />
-              <button type="button" onClick={() => setFormData({ ...formData, coverImage: '' })} className="btn btn-danger btn-small">
-                Remove
-              </button>
-              <div className="form-group">
-                <input
-                  type="text"
+            <Stack spacing={2}>
+              <Box
+                component="img"
+                src={formData.coverImage}
+                alt="Cover preview"
+                sx={{ width: '100%', maxHeight: 240, objectFit: 'cover', borderRadius: 2, border: (theme) => `1px solid ${theme.palette.divider}` }}
+              />
+
+              <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2} alignItems={{ xs: 'stretch', sm: 'flex-start' }}>
+                <TextField
+                  label="Image credit or description"
                   value={formData.coverImageCaption}
                   onChange={(e) => setFormData({ ...formData, coverImageCaption: e.target.value })}
                   placeholder="Optional: Image credit or description"
-                  maxLength={100}
+                  inputProps={{ maxLength: 100 }}
                 />
-              </div>
-            </div>
+                <Button variant="outlined" color="error" onClick={() => setFormData({ ...formData, coverImage: '' })} sx={{ flexShrink: 0 }}>
+                  Remove
+                </Button>
+              </Stack>
+            </Stack>
           )}
-        </div>
-      </div>
+        </Stack>
+      </Paper>
 
-      <div className="form-section">
-        <h2>Genres</h2>
-        <p className="section-description">Select one or more genres that fit your story</p>
+      <Paper variant="outlined" sx={{ p: { xs: 2, sm: 3 } }}>
+        <Stack spacing={2.5}>
+          <Box>
+            <Typography variant="h6" sx={{ mb: 0.5 }}>Genres</Typography>
+            <Typography variant="body2" color="text.secondary">Select one or more genres that fit your story.</Typography>
+          </Box>
 
-        <div className="genre-grid">
-          {availableGenres.map((genre) => (
-            <button
-              key={genre}
-              type="button"
-              className={`genre-button ${formData.genres.includes(genre) ? 'selected' : ''}`}
-              onClick={() => toggleGenre(genre)}
-            >
-              {genre}
-            </button>
-          ))}
-        </div>
-      </div>
-
-      <div className="form-section">
-        <h2>Tags</h2>
-        <p className="section-description">Add custom tags to help readers find your story</p>
-
-        <div className="tag-input-group">
-          <input type="text" onKeyPress={handleTagInput} placeholder="Type a tag and press Enter..." maxLength={20} />
-          <small>Press Enter to add a tag</small>
-        </div>
-
-        {formData.tags.length > 0 && (
-          <div className="tags-list">
-            {formData.tags.map((tag, idx) => (
-              <span key={idx} className="tag-chip">
-                <span>{tag}</span>
-                <button type="button" onClick={() => removeTag(tag)} className="tag-remove">✕</button>
-              </span>
+          <ToggleButtonGroup
+            value={formData.genres}
+            onChange={(_, newGenres) => setFormData({ ...formData, genres: newGenres || [] })}
+            aria-label="Story genres"
+            sx={{ flexWrap: 'wrap', gap: 1 }}
+          >
+            {availableGenres.map((genre) => (
+              <ToggleButton key={genre} value={genre} aria-label={genre} sx={{ textTransform: 'none', borderRadius: 999, px: 2 }}>
+                {genre}
+              </ToggleButton>
             ))}
-          </div>
-        )}
-      </div>
-    </div>
+          </ToggleButtonGroup>
+        </Stack>
+      </Paper>
+
+      <Paper variant="outlined" sx={{ p: { xs: 2, sm: 3 } }}>
+        <Stack spacing={2.5}>
+          <Box>
+            <Typography variant="h6" sx={{ mb: 0.5 }}>Tags</Typography>
+            <Typography variant="body2" color="text.secondary">Add custom tags to help readers find your story.</Typography>
+          </Box>
+
+          <TextField
+            label="Add a tag"
+            value={tagInput}
+            onChange={(e) => setTagInput(e.target.value)}
+            onKeyDown={handleTagInput}
+            placeholder="Type a tag and press Enter"
+            inputProps={{ maxLength: 20, 'aria-label': 'Add a story tag' }}
+            helperText="Press Enter to add a tag"
+          />
+
+          {formData.tags.length > 0 && (
+            <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1 }}>
+              {formData.tags.map((tag) => (
+                <Chip key={tag} label={tag} onDelete={() => removeTag(tag)} deleteIcon={<CloseIcon fontSize="small" />} />
+              ))}
+            </Box>
+          )}
+        </Stack>
+      </Paper>
+    </Box>
   );
 };
 

@@ -55,7 +55,8 @@ const Home = () => {
               </Box>
 
               <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2}>
-                <Button variant="contained" size="large" component={RouterLink} to="/feed">Browse Stories</Button>
+                <Button variant="contained" size="large" component={RouterLink} to="/browse-v2">Browse Stories</Button>
+                <Button variant="outlined" size="large" component={RouterLink} to="/about">About</Button>
                 <Button variant="outlined" size="large" component={RouterLink} to="/create">Start Creating</Button>
               </Stack>
 

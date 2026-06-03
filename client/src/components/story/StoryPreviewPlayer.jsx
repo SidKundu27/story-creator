@@ -1,4 +1,10 @@
 import React, { useState } from 'react';
+import Box from '@mui/material/Box';
+import Button from '@mui/material/Button';
+import Chip from '@mui/material/Chip';
+import Paper from '@mui/material/Paper';
+import Stack from '@mui/material/Stack';
+import Typography from '@mui/material/Typography';
 import { parseMarkdown } from '../../utils/markdownParser';
 import './StoryPreviewPlayer.css';
 
@@ -19,20 +25,20 @@ const StoryPreviewPlayer = ({ story }) => {
   };
 
   if (!currentNode) {
-    return <div className="preview-error">Scene not found</div>;
+    return <Box className="preview-error">Scene not found</Box>;
   }
 
   return (
     <div className="preview-player">
       <header className="preview-header">
-        <h2>{story.title}</h2>
-        <p className="preview-by">by {story.authorName}</p>
+        <Typography variant="h4" component="h2">{story.title}</Typography>
+        <Typography variant="body2" className="preview-by">by {story.authorName}</Typography>
         {story.genres && story.genres.length > 0 && (
-          <div className="preview-genres">
+          <Stack direction="row" spacing={1} justifyContent="center" useFlexGap flexWrap="wrap" className="preview-genres">
             {story.genres.map((genre, idx) => (
-              <span key={idx} className="genre">{genre}</span>
+              <Chip key={idx} label={genre} size="small" className="genre" />
             ))}
-          </div>
+          </Stack>
         )}
       </header>
 
@@ -47,21 +53,19 @@ const StoryPreviewPlayer = ({ story }) => {
           </article>
 
           {currentNode.isEnding ? (
-            <div className="ending-section">
-              <h4>The End</h4>
-              <button onClick={restart} className="btn btn-primary">
-                ← Read Again
-              </button>
-            </div>
+            <Paper variant="outlined" className="ending-section">
+              <Typography variant="h6" component="h4">The End</Typography>
+              <Button onClick={restart} variant="contained">Read Again</Button>
+            </Paper>
           ) : (
             <nav className="choices-nav">
-              <p className="choices-prompt">What happens next?</p>
+              <Typography variant="caption" component="p" className="choices-prompt">What happens next?</Typography>
               <ul className="choices-buttons">
                 {currentNode.choices && currentNode.choices.map((choice, idx) => (
                   <li key={idx}>
-                    <button onClick={() => makeChoice(choice.nextNodeId)} className="choice-button">
-                      → {choice.text}
-                    </button>
+                    <Button onClick={() => makeChoice(choice.nextNodeId)} variant="outlined" className="choice-button" fullWidth>
+                      {choice.text}
+                    </Button>
                   </li>
                 ))}
               </ul>
@@ -71,8 +75,8 @@ const StoryPreviewPlayer = ({ story }) => {
 
         <aside className="preview-sidebar">
           <div className="progress">
-            <h4>Progress</h4>
-            <p className="progress-text">{history.length} / {story.nodes.length} scenes</p>
+            <Typography variant="overline" component="h4">Progress</Typography>
+            <Typography variant="body2" className="progress-text">{history.length} / {story.nodes.length} scenes</Typography>
             <div className="progress-bar">
               <div
                 className="progress-fill"
@@ -82,9 +86,9 @@ const StoryPreviewPlayer = ({ story }) => {
           </div>
 
           {!currentNode.isEnding && (
-            <button onClick={restart} className="btn btn-secondary btn-small" style={{ width: '100%' }}>
-              ↻ Restart
-            </button>
+            <Button onClick={restart} variant="outlined" size="small" fullWidth>
+              Restart
+            </Button>
           )}
         </aside>
       </main>

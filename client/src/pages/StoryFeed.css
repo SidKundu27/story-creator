@@ -22,7 +22,7 @@
 }
 
 .feed-header h1 {
-  color: #111827;
+  color: #0f172a;
   margin-bottom: 10px;
   font-size: 44px;
   font-weight: 900;
@@ -53,6 +53,15 @@
   flex: 1;
   min-width: 250px;
   position: relative;
+}
+
+.search-box .MuiInputBase-root {
+  width: 100%;
+}
+
+.search-box .MuiInputBase-input {
+  padding: 10px 14px;
+  font-size: 15px;
 }
 
 .search-icon {
@@ -198,9 +207,5 @@
   .feed-stats {
     text-align: left;
     padding-left: 4px;
-  }
-
-  .story-grid {
-    grid-template-columns: 1fr;
   }
 }
