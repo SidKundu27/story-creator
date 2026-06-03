@@ -1,11 +1,22 @@
 // Health check utility that polls the configured API base URL's /internal-check endpoint.
 const LOADER_DELAY_MS = 1000;
 const POLL_INTERVAL_MS = 2000;
-const LOADER_ESTIMATE_SECONDS = 60;
 const COOKIE_NAME = 'server_ok';
 const COOKIE_LAST_CHECK_NAME = 'server_ok_at';
 const COOKIE_EXPIRATION_MINS = 15;
 const REQUEST_TIMEOUT_MS = 5000; // per-request timeout
+const LOADING_MESSAGES = [
+  'Crunching numbers right now',
+  'Dusting off the server chairs',
+  'Warming up the digital coffee pot',
+  'Teaching the backend to wake up',
+  'Loading story fuel into the engine',
+  'Untangling a few tiny wires',
+  'Negotiating with the gremlins',
+  'Polishing the response pixels',
+  'Counting the pixels one by one',
+  'Asking the server nicely to hurry up',
+];
 
 function setCookie(name, value, minutes) {
   const d = new Date();
@@ -67,7 +78,6 @@ async function fetchWithTimeout(url, timeoutMs) {
 export async function checkServerStatus(setIsLoadingServer) {
   const loader = document.getElementById('loader');
   const loaderMessage = document.getElementById('loader-message');
-  const loaderTimer = document.getElementById('loader-timer');
   const content = document.getElementById('content');
   const healthUrl = buildHealthUrl();
   const startedAt = Date.now();
@@ -76,17 +86,12 @@ export async function checkServerStatus(setIsLoadingServer) {
   let loaderRevealTimerId = null;
 
   const updateLoaderCopy = () => {
-    if (!loaderMessage || !loaderTimer) return;
+    if (!loaderMessage) return;
 
     const elapsedSeconds = Math.floor((Date.now() - startedAt) / 1000);
-    const remainingSeconds = Math.max(0, LOADER_ESTIMATE_SECONDS - elapsedSeconds);
-
-    loaderMessage.textContent = remainingSeconds > 0
-      ? 'Waking up the backend now.'
-      : 'Still waking up. This can take a bit longer on cold starts.';
-    loaderTimer.textContent = remainingSeconds > 0
-      ? `Please wait about ${remainingSeconds}s more.`
-      : 'Waiting for the server to respond...';
+    const messageIndex = Math.floor(elapsedSeconds / 3) % LOADING_MESSAGES.length;
+    const dotCount = (elapsedSeconds % 3) + 1;
+    loaderMessage.textContent = `${LOADING_MESSAGES[messageIndex]}${'.'.repeat(dotCount)}`;
   };
 
   const stopLoaderTimer = () => {
